@@ -12,20 +12,9 @@
 #include "MechanismConfig.h"
 #include <pathplanner/lib/auto/NamedCommands.h>
 
-#include "cmds/ShootCoral.h"
-#include "cmds/LowerArm.h"
-#include "cmds/RaiseArm.h"
-#include "cmds/RaiseArmToBottom.h"
-#include "cmds/UseSmartPlan.h"
 
 Robot::Robot() {
   m_cam = std::make_shared<PhotonVisionCamera>("Climber cam", ratbot::VisionConfig::ROBOT_TO_CAMERA);
-  
-  pathplanner::NamedCommands::registerCommand("shoot", std::make_shared<ShootCoral>(_robot_control_data));
-  pathplanner::NamedCommands::registerCommand("raise", std::make_shared<RaiseArm>(_robot_control_data));
-  pathplanner::NamedCommands::registerCommand("lower", std::make_shared<LowerArm>(_robot_control_data));
-  pathplanner::NamedCommands::registerCommand("raiseToBottom", std::make_shared<RaiseArmToBottom>(_robot_control_data));
-  pathplanner::NamedCommands::registerCommand("smartplan", std::make_shared<UseSmartPlan>(_robot_control_data));
 
   SwerveInit();
 
@@ -98,9 +87,6 @@ void Robot::AutonomousPeriodic() {
 void Robot::AutonomousExit() {}
 
 void Robot::TeleopInit() {
-  m_coralLauncherManager.ResetState();
-  m_algaeRemoverManager.ResetState(_robot_control_data);
-  m_ClimberManager.ResetState();
 
 
 }
@@ -110,98 +96,7 @@ void Robot::TeleopPeriodic() {
   // Start normal teleop
   m_cam->SaveResult();
 
-  if (!IsAutonomous())
-  {
-    _controller_interface.UpdateRobotControlData(_robot_control_data);
-  }
-
-  bool userWantsToSmartPlan = _robot_control_data.plannerInput.Left_L1
-                            || _robot_control_data.plannerInput.Right_L1
-                            || _robot_control_data.plannerInput.Left_L2
-                            || _robot_control_data.plannerInput.Right_L2;
-
-  m_smartPlanner->HandleInput(_robot_control_data);
-  if (!userWantsToSmartPlan && !IsAutonomous())
-  {
-      if (_robot_control_data.swerveInput.rotation > GetSwerveDeadZone() || _robot_control_data.swerveInput.rotation < -GetSwerveDeadZone())
-      {
-        _robot_control_data.swerveInput.targetLeftFeederAngle = false;
-        _robot_control_data.swerveInput.targetRightFeederAngle = false;
-      }
-      if(_robot_control_data.swerveInput.targetLeftFeederAngle)
-      {
-        auto chassisRotateToFeeder =  m_rotateToFeeder.move(_swerve.GetPose(), frc::Pose2d(0.0_m, 0.0_m, frc::Rotation2d(-ratbot::IntakeConfig::ROTATION_TO_FEEDER)));
-        _swerve.Drive(_robot_control_data.swerveInput.xTranslation, _robot_control_data.swerveInput.yTranslation, chassisRotateToFeeder.omega);
-      }
-      else if(_robot_control_data.swerveInput.targetRightFeederAngle)
-      {
-        auto chassisRotateToFeeder =  m_rotateToFeeder.move(_swerve.GetPose(), frc::Pose2d(0.0_m, 0.0_m, frc::Rotation2d(ratbot::IntakeConfig::ROTATION_TO_FEEDER)));
-        _swerve.Drive(_robot_control_data.swerveInput.xTranslation, _robot_control_data.swerveInput.yTranslation, chassisRotateToFeeder.omega);
-        
-      }
-      else
-      {
-        m_rotateToFeeder.reset();
-        if(_robot_control_data.swerveInput.goFieldOriented)
-        {
-          _swerve.SetRobotOriented();
-            _swerve.Drive(0.0f, -_robot_control_data.swerveInput.yTranslation, 0.0f);
-        }
-        else
-        {
-          _swerve.SetFieldOriented();
-            _swerve.Drive(_robot_control_data.swerveInput.xTranslation, _robot_control_data.swerveInput.yTranslation, _robot_control_data.swerveInput.rotation);
-        }
-    
-      }
-
-      if (_robot_control_data.resetNavx.reset)
-      {
-        _gyro.Reset();
-      }
-  }
-
-  m_coralLauncherManager.HandleInput(_robot_control_data);
-  m_algaeRemoverManager.HandleInput(_robot_control_data);
-  m_ClimberManager.HandleInput(_robot_control_data);
-  // End normal Teleop
-
-  // else
-  // {
-  //   if (autonTimer.Get().value() <= 2.5)
-  //   {
-  //     _robot_control_data.algaeInput.RunRemoverTop = true;
-  //     _robot_control_data.algaeInput.RunRemoverStow = false;
-  //     _robot_control_data.algaeInput.RunRemoverBottom = false;
-  //    m_algaeRemoverManager.HandleInput(_robot_control_data);
-  //   }
-  //   else
-  //   {
-  //     _robot_control_data.algaeInput.RunRemoverBottom = false;
-  //     _robot_control_data.algaeInput.RunRemoverStow = true;
-  //     _robot_control_data .algaeInput.RunRemoverTop = false;
-  //     m_algaeRemoverManager.HandleInput(_robot_control_data);
-  //   }
-
-  //   if (autonTimer.Get().value() >= 3.48 && autonTimer.Get().value() <= 4.5)
-  //   {
-  //     _robot_control_data.coralInput.setFlywheelToL2Speed = true;
-  //     _robot_control_data.coralInput.setFlywheelToL1Speed = false;
-  //     _robot_control_data.coralInput.disableFlywheels = false;
-  //     _robot_control_data.coralInput.indexerSpeeds = 1.0f;
-  //     m_coralLauncherManager.HandleInput(_robot_control_data);
-  //   }
-  //   else
-  //   {
-  //       _robot_control_data.coralInput.disableFlywheels = true;
-  //       _robot_control_data.coralInput.setFlywheelToL2Speed = false;
-  //       _robot_control_data.coralInput.setFlywheelToL1Speed = false;
-  //       _robot_control_data.coralInput.indexerSpeeds = 0.0f;
-
-  //       m_coralLauncherManager.HandleInput(_robot_control_data);
-  //   }
-  // }
-  
+ 
 
 }
 

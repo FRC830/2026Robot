@@ -14,7 +14,7 @@ void NeoTurnMotor::Configure(SwerveTurnMotorConfig &config){
 
     mtr_config.encoder.PositionConversionFactor(config.ratio);
 
-    mtr_config.closedLoop.SetFeedbackSensor(rev::spark::ClosedLoopConfig::FeedbackSensor::kPrimaryEncoder);
+    mtr_config.closedLoop.SetFeedbackSensor(rev::spark::FeedbackSensor::kPrimaryEncoder);
     mtr_config.closedLoop.Pidf(config.p, config.i, config.d, config.ff);
 
     mtr_config.SmartCurrentLimit(config.turn_motor_current_limit);

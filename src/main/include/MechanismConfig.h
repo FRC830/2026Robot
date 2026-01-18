@@ -3,7 +3,8 @@
 #include <rev/config/SparkMaxConfig.h>
 #include "PhotonVisionCamera.h"
 #include <ctre/phoenix6/TalonFX.hpp>
-#include <ctre/phoenix6/configs/Configs.hpp>
+#include <ctre/phoenix6/configs/Configuration.hpp>
+#include <ctre/phoenix6/configs/Configurator.hpp>
 
 namespace {
 namespace ratbot

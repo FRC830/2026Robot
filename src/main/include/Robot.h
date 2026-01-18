@@ -22,9 +22,6 @@
 #include "ControllerInterface.h"
 #include "RobotControlData.h"
 #include "MoveToPose.h"
-#include "InputManager/ClimberManager.h"
-#include "InputManager/CoralLauncherManager.h"
-#include "InputManager/AlgaeRemoverManager.h"
 #include "SmartPlanner.h"
 
 class Robot : public frc::TimedRobot {
@@ -61,8 +58,6 @@ class Robot : public frc::TimedRobot {
   ControllerInterface _controller_interface;
   RobotControlData _robot_control_data;
   MoveToPose m_rotateToFeeder;
-  CoralLauncherManager m_coralLauncherManager;
-  AlgaeRemoverManager m_algaeRemoverManager;
 
   frc::Timer autonTimer;
   
@@ -74,5 +69,4 @@ class Robot : public frc::TimedRobot {
   std::shared_ptr<PhotonVisionCamera> m_cam;
   std::shared_ptr<SmartPlanner> m_smartPlanner;
 
-  ClimberManager m_ClimberManager;
 };

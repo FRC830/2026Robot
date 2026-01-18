@@ -10,7 +10,7 @@ void NeoDriveMotor::Configure(SwerveDriveMotorConfig &config){
 
     rev::spark::SparkMaxConfig mtr_config{};
 
-    mtr_config.closedLoop.SetFeedbackSensor(rev::spark::ClosedLoopConfig::FeedbackSensor::kPrimaryEncoder);
+    mtr_config.closedLoop.SetFeedbackSensor(rev::spark::FeedbackSensor::kPrimaryEncoder);
     mtr_config.closedLoop.Pidf(config.p, config.i, config.d, config.ff);
     mtr_config.encoder.VelocityConversionFactor(config.ratio);
     mtr_config.encoder.PositionConversionFactor((config.ratio*60));
