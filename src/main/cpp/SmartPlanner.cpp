@@ -1,10 +1,16 @@
 #include "SmartPlanner.h"
 #include <iostream>
+#include <Robot.h>
+#include <frc/smartdashboard/SmartDashboard.h>
+#include <PhotonVisionCamera.h>
 
 SmartPlanner::SmartPlanner(PhotonVisionCamera &cam, WPISwerveDrive &swerve)
     : m_Cam(cam)
     , m_Swerve(swerve)
 {}
+
+
+
 
 void SmartPlanner::HandleInput(RobotControlData &data)
 {

@@ -5,13 +5,18 @@
 #include <ctre/phoenix6/TalonFX.hpp>
 #include <ctre/phoenix6/configs/Configuration.hpp>
 #include <ctre/phoenix6/configs/Configurator.hpp>
+#include <frc/geometry/Transform3d.h>
+#include <frc/geometry/Translation3d.h>
 
 namespace {
 namespace ratbot
 {
 
     const double VOLTAGE_COMPENSATION = 10.5f;
-
+    namespace VisionConfig
+    {
+        frc::Transform3d ROBOT_TO_CAMERA = frc::Transform3d{frc::Translation3d(0_in, 0_in, 0_in), frc::Rotation3d(0_rad, 0_rad, 0_rad)};
+    }
     namespace MoveToPoseConfig
     {
         // TODO: tune values on carpet

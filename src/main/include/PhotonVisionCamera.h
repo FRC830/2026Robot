@@ -27,5 +27,6 @@ class PhotonVisionCamera
         std::optional<photon::EstimatedRobotPose> GetPose();
         void SaveResult();
         int GetAprilTagID();
+        void PrintVisionInfo();
         
 };

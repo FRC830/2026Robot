@@ -4,21 +4,21 @@
 
 #include "Robot.h"
 #include <fmt/core.h>
-#include <frc/smartdashboard/SmartDashboard.h>
 #include <pathplanner/lib/auto/AutoBuilder.h>
 #include <frc2/command/CommandScheduler.h>
 #include <frc/smartdashboard/SmartDashboard.h>
 #include <frc/DriverStation.h>
 #include "MechanismConfig.h"
+#include <frc/geometry/Pose2d.h>
 //#include <pathplanner/lib/auto/NamedCommands.h>
 
 
 Robot::Robot() {
-  //m_cam = std::make_shared<PhotonVisionCamera>("Climber cam", ratbot::VisionConfig::ROBOT_TO_CAMERA);
+  m_cam = std::make_shared<PhotonVisionCamera>("cam1", ratbot::VisionConfig::ROBOT_TO_CAMERA);
 
   SwerveInit();
 
- // m_smartPlanner = std::make_shared<SmartPlanner>(*m_cam, _swerve);
+  m_smartPlanner = std::make_shared<SmartPlanner>(*m_cam, _swerve);
   
   m_autoChooser = pathplanner::AutoBuilder::buildAutoChooser();
   frc::SmartDashboard::PutData("Auto Chooser", &m_autoChooser);
@@ -28,6 +28,7 @@ Robot::Robot() {
 
 void Robot::RobotPeriodic() {
   PrintSwerveInfo();
+  m_cam->PrintVisionInfo();
 }
 
 void Robot::DisabledInit() {}
@@ -94,10 +95,15 @@ void Robot::TeleopInit() {
 void Robot::TeleopPeriodic() {
 
   // Start normal teleop
-  //m_cam->SaveResult();
+  m_cam->SaveResult();
+  if (_robot_control_data.swerveInput.autoTarget == false)
+  {  
+    _swerve.Drive(_robot_control_data.swerveInput.xTranslation, _robot_control_data.swerveInput.yTranslation, _robot_control_data.swerveInput.rotation);
+  }
+  else
+  {
 
-  _swerve.Drive(_robot_control_data.swerveInput.xTranslation, _robot_control_data.swerveInput.yTranslation, _robot_control_data.swerveInput.rotation);
-
+  }
   _controller_interface.UpdateRobotControlData(_robot_control_data);
 }
 

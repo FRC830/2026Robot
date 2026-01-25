@@ -1,4 +1,5 @@
 #include "PhotonVisionCamera.h"
+#include <cmath>
 
 PhotonVisionCamera::PhotonVisionCamera(std::string name, frc::Transform3d robotToCamera)
     : m_robotToCam(robotToCamera)
@@ -15,6 +16,21 @@ PhotonVisionCamera::PhotonVisionCamera(std::string name, frc::Transform3d robotT
 
 
 #include <iostream>
+
+void PhotonVisionCamera::PrintVisionInfo()
+{
+    
+    auto result = m_lastResult.GetBestTarget().GetBestCameraToTarget();
+    auto result2 = m_lastResult.GetBestTarget().GetFiducialId();
+    double real = sqrt(double(result.X()) *  double(result.X()) + double(result.Y()) * double(result.Y()) + double(result.Z()) * double(result.Z()));
+    //std::cout << real << std::endl;
+    frc::SmartDashboard::PutNumber("distance to tag", real);
+    frc::SmartDashboard::PutNumber("apriltag: ", result2);
+    frc::SmartDashboard::PutData("vision_pose", &m_field);
+}
+
+
+
 std::optional<photon::EstimatedRobotPose> PhotonVisionCamera::GetPose()
 {
     std::cout << "got inside getpose" << std::endl;

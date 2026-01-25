@@ -58,7 +58,7 @@ class Robot : public frc::TimedRobot {
   NavXGyro _gyro;
   ControllerInterface _controller_interface;
   RobotControlData _robot_control_data;
-  MoveToPose m_rotateToFeeder;
+  MoveToPose m_rotateToHub;
 
   frc::Timer autonTimer;
   
@@ -67,7 +67,7 @@ class Robot : public frc::TimedRobot {
 
   frc::SendableChooser<frc2::Command*> m_autoChooser;
   
-  //std::shared_ptr<PhotonVisionCamera> m_cam;
+  std::shared_ptr<PhotonVisionCamera> m_cam;
   std::shared_ptr<SmartPlanner> m_smartPlanner;
 
 
