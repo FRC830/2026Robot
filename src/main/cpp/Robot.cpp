@@ -14,11 +14,11 @@
 
 
 Robot::Robot() {
-  m_cam = std::make_shared<PhotonVisionCamera>("Climber cam", ratbot::VisionConfig::ROBOT_TO_CAMERA);
+  //m_cam = std::make_shared<PhotonVisionCamera>("Climber cam", ratbot::VisionConfig::ROBOT_TO_CAMERA);
 
   SwerveInit();
 
-  m_smartPlanner = std::make_shared<SmartPlanner>(*m_cam, _swerve);
+ // m_smartPlanner = std::make_shared<SmartPlanner>(*m_cam, _swerve);
   
   m_autoChooser = pathplanner::AutoBuilder::buildAutoChooser();
   frc::SmartDashboard::PutData("Auto Chooser", &m_autoChooser);

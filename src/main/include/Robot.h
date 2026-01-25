@@ -23,6 +23,7 @@
 #include "RobotControlData.h"
 #include "MoveToPose.h"
 #include "SmartPlanner.h"
+#include "ratpack/swerve/SwerveConfig.h"
 
 class Robot : public frc::TimedRobot {
  public:
@@ -68,5 +69,6 @@ class Robot : public frc::TimedRobot {
   
   std::shared_ptr<PhotonVisionCamera> m_cam;
   std::shared_ptr<SmartPlanner> m_smartPlanner;
+
 
 };
