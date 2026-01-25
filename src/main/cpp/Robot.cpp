@@ -10,7 +10,7 @@
 #include <frc/smartdashboard/SmartDashboard.h>
 #include <frc/DriverStation.h>
 #include "MechanismConfig.h"
-#include <pathplanner/lib/auto/NamedCommands.h>
+//#include <pathplanner/lib/auto/NamedCommands.h>
 
 
 Robot::Robot() {
@@ -23,7 +23,7 @@ Robot::Robot() {
   m_autoChooser = pathplanner::AutoBuilder::buildAutoChooser();
   frc::SmartDashboard::PutData("Auto Chooser", &m_autoChooser);
 
-  _swerve.SetShouldSwerveLock(false);
+  _swerve.SetShouldSwerveLock(true);
 }
 
 void Robot::RobotPeriodic() {
@@ -94,10 +94,11 @@ void Robot::TeleopInit() {
 void Robot::TeleopPeriodic() {
 
   // Start normal teleop
-  m_cam->SaveResult();
+  //m_cam->SaveResult();
 
- 
+  _swerve.Drive(_robot_control_data.swerveInput.xTranslation, _robot_control_data.swerveInput.yTranslation, _robot_control_data.swerveInput.rotation);
 
+  _controller_interface.UpdateRobotControlData(_robot_control_data);
 }
 
 void Robot::TeleopExit() {}

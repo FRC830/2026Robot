@@ -67,7 +67,7 @@ class Robot : public frc::TimedRobot {
 
   frc::SendableChooser<frc2::Command*> m_autoChooser;
   
-  std::shared_ptr<PhotonVisionCamera> m_cam;
+  //std::shared_ptr<PhotonVisionCamera> m_cam;
   std::shared_ptr<SmartPlanner> m_smartPlanner;
 
 
