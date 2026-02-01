@@ -30,6 +30,30 @@ namespace ratbot
         const double INTAKE_ROLLER_SPEED = 0.8;
         const double INTAKE_ANGLE_SPEED = 0.1;
         const double DOWN_LOCATION = 0;
+    namespace LauncherConfig
+    {
+        namespace Flywheel
+        {
+            const double P = 0.00025;
+            const double I = 0.0;
+            const double D = 0.35;
+            const double F = 0.0;
+            const double VEL_CONV_FACTOR = 1.0;
+            const double CURRENT_LIM = 30.0;
+            const bool INVERTED = true;
+            rev::spark::SparkBaseConfig::IdleMode IDLE_MODE = rev::spark::SparkBaseConfig::IdleMode::kCoast;
+        }
+
+        namespace Indexer
+        {
+            const double CURRENT_LIM = 20.0;
+            const bool INVERTED = true;
+            rev::spark::SparkBaseConfig::IdleMode IDLE_MODE = rev::spark::SparkBaseConfig::IdleMode::kCoast;
+        } 
+    }
+    namespace Spindexer
+    {
+        const double DEFAULT_SPEED = 0.8;
     }
 }
 }
