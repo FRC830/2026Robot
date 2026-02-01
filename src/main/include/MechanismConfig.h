@@ -25,5 +25,11 @@ namespace ratbot
         const double MAX_SPEED_M_PER_SEC = 1.32f; // todo: change!!!
         const double SPEED_FEED_FORWARD_M_PER_SEC = 0.1f; //todo: change!!!!!
     }
+    namespace Intake
+    {
+        const double INTAKE_ROLLER_SPEED = 0.8;
+        const double INTAKE_ANGLE_SPEED = 0.1;
+        const double DOWN_LOCATION = 0;
+    }
 }
 }

@@ -14,9 +14,15 @@ struct ResetNavx
     bool reset;
 };
 
+struct IntakeInput{
+    bool intakeDirection; 
+    bool intakeState;
+};
+
 struct RobotControlData {
     SwerveInput swerveInput;
     ResetNavx resetNavx;
+    IntakeInput intakeInput;
 };
 
 

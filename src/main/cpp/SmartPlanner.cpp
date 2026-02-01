@@ -14,17 +14,7 @@ SmartPlanner::SmartPlanner(PhotonVisionCamera &cam, WPISwerveDrive &swerve)
 
 void SmartPlanner::HandleInput(RobotControlData &data)
 {
-    if(data.plannerInput.Left_L1 || data.plannerInput.Left_L2 || data.plannerInput.Right_L1 || data.plannerInput.Right_L2)
-    {
-        SmartPlan(data);
-    }
-    else
-    {
-        m_state = 0;
-        m_moveToPose.reset();
-        m_pathstate = 0;
-        //m_Swerve.SetFieldOriented();
-    }
+    
 }
 
 #include <iostream>
