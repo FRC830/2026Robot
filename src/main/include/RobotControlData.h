@@ -30,9 +30,15 @@ struct SpindexerData
     double joystick;
 };
 
+struct IntakeInput{
+    bool intakeDirection; 
+    bool intakeState;
+};
+
 struct RobotControlData {
     SwerveInput swerveInput;
     ResetNavx resetNavx;
+    IntakeInput intakeInput;
     LauncherInput launcherInput;
     LauncherOutput launcherOutput;
     SpindexerData spindexer;

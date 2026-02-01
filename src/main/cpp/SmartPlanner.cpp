@@ -14,6 +14,7 @@ SmartPlanner::SmartPlanner(PhotonVisionCamera &cam, WPISwerveDrive &swerve)
 
 void SmartPlanner::HandleInput(RobotControlData &data)
 {
+    
 }
 
 #include <iostream>
