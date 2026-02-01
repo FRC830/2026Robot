@@ -12,5 +12,9 @@ class Intake
 
         void IntakeOn();
         void IntakeOff();
-        void MoveUp();
+        void MoveIntakeUp();
+        void MoveIntakeDown();
+    private:
+        rev::spark::SparkMax m_spinnerMotor{INTAKE_SPINNER_CAN_ID, rev::spark::SparkMax::MotorType::kBrushless};
+        rev::spark::SparkMax m_intakeMotor{INTAKE_LIFT_CAN_ID, rev::spark::SparkMax::MotorType::kBrushless};
 };

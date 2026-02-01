@@ -9,5 +9,6 @@ class IntakeHAL
     public:
         IntakeHAL();
         ~IntakeHAL() = default;
-        bool state = false;
+        bool toggle = false;
+        
 };
