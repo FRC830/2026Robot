@@ -14,9 +14,16 @@ struct ResetNavx
     bool reset;
 };
 
+struct SpindexerData
+{
+    double RPM;
+    double joystick;
+};
+
 struct RobotControlData {
     SwerveInput swerveInput;
     ResetNavx resetNavx;
+    SpindexerData spindexer;
 };
 
 
