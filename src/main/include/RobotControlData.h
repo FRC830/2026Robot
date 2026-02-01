@@ -24,11 +24,18 @@ struct LauncherOutput{
     bool launcherAtSpeed;
 };
 
+struct SpindexerData
+{
+    double RPM;
+    double joystick;
+};
+
 struct RobotControlData {
     SwerveInput swerveInput;
     ResetNavx resetNavx;
     LauncherInput launcherInput;
     LauncherOutput launcherOutput;
+    SpindexerData spindexer;
 };
 
 

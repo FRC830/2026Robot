@@ -46,4 +46,9 @@ namespace ratbot
             rev::spark::SparkBaseConfig::IdleMode IDLE_MODE = rev::spark::SparkBaseConfig::IdleMode::kCoast;
         } 
     }
+    namespace Spindexer
+    {
+        const double DEFAULT_SPEED = 0.8;
+    }
+}
 }

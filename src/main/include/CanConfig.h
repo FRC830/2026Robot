@@ -6,3 +6,5 @@ const int LAUNCHER_INDEXER_RIGHT_CAN_ID = 40;
 const int LAUNCHER_INDEXER_LEFT_CAN_ID = 41;
 
 const int CLIMBER_WINCH_CAN_ID = 30;
+const int SPINDEXER_A_CAN_ID = 0;
+const int SPINDEXER_B_CAN_ID = 0;
