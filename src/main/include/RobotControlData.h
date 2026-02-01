@@ -13,10 +13,22 @@ struct ResetNavx
 {
     bool reset;
 };
+struct LauncherInput {
+    double indexerSpeeds;
+    bool setLauncherToSpeed;
+    bool disableLauncher;
+};
+struct LauncherOutput{
+    double leftSpeed;
+    double rightSpeed;
+    bool launcherAtSpeed;
+};
 
 struct RobotControlData {
     SwerveInput swerveInput;
     ResetNavx resetNavx;
+    LauncherInput launcherInput;
+    LauncherOutput launcherOutput;
 };
 
 
