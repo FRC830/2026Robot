@@ -19,7 +19,7 @@ frc::ChassisSpeeds MoveToPose::move(frc::Pose2d current, frc::Pose2d desired) {
         case 1:
         {
             m_current = current;
-            m_rotation = angularRotation(current.Rotation(), desired.Rotation());
+            m_rotation = angularRotation(0, 0);
             m_translation = linearTranslation(desired);
             break;
         }
@@ -31,7 +31,10 @@ frc::ChassisSpeeds MoveToPose::move(frc::Pose2d current, frc::Pose2d desired) {
     return frc::ChassisSpeeds{m_translation.first, m_translation.second, m_rotation}; //vx, vy, omega
 };
 
-units::degrees_per_second_t MoveToPose::angularRotation(frc::Rotation2d current, frc::Rotation2d desired) {    
+// #include <iostream>
+
+
+units::degrees_per_second_t MoveToPose::angularRotation(double current, double desired) {    
     /*
     "Efficient Rotation"
     double start = current.Degrees().value();
@@ -47,23 +50,32 @@ units::degrees_per_second_t MoveToPose::angularRotation(frc::Rotation2d current,
         m_turn = m_turn + 360.0;
     }
     */
-    auto error = desired-current;
-    m_turn = error.Degrees().value();
 
-    auto val = ((std::fabs(m_turn) / 180.0f) * ratbot::MoveToPoseConfig::MAX_TURN_SPEED_DEG_PER_SEC) + ratbot::MoveToPoseConfig::TURN_FEED_FORWARD_DEG_PER_SEC;
-    
-    if (m_turn < 0.0f)
+    m_turn = desired-current;
+    if (m_turn > 180.0)
     {
-        val = -val;
+        m_turn = m_turn - 360.0;
+    }
+    else if (m_turn < -180.0)
+    {
+        m_turn = m_turn + 360.0;
     }
 
 
-    if (std::fabs(m_turn) <= 2.0f)
+
+    auto val = ((std::fabs(m_turn)/180.0f) * ratbot::MoveToPoseConfig::MAX_TURN_SPEED_DEG_PER_SEC) + ratbot::MoveToPoseConfig::TURN_FEED_FORWARD_DEG_PER_SEC;
+    
+    val = (m_turn > 0.0) ? -val : val;
+
+    //std::cout << val << std::endl;
+
+
+    if (std::fabs(m_turn) <= 30.0f)
     {
-        static const double slow_turn_val = 10.0f;
+        static const double slow_turn_val = 30.0f;
         val = (m_turn > 0.0) ? -slow_turn_val : slow_turn_val;
         
-        if (std::fabs(m_turn) <= 0.1f)
+        if (std::fabs(m_turn) <= 4.0f)
         {
             val = 0.0f;
             m_MoveAngleToState = 3;
