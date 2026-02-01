@@ -47,6 +47,32 @@ void ControllerInterface::UpdateSmartplannerInput(RobotControlData &controlData)
 
 
 }
+void ControllerInterface::UpdateIntakeInput(RobotControlData &controlData)
+{
+
+
+}
+void ControllerInterface::UpdateLauncherInput(RobotControlData &controlData)
+{
+     if (m_copilot.GetAButton())
+    {
+        controlData.launcherInput.disableLauncher = false;
+        controlData.launcherInput.setLauncherToSpeed = true;
+    }
+    else
+    {
+        controlData.launcherInput.disableLauncher = true;
+        controlData.launcherInput.setLauncherToSpeed = false;
+    }
+    
+
+ 
+    controlData.launcherInput.indexerSpeeds = 1.0f;
+}
+void ControllerInterface::UpdateSpindexerInput(RobotControlData &controlData)
+{
+
+}
 
 void ControllerInterface::VibrateController(double intensity, double duration)
 {
