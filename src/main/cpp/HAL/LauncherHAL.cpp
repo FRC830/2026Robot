@@ -21,9 +21,15 @@ void Launcher::SetLauncherSpeeds(double rightSpeed, double leftSpeed)
 }
 void Launcher::SetIndexerSpeeds(double indexerSpeed)
 {
-    
-    m_leftIndexer.GetClosedLoopController().SetReference(indexerSpeed, rev::spark::SparkLowLevel::ControlType::kDutyCycle);
-    m_rightIndexer.GetClosedLoopController().SetReference(indexerSpeed, rev::spark::SparkLowLevel::ControlType::kDutyCycle);
+    if (AreFlywheelsAtDesiredSpeed())
+    {      
+        m_leftIndexer.GetClosedLoopController().SetReference(indexerSpeed, rev::spark::SparkLowLevel::ControlType::kDutyCycle);
+        m_rightIndexer.GetClosedLoopController().SetReference(indexerSpeed, rev::spark::SparkLowLevel::ControlType::kDutyCycle);
+    } else
+    {
+        m_leftIndexer.GetClosedLoopController().SetReference(0, rev::spark::SparkLowLevel::ControlType::kDutyCycle);
+        m_rightIndexer.GetClosedLoopController().SetReference(0, rev::spark::SparkLowLevel::ControlType::kDutyCycle);
+    }
 }
 double Launcher::GetRightLauncherSpeed()
 {
