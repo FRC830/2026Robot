@@ -1,9 +1,16 @@
 #include "HAL/SpindexerHAL.h"
 
-void Spindexer::RunSpindexer(double speed)
+void Spindexer::RunSpindexer(double speed, bool flywheelsAtSpeed)
 {
-    m_SpindexerMotorA.Set(speed);
-    m_SpindexerMotorB.Set(-speed);
+    if (flywheelsAtSpeed)
+    {      
+        m_SpindexerMotorA.GetClosedLoopController().SetReference(speed, rev::spark::SparkLowLevel::ControlType::kDutyCycle);
+        m_SpindexerMotorB.GetClosedLoopController().SetReference(-speed, rev::spark::SparkLowLevel::ControlType::kDutyCycle);
+    } else
+    {
+        m_SpindexerMotorA.GetClosedLoopController().SetReference(0, rev::spark::SparkLowLevel::ControlType::kDutyCycle);
+        m_SpindexerMotorB.GetClosedLoopController().SetReference(0, rev::spark::SparkLowLevel::ControlType::kDutyCycle);
+    }
 }
 
 double Spindexer::GetSpeed()
