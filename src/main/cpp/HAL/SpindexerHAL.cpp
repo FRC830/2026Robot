@@ -4,12 +4,12 @@ void Spindexer::RunSpindexer(double speed, bool flywheelsAtSpeed)
 {
     if (flywheelsAtSpeed)
     {      
-        m_SpindexerMotorA.GetClosedLoopController().SetReference(speed, rev::spark::SparkLowLevel::ControlType::kDutyCycle);
-        m_SpindexerMotorB.GetClosedLoopController().SetReference(-speed, rev::spark::SparkLowLevel::ControlType::kDutyCycle);
+        m_SpindexerMotorA.Set(speed);
+        m_SpindexerMotorB.Set(-speed);
     } else
     {
-        m_SpindexerMotorA.GetClosedLoopController().SetReference(0, rev::spark::SparkLowLevel::ControlType::kDutyCycle);
-        m_SpindexerMotorB.GetClosedLoopController().SetReference(0, rev::spark::SparkLowLevel::ControlType::kDutyCycle);
+        m_SpindexerMotorA.Set(0);
+        m_SpindexerMotorB.Set(-0);
     }
 }
 

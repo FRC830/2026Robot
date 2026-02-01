@@ -15,6 +15,5 @@ public:
     void HandleInput(RobotControlData &robotControlData);
 private:
     Launcher m_Launcher;
-    bool m_setLauncherToSpeed = false;
-    bool m_setLauncherToZero = false;
+    double m_launcherSpeed;
 };

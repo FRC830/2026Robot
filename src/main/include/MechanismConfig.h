@@ -8,14 +8,13 @@
 #include <frc/geometry/Transform3d.h>
 #include <frc/geometry/Translation3d.h>
 
-namespace {
 namespace ratbot
 {
 
     const double VOLTAGE_COMPENSATION = 10.5f;
     namespace VisionConfig
     {
-        frc::Transform3d ROBOT_TO_CAMERA = frc::Transform3d{frc::Translation3d(0_in, 0_in, 0_in), frc::Rotation3d(0_rad, 0_rad, 0_rad)};
+        constexpr frc::Transform3d ROBOT_TO_CAMERA = frc::Transform3d{frc::Translation3d(0_in, 0_in, 0_in), frc::Rotation3d(0_rad, 0_rad, 0_rad)};
     }
     namespace MoveToPoseConfig
     {
@@ -30,6 +29,7 @@ namespace ratbot
         const double INTAKE_ROLLER_SPEED = 0.8;
         const double INTAKE_ANGLE_SPEED = 0.1;
         const double DOWN_LOCATION = 0;
+    }
     namespace LauncherConfig
     {
         namespace Flywheel
@@ -41,19 +41,18 @@ namespace ratbot
             const double VEL_CONV_FACTOR = 1.0;
             const double CURRENT_LIM = 30.0;
             const bool INVERTED = true;
-            rev::spark::SparkBaseConfig::IdleMode IDLE_MODE = rev::spark::SparkBaseConfig::IdleMode::kCoast;
+            constexpr rev::spark::SparkBaseConfig::IdleMode IDLE_MODE = rev::spark::SparkBaseConfig::IdleMode::kCoast;
         }
 
         namespace Indexer
         {
             const double CURRENT_LIM = 20.0;
             const bool INVERTED = true;
-            rev::spark::SparkBaseConfig::IdleMode IDLE_MODE = rev::spark::SparkBaseConfig::IdleMode::kCoast;
+            constexpr rev::spark::SparkBaseConfig::IdleMode IDLE_MODE = rev::spark::SparkBaseConfig::IdleMode::kCoast;
         } 
     }
     namespace Spindexer
     {
         const double DEFAULT_SPEED = 0.8;
     }
-}
 }

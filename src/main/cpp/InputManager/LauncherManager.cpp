@@ -2,20 +2,13 @@
 
 
 void LauncherManager::HandleInput(RobotControlData &robotControlData){
-    if(robotControlData.launcherInput.setLauncherToSpeed){
-        m_setLauncherToSpeed = true;
-        m_setLauncherToZero = false;
-    }else if (robotControlData.launcherInput.disableLauncher){
-        m_setLauncherToSpeed = false;
-        m_setLauncherToZero = true;
+    if (robotControlData.launcherInput.disableLauncher){
+        m_launcherSpeed = 0.0;
     }
-
-    if(m_setLauncherToSpeed){
-        m_Launcher.SetLauncherSpeeds(500.0, -500.0); //configure speeds
+    else{
+        m_launcherSpeed = robotControlData.launcherInput.launcherSpeed; //configure max speed
     }
-    if(m_setLauncherToZero){
-        m_Launcher.SetLauncherSpeeds(0.0,0.0);
-    }
+    m_Launcher.SetLauncherSpeeds(m_launcherSpeed, -m_launcherSpeed);
     m_Launcher.SetIndexerSpeeds(robotControlData.launcherInput.indexerSpeeds);
     // if(m_Launcher.BeamBreakStatus()){
     //     m_Launcher.SetWheelSpeeds(0,0);
@@ -26,6 +19,5 @@ void LauncherManager::HandleInput(RobotControlData &robotControlData){
 }
 
 void LauncherManager:: ResetState(){
-    m_setLauncherToSpeed = false;
-    m_setLauncherToZero = true;
+    m_launcherSpeed = 0.0;
 }

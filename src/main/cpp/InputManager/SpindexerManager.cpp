@@ -7,6 +7,6 @@ void SpindexerManager::ResetState(RobotControlData &robotControlData)
 
 void SpindexerManager::HandleInput(RobotControlData &robotControlData)
 {
-    robotControlData.spindexer.RPM = ratbot::Spindexer::DEFAULT_SPEED + robotControlData.spindexer.joystick * 0.5;
-    m_Spindexer.RunSpindexer(robotControlData.spindexer.RPM);
+    robotControlData.spindexer.RPM = ratbot::Spindexer::DEFAULT_SPEED;
+    m_Spindexer.RunSpindexer(robotControlData.spindexer.RPM, robotControlData.launcherOutput.launcherAtSpeed);
 }

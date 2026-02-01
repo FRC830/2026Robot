@@ -13,7 +13,9 @@ class ControllerInterface
     private:
         void UpdateSwerveInput(RobotControlData &controlData);
         void UpdateSmartplannerInput(RobotControlData &controlData);
-
+        void UpdateLauncherInput(RobotControlData &controlData);
+        void UpdateSpindexerInput(RobotControlData &controlData);
+        void UpdateIntakeInput(RobotControlData &controlData);
         void UpdateNavxInput(RobotControlData &controlData);
         
 

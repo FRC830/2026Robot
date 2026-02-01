@@ -14,7 +14,7 @@ class Spindexer
         Spindexer() = default;
         ~Spindexer() = default;
 
-        void RunSpindexer(double speed);
+        void RunSpindexer(double speed, bool flywheelsAtSpeed);
         double GetSpeed();
 
     private:

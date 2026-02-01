@@ -6,7 +6,7 @@ void IntakeManager::HandleInput(RobotControlData &robotControlData)
     {
         m_intakeHAL.SequenceStore();
     }
-    if (robotControlData.intakeInput.intakeState == false)
+    if (!robotControlData.intakeInput.intakeState)
     {
         m_intakeHAL.SequenceDown();
     }
