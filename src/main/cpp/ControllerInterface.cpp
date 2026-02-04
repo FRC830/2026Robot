@@ -28,13 +28,6 @@ void ControllerInterface::UpdateSwerveInput(RobotControlData &controlData)
     controlData.swerveInput.xTranslation = -m_pilot.GetLeftY();
     controlData.swerveInput.yTranslation = -m_pilot.GetLeftX();
     controlData.swerveInput.rotation = -m_pilot.GetRightX();    
-
-    if (m_pilot.GetAButton()) 
-    {
-        controlData.swerveInput.autoTarget = true;
-    } else {
-        controlData.swerveInput.autoTarget = false;
-    }
 }
 #include <iostream>
 
