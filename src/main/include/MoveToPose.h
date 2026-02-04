@@ -15,6 +15,7 @@
 #include <units/velocity.h>
 #include <units/acceleration.h>
 //#include <units/math.h>
+#include <frc/controller/PIDController.h>
 
 
 class MoveToPose
@@ -47,6 +48,14 @@ class MoveToPose
         // Trapezoid move to handle linear translation to desired pose
         std::pair<units::feet_per_second_t, units::feet_per_second_t> linearTranslation(frc::Pose2d desired);
 
+        // --- PID Controllers ---
+        frc::PIDController m_thetaPID{0.02, 0.0, 0.001};   // rotation (deg → deg/s)
+        frc::PIDController m_xPID{1.5, 0.0, 0.0};          // X position (m → m/s)
+        frc::PIDController m_yPID{1.5, 0.0, 0.0};          // Y position (m → m/s)
+
+        // Tolerances
+        static constexpr units::degree_t kThetaTolerance = 2_deg;
+        static constexpr units::meter_t kPosTolerance = 0.05_m;
 
     public:
         MoveToPose() = default;

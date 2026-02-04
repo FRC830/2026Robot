@@ -96,16 +96,16 @@ void Robot::TeleopPeriodic() {
 
   // Start normal teleop
   m_cam->SaveResult();
-  // if (_robot_control_data.swerveInput.autoTarget == false)
-  // {  
-  //   _swerve.Drive(_robot_control_data.swerveInput.xTranslation, _robot_control_data.swerveInput.yTranslation, _robot_control_data.swerveInput.rotation);
-  // }
-  // else
-  // {-
-
-  // }
-  auto turnSpeed = m_rotateToHub.angularRotation(_swerve.GetPose().Rotation().Degrees().value(), 0);
-  _swerve.Drive(0,0,turnSpeed);
+  auto turnSpeed = 0;
+  if (_robot_control_data.swerveInput.autoTarget)
+  {  
+  auto turnSpeed = m_rotateToHub.angularRotation(_swerve.GetPose().Rotation().Degrees().value(), atan2(_swerve.GetPose().Y().value(),_swerve.GetPose().X().value())*(90/(2*std::numbers::pi)));
+  }
+  else
+  {
+  auto turnSpeed = 0;
+  }
+  _swerve.Drive(_robot_control_data.swerveInput.xTranslation,_robot_control_data.swerveInput.yTranslation,turnSpeed);
 
   _controller_interface.UpdateRobotControlData(_robot_control_data);
 }
