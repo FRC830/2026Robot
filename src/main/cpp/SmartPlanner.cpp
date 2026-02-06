@@ -20,7 +20,7 @@ void SmartPlanner::HandleInput(RobotControlData &data)
 #include <iostream>
 void SmartPlanner::SmartPlan(RobotControlData &data)
 {
-
+  
 }
 
 void SmartPlanner::followPath()
