@@ -104,19 +104,16 @@ void Robot::TeleopPeriodic() {
   // {-
 
   // }
-  auto swervePose = m_cam->GetPose();
 
-  double targetAngle = atan2(swervePose->estimatedPose.Y().value(),swervePose->estimatedPose.X().value());
-  if (swervePose->estimatedPose.X().value() != 0)
-  {  
-    frc::SmartDashboard::PutNumber("X est pose", 12.27-swervePose->estimatedPose.X().value()); //12.27-
-    frc::SmartDashboard::PutNumber("Y est pose", 3.431-swervePose->estimatedPose.Y().value()); //3.431-
-  }
+  
+  
 
-  frc::SmartDashboard::PutNumber("target angle", targetAngle);
 
-  auto turnSpeed = m_rotateToHub.angularRotation(_swerve.GetPose().Rotation().Degrees().value(), (targetAngle * 180/3.1415));
-  _swerve.Drive(_robot_control_data.swerveInput.xTranslation, _robot_control_data.swerveInput.yTranslation,0);
+  
+  
+  
+
+ // _swerve.Drive(0, 0,0);
 
   _controller_interface.UpdateRobotControlData(_robot_control_data);
 }

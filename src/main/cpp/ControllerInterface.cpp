@@ -64,14 +64,7 @@ void ControllerInterface::UpdateLauncherInput(RobotControlData &controlData)
     {
         controlData.launcherInput.disableLauncher = false;
         controlData.launcherInput.launcherSpeed = 1000 + m_copilot.GetLeftY()*200;
-        if (m_copilot.GetAButton())
-        {
-            controlData.launcherInput.autoAim = true;
-        }
-        else
-        {
-            controlData.launcherInput.autoAim = false;
-        }
+        controlData.swerveInput.autoTarget = m_copilot.GetAButton();
     }
     else //neutral
     {

@@ -70,5 +70,6 @@ class Robot : public frc::TimedRobot {
   std::shared_ptr<PhotonVisionCamera> m_cam;
   std::shared_ptr<SmartPlanner> m_smartPlanner;
 
+  double m_targetAngle = 0;
 
 };
