@@ -7,6 +7,7 @@
 #include "RobotControlData.h"
 #include <frc/smartdashboard/SmartDashboard.h>
 #include <frc/DigitalInput.h>
+#include <MechanismConfig.h>
 
 class Launcher
 {
@@ -18,6 +19,8 @@ class Launcher
         double GetLeftLauncherSpeed();
         double GetRightLauncherSpeed();
         bool AreFlywheelsAtDesiredSpeed();
+        double CalcSpeed(double distance); // get mps by using distance v rpm and then rpm v speed
+        double CalcRPM(double speed); // get rpm by using rpm v speed backwards
     private:
         rev::spark::SparkMax m_rightLauncher{LAUNCHER_FLYWHEEL_RIGHT_CAN_ID, rev::spark::SparkMax::MotorType::kBrushless};
         rev::spark::SparkMax m_leftLauncher{LAUNCHER_FLYWHEEL_LEFT_CAN_ID, rev::spark::SparkMax::MotorType::kBrushless};
