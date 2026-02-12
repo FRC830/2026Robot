@@ -45,3 +45,12 @@ bool Launcher::AreFlywheelsAtDesiredSpeed()
 }
 
 
+double Launcher::CalcRPM(double speed)
+{
+    // get rpm by using rpm v speed backwards
+}
+
+double Launcher::CalcSpeed(double distance)
+{
+    // get mps by using distance v rpm and then rpm v speed
+}
