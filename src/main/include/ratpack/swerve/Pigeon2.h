@@ -27,5 +27,5 @@ class Pigeon2 : public SwerveGyro
     private:
         bool m_is_inverted;
         frc::Rotation2d m_zero_heading; // Pigeon2 should set a zero heading during automatic calibration
-        studica::AHRS* m_gyro;
+        ctre::phoenix6::hardware::Pigeon2* m_gyro;
 };

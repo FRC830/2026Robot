@@ -1,5 +1,5 @@
 #include "ratpack/swerve/Pigeon2.h"
-
+#include <units/angle.h>
 
 void Pigeon2::Configure(GyroConfig &config)
 {
@@ -10,10 +10,7 @@ void Pigeon2::Configure(GyroConfig &config)
 
 frc::Rotation3d Pigeon2::GetYawPitchRoll() 
 {
-    units::radian_t yaw = units::radian_t(m_gyro->GetYaw());
-    units::radian_t pitch = units::radian_t(m_gyro->GetPitch());
-    units::radian_t roll = units::radian_t(m_gyro->GetRoll());
-    frc::Rotation3d yaw_pitch_roll = pufrc::Rotation3d(roll, pitch, yaw);
+    frc::Rotation3d yaw_pitch_roll = m_gyro->GetRotation3d();
     return yaw_pitch_roll;
 }
 
@@ -32,14 +29,7 @@ frc::Rotation2d Pigeon2::GetHeading()
 
 frc::Rotation2d Pigeon2::GetRawHeading() 
 {
-    double rawHeading = std::fmod(m_gyro->GetAngle(), 360.0);
-
-    if (m_is_inverted) 
-    {
-        rawHeading = std::abs(360.0f - rawHeading);
-    }
-
-    return frc::Rotation2d(units::degree_t(rawHeading));
+    return m_gyro->GetRotation2d();
 }
 
 bool Pigeon2::GetInverted() 

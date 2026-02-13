@@ -98,7 +98,7 @@ void Robot::TeleopPeriodic() {
   m_cam->SaveResult();
   // if (_robot_control_data.swerveInput.autoTarget == false)
   // {  
-  //   _swerve.Drive(_robot_control_data.swerveInput.xTranslation, _robot_control_data.swerveInput.yTranslation, _robot_control_data.swerveInput.rotation);
+   _swerve.Drive(_robot_control_data.swerveInput.xTranslation, _robot_control_data.swerveInput.yTranslation, _robot_control_data.swerveInput.rotation);
   // }
   // else
   // {-
