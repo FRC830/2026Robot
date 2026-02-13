@@ -16,7 +16,7 @@ class ControllerInterface
         void UpdateLauncherInput(RobotControlData &controlData);
         void UpdateSpindexerInput(RobotControlData &controlData);
         void UpdateIntakeInput(RobotControlData &controlData);
-        void UpdateNavxInput(RobotControlData &controlData);
+        void UpdatePigeon2Input(RobotControlData &controlData);
         
 
         frc::XboxController m_pilot{0};

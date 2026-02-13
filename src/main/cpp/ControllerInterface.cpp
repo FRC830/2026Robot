@@ -5,7 +5,7 @@ void ControllerInterface::UpdateRobotControlData(RobotControlData &controlData)
 {
 
     UpdateSwerveInput(controlData);
-    UpdateNavxInput(controlData);
+    UpdatePigeon2Input(controlData);
 
     // code for the VibrateController function
     if (m_timer.Get().value()>=m_globalDuration)
@@ -17,9 +17,9 @@ void ControllerInterface::UpdateRobotControlData(RobotControlData &controlData)
 
 
 
-void ControllerInterface::UpdateNavxInput(RobotControlData &controlData)
+void ControllerInterface::UpdatePigeon2Input(RobotControlData &controlData)
 {
-    controlData.resetNavx.reset = m_pilot.GetStartButtonPressed();
+    controlData.resetPigeon2.reset = m_pilot.GetStartButtonPressed();
 }
 
 void ControllerInterface::UpdateSwerveInput(RobotControlData &controlData)

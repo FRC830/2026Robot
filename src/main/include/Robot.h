@@ -12,7 +12,7 @@
 #include <frc/Timer.h>
 
 #include "ratpack/swerve/AnalogAbsoluteEncoder.h"
-#include "ratpack/swerve/NavXGyro.h"
+#include "ratpack/swerve/Pigeon2.h"
 #include "ratpack/swerve/NeoDriveMotor.h"
 #include "ratpack/swerve/NeoTurnMotor.h"
 #include "ratpack/swerve/WPISwerveModule.h"
@@ -24,6 +24,8 @@
 #include "MoveToPose.h"
 #include "SmartPlanner.h"
 #include "ratpack/swerve/SwerveConfig.h"
+
+
 
 class Robot : public frc::TimedRobot {
  public:
@@ -55,7 +57,7 @@ class Robot : public frc::TimedRobot {
   std::array<WPISwerveModule, NUM_MODULES> _modules;
   WPISwerveDrive _swerve;
 
-  NavXGyro _gyro;
+  Pigeon2 _gyro;
   ControllerInterface _controller_interface;
   RobotControlData _robot_control_data;
   MoveToPose m_rotateToHub;
@@ -69,7 +71,7 @@ class Robot : public frc::TimedRobot {
   
   std::shared_ptr<PhotonVisionCamera> m_cam;
   std::shared_ptr<SmartPlanner> m_smartPlanner;
-
+ 
   double m_targetAngle = 0;
-
+ 
 };
