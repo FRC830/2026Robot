@@ -21,11 +21,19 @@ void SmartPlanner::HandleInput(RobotControlData &data)
 #include <iostream>
 void SmartPlanner::SmartPlan(RobotControlData &data)
 {
-  auto swervePose = m_Cam.GetPose();
-  double x = swervePose->estimatedPose.X().value();
-  double y = swervePose->estimatedPose.Y().value();
+  if (true)
+  {
+    auto camPose = m_Cam.GetPose()->estimatedPose;
+    m_Swerve.UpdatePoseWithVision( camPose, units::time::second_t(m_Cam.GetPose().value().timestamp));
+  }
+
+
+  auto swervePose = m_Swerve.GetPose();
+  double x = swervePose.X().value();
+  double y = swervePose.Y().value();
+
   blueAlliance = frc::DriverStation::GetAlliance() == frc::DriverStation::Alliance::kBlue;
-  if (swervePose->estimatedPose.X().value() != 0)
+  if (swervePose.X().value() != 0)
   {  
     frc::SmartDashboard::PutNumber("X est pose", x);
     frc::SmartDashboard::PutNumber("Y est pose", y);
