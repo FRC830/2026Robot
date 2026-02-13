@@ -72,7 +72,7 @@ units::degrees_per_second_t MoveToPose::angularRotation(double current, double d
 
     if (std::fabs(m_turn) <= 30.0f)
     {
-        static const double slow_turn_val = 30.0f;
+        static const double slow_turn_val = 50.0f;
         val = (m_turn > 0.0) ? -slow_turn_val : slow_turn_val;
         
         if (std::fabs(m_turn) <= 5.0f)
