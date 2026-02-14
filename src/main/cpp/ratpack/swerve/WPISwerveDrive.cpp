@@ -206,9 +206,9 @@ frc::ChassisSpeeds WPISwerveDrive::GetRobotRelativeSpeeds()
     return m_kinematics->ToChassisSpeeds({m_modules[0]->GetState(), m_modules[1]->GetState(), m_modules[2]->GetState(), m_modules[3]->GetState()});
 }
 
-void WPISwerveDrive::UpdatePoseWithVision(frc::Pose3d pose3d, units::second_t timestamp)
+void WPISwerveDrive::UpdatePoseWithVision(frc::Pose2d pose2d, units::second_t timestamp)
 {
-    frc::Pose2d pose{frc::Translation2d{pose3d.X(), pose3d.Y()}, m_gyro->GetHeading()};
+    frc::Pose2d pose{frc::Translation2d{pose2d.X(), pose2d.Y()}, m_gyro->GetHeading()};
     if (!m_visionResetOccurred)
     {
         m_estimator->ResetPose(pose);

@@ -18,9 +18,15 @@ void SmartPlanner::HandleInput(RobotControlData &data)
     SmartPlan(data);
 }
 
-#include <iostream>
 void SmartPlanner::SmartPlan(RobotControlData &data)
 {
+  auto camPose = m_Cam.GetPose();
+  if (camPose.has_value())
+  {
+    auto poseThing = camPose;
+    m_Swerve.UpdatePoseWithVision(poseThing->estimatedPose.ToPose2d(), units::time::second_t(poseThing->timestamp));
+  }
+
   auto swervePose = m_Cam.GetPose();
   double x = swervePose->estimatedPose.X().value();
   double y = swervePose->estimatedPose.Y().value();
