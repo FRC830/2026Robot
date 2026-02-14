@@ -33,7 +33,7 @@ void PhotonVisionCamera::PrintVisionInfo()
 
 std::optional<photon::EstimatedRobotPose> PhotonVisionCamera::GetPose()
 {
-    std::cout << "got inside getpose" << std::endl;
+   // std::cout << "got inside getpose" << std::endl;
     std::optional<photon::EstimatedRobotPose> estimate;
 
     if (!m_LastResultIsEmpty && (GetAprilTagID() != -1))
@@ -43,7 +43,7 @@ std::optional<photon::EstimatedRobotPose> PhotonVisionCamera::GetPose()
         {
             m_field.SetRobotPose(estimate.value().estimatedPose.ToPose2d());
         }
-        std::cout << "updated result" << std::endl;
+       // std::cout << "updated result" << std::endl;
     }
 
     return estimate;

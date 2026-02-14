@@ -49,7 +49,7 @@ class MoveToPose
         std::pair<units::feet_per_second_t, units::feet_per_second_t> linearTranslation(frc::Pose2d desired);
 
         // --- PID Controllers ---
-        frc::PIDController m_thetaPID{0.02, 0.0, 0.001};   // rotation (deg → deg/s)
+        frc::PIDController m_thetaPID{1, 0.0, 0.001};   // rotation (deg → deg/s)
         frc::PIDController m_xPID{1.5, 0.0, 0.0};          // X position (m → m/s)
         frc::PIDController m_yPID{1.5, 0.0, 0.0};          // Y position (m → m/s)
 

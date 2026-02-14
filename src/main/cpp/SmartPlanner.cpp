@@ -14,12 +14,81 @@ SmartPlanner::SmartPlanner(PhotonVisionCamera &cam, WPISwerveDrive &swerve)
 
 void SmartPlanner::HandleInput(RobotControlData &data)
 {
+  SmartPlan(data);
     
 }
 
 #include <iostream>
 void SmartPlanner::SmartPlan(RobotControlData &data)
 {
+  auto camPose = m_Cam.GetPose();
+  if (camPose.has_value())
+  {
+    auto poseThing = camPose;
+    m_Swerve.UpdatePoseWithVision(poseThing->estimatedPose.ToPose2d(), units::time::second_t(poseThing->timestamp));
+  }
+
+
+  auto swervePose = m_Swerve.GetPose();
+  double x = swervePose.X().value();
+  double y = swervePose.Y().value();
+
+  blueAlliance = frc::DriverStation::GetAlliance() == frc::DriverStation::Alliance::kBlue;
+  if (swervePose.X().value() != 0)
+  {  
+    frc::SmartDashboard::PutNumber("X est pose", x);
+    frc::SmartDashboard::PutNumber("Y est pose", y);
+    if (blueAlliance)
+    {
+      m_targetAngle = atan2(4.035 - y,4.626 - x);
+      distToHub = std::hypot(4.626 - x, 4.035 - y);
+      // targetPosition = frc::Translation2d(units::length::meter_t(4.626 - x), units::length::meter_t(4.035 - y));
+      targetPosition = frc::Translation2d( units::length::meter_t(4.626 - x),units::length::meter_t(4.035 - y));
+
+    }
+    else
+    {
+      m_targetAngle = atan2(4.035 - y, 11.915 - x);
+      distToHub = std::hypot(11.915 - x, 4.035 - y);      
+      // targetPosition= frc::Translation2d(units::length::meter_t(11.915 - x), units::length::meter_t(4.035 - y));
+      targetPosition= frc::Translation2d(units::length::meter_t(11.915 - x),units::length::meter_t(4.035 - y));
+
+    }
+  }
+
+  // find out which hub we target
+  // 469.11, 158.84, red
+  // 182.11, 158.84, blue
+
+
+  double distance = targetPosition.Norm().value();
+  double idealSpeed = 0;
+
+
+  frc::Translation2d targetVector(units::meter_t (targetPosition.X().value()/distance * idealSpeed) , units::meter_t (targetPosition.Y().value()/distance * idealSpeed));
+  
+  double swerveX = m_Swerve.GetRobotRelativeSpeeds().vx();
+  double swerveY = m_Swerve.GetRobotRelativeSpeeds().vy();
+
+  frc::Translation2d shotVector(units::meter_t (targetVector.X().value() - swerveX), units::meter_t (targetVector.Y().value() - swerveY));
+  //launcher spinning
+
+  // LOOK HERE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+  //m_targetAngle = shotVector.Angle().Degrees().value();
+
+  
+  double speed = shotVector.Norm().value(); //mps
+  speed = 0; //rpm
+  launcher.SetLauncherSpeeds(speed,speed);
+
+  frc::SmartDashboard::PutNumber("target angle", (m_targetAngle * 180/3.1415)-90);
+
+  auto turnSpeed = m_moveToPose.angularRotation(m_Swerve.GetPose().Rotation().Degrees().value(), (m_targetAngle * 180/3.1415)-90);
+  // auto turnSpeed = m_moveToPose.angularRotation((m_targetAngle * 180/3.1415)-90,m_Swerve.GetPose().Rotation().Degrees().value());
+
+
+  m_Swerve.Drive(data.swerveInput.xTranslation,data.swerveInput.yTranslation,turnSpeed);
+
 
 }
 
