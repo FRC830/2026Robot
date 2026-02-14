@@ -41,10 +41,6 @@ std::optional<photon::EstimatedRobotPose> PhotonVisionCamera::GetPose()
             m_field.SetRobotPose(estimate.value().estimatedPose.ToPose2d());
             //std::cout << "has value" << std::endl;
         }
-        else
-        {
-            //std::cout << "doesnt' have value" << std::endl;
-        }
     }
 
     return estimate;

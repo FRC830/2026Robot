@@ -21,10 +21,11 @@ void SmartPlanner::HandleInput(RobotControlData &data)
 #include <iostream>
 void SmartPlanner::SmartPlan(RobotControlData &data)
 {
-  if (true)
+  auto camPose = m_Cam.GetPose();
+  if (camPose.has_value())
   {
-    auto camPose = m_Cam.GetPose()->estimatedPose;
-    m_Swerve.UpdatePoseWithVision( camPose, units::time::second_t(m_Cam.GetPose().value().timestamp));
+    auto poseThing = camPose;
+    m_Swerve.UpdatePoseWithVision(poseThing->estimatedPose.ToPose2d(), units::time::second_t(poseThing->timestamp));
   }
 
 
