@@ -121,10 +121,10 @@ void Robot::SwerveInit(){
     _modules[i].Configure(module_config);
   }
   
-  GyroConfig gyroConfig;
-  gyroConfig.is_inverted = _swerve.GYRO_INVERTED;
-  gyroConfig.zero_heading = _swerve.GYRO_ZERO_HEADING;
-  _gyro.Configure(gyroConfig);
+  // GyroConfig gyroConfig;
+  // gyroConfig.is_inverted = _swerve.GYRO_INVERTED;
+  // gyroConfig.zero_heading = _swerve.GYRO_ZERO_HEADING;
+  // _gyro.Configure(gyroConfig);
 
   SwerveConfig swerveConfig;
   swerveConfig.backLeftLocation= _swerve.bl_position;
@@ -143,8 +143,11 @@ void Robot::SwerveInit(){
   {
     (*temp)[i] = &_modules[i];
   }
+  #include <iostream>
+  std::cout<<"Configure to start"<<std::endl;
   _swerve.Configure(swerveConfig);
   _swerve.SetFieldOriented();
+  std::cout<<"Hey"<<std::endl;
 }
 
 void Robot::PrintSwerveInfo()

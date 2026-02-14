@@ -3,18 +3,19 @@
 #include "Interfaces/SwerveGyro.h"
 #include <studica/AHRS.h>
 #include <frc/SPI.h>
+#include <ctre/phoenix6/Pigeon2.hpp>
 
-struct GyroConfig 
-{
-    bool is_inverted;
-    frc::Rotation2d zero_heading;
-};
+// struct GyroConfig 
+// {
+//     bool is_inverted;
+//     frc::Rotation2d zero_heading;
+// };
 
-class NavXGyro : public SwerveGyro
+class Pigeon2 : public SwerveGyro
 {
     public:
-        NavXGyro() = default;
-        virtual ~NavXGyro() = default;
+        Pigeon2();
+        virtual ~Pigeon2() = default;
         virtual void Configure(GyroConfig &config) override;
         virtual frc::Rotation3d GetYawPitchRoll() override;
         virtual frc::Rotation2d GetHeading() override;
@@ -25,6 +26,6 @@ class NavXGyro : public SwerveGyro
         void Reset();
     private:
         bool m_is_inverted;
-        frc::Rotation2d m_zero_heading; // NavX Gyro should set a zero heading during automatic calibration
-        studica::AHRS* m_gyro;
+        frc::Rotation2d m_zero_heading; // Pigeon2 should set a zero heading during automatic calibration
+        ctre::phoenix6::hardware::Pigeon2 *m_gyro;
 };
