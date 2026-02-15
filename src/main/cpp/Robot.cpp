@@ -104,14 +104,9 @@ void Robot::TeleopPeriodic() {
   // {-
 
   // }
-  m_smartPlanner->HandleInput(_robot_control_data);
-  
-  
 
-
-  
-  
-  
+  launcher.SetAngle(m_pilot.GetRightY()*5);
+    
 
  // _swerve.Drive(0, 0,0);
 
