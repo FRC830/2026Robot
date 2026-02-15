@@ -18,7 +18,7 @@ class LinearActuator{
         bool isFinished();
         
     private:
-        frc::Servo m_LinearActuator{LinActID};
+        //frc::Servo m_LinearActuator{LinActID};
         const double m_speed = 10; // max speed
         const double m_length = 10; // length of the actuator
         double lastTime = 0;

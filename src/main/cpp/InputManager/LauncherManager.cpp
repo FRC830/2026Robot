@@ -10,14 +10,11 @@ void LauncherManager::HandleInput(RobotControlData &robotControlData){
     }
     m_Launcher.SetLauncherSpeeds(m_launcherSpeed, -m_launcherSpeed);
     m_Launcher.SetIndexerSpeeds(robotControlData.launcherInput.indexerSpeeds);
-    // if(m_Launcher.BeamBreakStatus()){
-    //     m_Launcher.SetWheelSpeeds(0,0);
-    // }
     robotControlData.launcherOutput.leftSpeed = m_Launcher.GetLeftLauncherSpeed();
     robotControlData.launcherOutput.rightSpeed = m_Launcher.GetRightLauncherSpeed();
     robotControlData.launcherOutput.launcherAtSpeed = m_Launcher.AreFlywheelsAtDesiredSpeed();
 }
 
-void LauncherManager:: ResetState(){
+void LauncherManager::ResetState(){
     m_launcherSpeed = 0.0;
 }
