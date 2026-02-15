@@ -5,11 +5,15 @@
 #include <math.h>
 #include <frc/DriverStation.h>
 #include <pathplanner/lib/config/RobotConfig.h>
-
+#include <iostream>
 void WPISwerveDrive::Configure(SwerveConfig &config){
+    
     frc::SmartDashboard::PutData("Field", &m_field);
+    std::cout<<"1"<<std::endl;
     m_ebrake = config.ebrake;
+    std::cout<<2;
     m_maxDriveSpeed = config.maxDriveSpeed;
+    std::cout<<3;
     m_maxTurnSpeed = config.maxTurnSpeed;
     m_orientation = config.orientation;
     m_frontLeftLocation = config.frontLeftLocation;
@@ -20,13 +24,34 @@ void WPISwerveDrive::Configure(SwerveConfig &config){
     //m_modules = config.modules;
     m_kinematics = new frc::SwerveDriveKinematics(m_frontLeftLocation, m_frontRightLocation, m_backLeftLocation, m_backRightLocation);
     m_deadzone = config.deadzone;
+    std::cout<<"Gyro started"<<std::endl;
     m_gyro = config.gyro;
-    //Last parameter in constuer must be relative the actual robot for it to wrok some what correctly
-    //REMEMEBR TO FLIP DIRECTION DURING AUTON MAKING
-    m_estimator = new frc::SwerveDrivePoseEstimator<4>(*m_kinematics, m_gyro->GetRawHeading(), {m_modules[0]->GetPosition(), m_modules[1]->GetPosition(), m_modules[2]->GetPosition(), m_modules[3]->GetPosition()}, frc::Pose2d(frc::Translation2d(), m_gyro->GetHeading()));
+    std::cout<<"gyro ended"<<std::endl;
+    // Last parameter in constructor must be relative the actual robot for it to work somewhat correctly
+    // Build module positions safely: avoid dereferencing null module pointers which can cause a crash here.
+    std::array<frc::SwerveModulePosition, 4> modulePositions;
+    bool anyNullModule = false;
+    for (size_t i = 0; i < modulePositions.size(); ++i) {
+        if (m_modules[i] != nullptr) {
+            modulePositions[i] = m_modules[i]->GetPosition();
+        } else {
+            // fallback to zeroed position if module not yet provided
+            modulePositions[i] = frc::SwerveModulePosition{units::meter_t{0.0}, frc::Rotation2d()};
+            anyNullModule = true;
+        }
+    }
 
+    frc::Rotation2d initialHeading = m_gyro ? m_gyro->GetHeading() : frc::Rotation2d();
+
+    if (anyNullModule) {
+        // If any module was null, log a warning so it's easier to diagnose
+        std::cout << "Warning: one or more swerve modules were null when constructing estimator" << std::endl;
+    }
+
+    m_estimator = new frc::SwerveDrivePoseEstimator<4>(*m_kinematics, initialHeading, modulePositions, frc::Pose2d(frc::Translation2d(), initialHeading));
+    std::cout<<"estimator ended"<<std::endl;
     pathplanner::RobotConfig pathplanner_config = pathplanner::RobotConfig::fromGUISettings();
-
+    std::cout<<"pathplanner ended ended"<<std::endl;
     pathplanner::AutoBuilder::configure(
         [this]() {return GetPose();},
         [this](frc::Pose2d InitPose)  {ResetPose(InitPose);},
@@ -40,7 +65,7 @@ void WPISwerveDrive::Configure(SwerveConfig &config){
         []() { return true;},
         {nullptr}
     );
-
+    std::cout<<"config ended"<<std::endl;
 }
 
 bool WPISwerveDrive::GetEbrake() {
@@ -181,9 +206,9 @@ frc::ChassisSpeeds WPISwerveDrive::GetRobotRelativeSpeeds()
     return m_kinematics->ToChassisSpeeds({m_modules[0]->GetState(), m_modules[1]->GetState(), m_modules[2]->GetState(), m_modules[3]->GetState()});
 }
 
-void WPISwerveDrive::UpdatePoseWithVision(frc::Pose3d pose3d, units::second_t timestamp)
+void WPISwerveDrive::UpdatePoseWithVision(frc::Pose2d pose2d, units::second_t timestamp)
 {
-    frc::Pose2d pose{frc::Translation2d{pose3d.X(), pose3d.Y()}, m_gyro->GetHeading()};
+    frc::Pose2d pose{frc::Translation2d{pose2d.X(), pose2d.Y()}, m_gyro->GetHeading()};
     if (!m_visionResetOccurred)
     {
         m_estimator->ResetPose(pose);

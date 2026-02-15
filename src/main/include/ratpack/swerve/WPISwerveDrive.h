@@ -1,7 +1,7 @@
 #pragma once
 #include "Interfaces/SwerveDrive.h"
 #include "Interfaces/SwerveModule.h"
-#include "Interfaces/SwerveGyro.h"
+#include "ratpack/swerve/Pigeon2.h"
 #include "frc/estimator/SwerveDrivePoseEstimator.h"
 #include <frc/smartdashboard/Field2d.h>
 #include <frc/smartdashboard/SmartDashboard.h>
@@ -29,7 +29,7 @@ struct SwerveConfig{
     double maxDriveSpeed;
     double maxTurnSpeed;
     double deadzone;
-    SwerveGyro *gyro;
+    Pigeon2 *gyro;
     // Location of motors relative to the center of the robot
     frc::Translation2d frontLeftLocation;
     frc::Translation2d frontRightLocation;
@@ -59,7 +59,7 @@ class WPISwerveDrive : public SwerveDrive
         virtual frc::Pose2d GetPose() override;
         virtual void ResetPose(frc::Pose2d pose) override;
         virtual frc::ChassisSpeeds GetRobotRelativeSpeeds() override;
-        void UpdatePoseWithVision(frc::Pose3d pose3d, units::second_t timestamp);
+        void UpdatePoseWithVision(frc::Pose2d pose2d, units::second_t timestamp);
         void SetShouldSwerveLock(bool shouldLock);
 
         inline std::array<SwerveModule*, 4>* GetModules()
@@ -244,7 +244,7 @@ class WPISwerveDrive : public SwerveDrive
 
         double ApplyDeadzone(double input);
         std::pair<double, double> ApplyCylindricalDeadzone(double x, double y);
-        SwerveGyro *m_gyro;
+        Pigeon2 *m_gyro;
         frc::SwerveDrivePoseEstimator<4> *m_estimator;
 
         bool m_shouldSwerveLock = true;
