@@ -28,7 +28,9 @@ namespace ratbot
     {
         const double INTAKE_ROLLER_SPEED = 0.8;
         const double INTAKE_ANGLE_SPEED = 0.1;
-        const double DOWN_LOCATION = 0;
+        const double DEPLOYED_LOCATION = Math.pi/4; //todo: change
+        const double STORED_LOCATION = 0;
+        const double GEAR_RATIO = 36;
     }
     namespace LauncherConfig
     {
