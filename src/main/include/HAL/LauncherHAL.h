@@ -19,8 +19,9 @@ class Launcher
         double GetLeftLauncherSpeed();
         double GetRightLauncherSpeed();
         bool AreFlywheelsAtDesiredSpeed();
-        double CalcSpeed(double distance); // get mps by using distance v rpm and then rpm v speed
-        double CalcRPM(double speed); // get rpm by using rpm v speed backwards
+        void SetAngle(int angle);
+        void SetRPM(int rpm);
+
     private:
         rev::spark::SparkMax m_rightLauncher{LAUNCHER_FLYWHEEL_RIGHT_CAN_ID, rev::spark::SparkMax::MotorType::kBrushless};
         rev::spark::SparkMax m_leftLauncher{LAUNCHER_FLYWHEEL_LEFT_CAN_ID, rev::spark::SparkMax::MotorType::kBrushless};
@@ -30,5 +31,6 @@ class Launcher
         double m_desiredLeftLauncherSpeed; 
         double m_desiredRightIndexerSpeed;
         double m_desiredRightLauncherSpeed; 
+        const double GEAR_RATIO = 2; // placeholder
         const double SMALL_NUM = 0.001; //change variable name accordingly; make a more suitable name                            
 };

@@ -44,13 +44,13 @@ bool Launcher::AreFlywheelsAtDesiredSpeed()
     return ((std::fabs(GetRightLauncherSpeed() - m_desiredRightLauncherSpeed)<=SMALL_NUM)&&(std::fabs(GetLeftLauncherSpeed() - m_desiredLeftLauncherSpeed)<=SMALL_NUM));
 }
 
-
-double Launcher::CalcRPM(double speed)
+void Launcher::SetAngle(int angle)
 {
-    // get rpm by using rpm v speed backwards
+
 }
 
-double Launcher::CalcSpeed(double distance)
+void Launcher::SetRPM(int wheel_rpm)
 {
-    // get mps by using distance v rpm and then rpm v speed
+    launcher_rpm = wheel_rpm/GEAR_RATIO;
+    SetLauncherSpeeds(launcher_rpm, -launcher_rpm);
 }
