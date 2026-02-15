@@ -44,13 +44,15 @@ bool Launcher::AreFlywheelsAtDesiredSpeed()
     return ((std::fabs(GetRightLauncherSpeed() - m_desiredRightLauncherSpeed)<=SMALL_NUM)&&(std::fabs(GetLeftLauncherSpeed() - m_desiredLeftLauncherSpeed)<=SMALL_NUM));
 }
 
-void Launcher::SetAngle(int angle)
+void Launcher::SetAngle(double angle)
 {
+    m_verticalServo1.Set(angle*63);
+    m_verticalServo2.Set(angle*63);
 
 }
 
-void Launcher::SetRPM(int wheel_rpm)
+void Launcher::SetRPM(double wheel_rpm)
 {
-    launcher_rpm = wheel_rpm/GEAR_RATIO;
+    double launcher_rpm = wheel_rpm/GEAR_RATIO;
     SetLauncherSpeeds(launcher_rpm, -launcher_rpm);
 }

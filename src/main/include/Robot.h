@@ -70,6 +70,10 @@ class Robot : public frc::TimedRobot {
   std::shared_ptr<PhotonVisionCamera> m_cam;
   std::shared_ptr<SmartPlanner> m_smartPlanner;
 
+  frc::XboxController m_pilot{2};
+  
+  Launcher launcher;
+
   double m_targetAngle = 0;
 
 };

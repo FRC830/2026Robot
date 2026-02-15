@@ -19,14 +19,18 @@ class Launcher
         double GetLeftLauncherSpeed();
         double GetRightLauncherSpeed();
         bool AreFlywheelsAtDesiredSpeed();
-        void SetAngle(int angle);
-        void SetRPM(int rpm);
+        void SetAngle(double angle);
+        void SetRPM(double rpm);
 
     private:
         rev::spark::SparkMax m_rightLauncher{LAUNCHER_FLYWHEEL_RIGHT_CAN_ID, rev::spark::SparkMax::MotorType::kBrushless};
         rev::spark::SparkMax m_leftLauncher{LAUNCHER_FLYWHEEL_LEFT_CAN_ID, rev::spark::SparkMax::MotorType::kBrushless};
         rev::spark::SparkMax m_leftIndexer{LAUNCHER_INDEXER_RIGHT_CAN_ID, rev::spark::SparkMax::MotorType::kBrushless};
         rev::spark::SparkMax m_rightIndexer{LAUNCHER_INDEXER_LEFT_CAN_ID, rev::spark::SparkMax::MotorType::kBrushless};
+        rev::spark::SparkMax m_verticalServo1{SERVO_CAN_ID, rev::spark::SparkMax::MotorType::kBrushless};
+        rev::spark::SparkMax m_verticalServo2{SERVO_CAN_ID, rev::spark::SparkMax::MotorType::kBrushless};
+
+
         double m_desiredLeftIndexerSpeed;
         double m_desiredLeftLauncherSpeed; 
         double m_desiredRightIndexerSpeed;
