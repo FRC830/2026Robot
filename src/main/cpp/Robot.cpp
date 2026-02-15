@@ -96,24 +96,7 @@ void Robot::TeleopPeriodic() {
 
   // Start normal teleop
   m_cam->SaveResult();
-  // if (_robot_control_data.swerveInput.autoTarget == false)
-  // {  
-  //   _swerve.Drive(_robot_control_data.swerveInput.xTranslation, _robot_control_data.swerveInput.yTranslation, _robot_control_data.swerveInput.rotation);
-  // }
-  // else
-  // {-
-
-  // }
   m_smartPlanner->HandleInput(_robot_control_data);
-  
-  
-
-
-  
-  
-  
-
- // _swerve.Drive(0, 0,0);
 
   _controller_interface.UpdateRobotControlData(_robot_control_data);
 }

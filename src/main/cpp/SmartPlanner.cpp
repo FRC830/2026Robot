@@ -15,7 +15,8 @@ SmartPlanner::SmartPlanner(PhotonVisionCamera &cam, WPISwerveDrive &swerve)
 
 void SmartPlanner::HandleInput(RobotControlData &data)
 {
-    SmartPlan(data);
+  SmartPlan(data);
+    
 }
 
 void SmartPlanner::SmartPlan(RobotControlData &data)
@@ -27,11 +28,13 @@ void SmartPlanner::SmartPlan(RobotControlData &data)
     m_Swerve.UpdatePoseWithVision(poseThing->estimatedPose.ToPose2d(), units::time::second_t(poseThing->timestamp));
   }
 
-  auto swervePose = m_Cam.GetPose();
-  double x = swervePose->estimatedPose.X().value();
-  double y = swervePose->estimatedPose.Y().value();
+
+  auto swervePose = m_Swerve.GetPose();
+  double x = swervePose.X().value();
+  double y = swervePose.Y().value();
+
   blueAlliance = frc::DriverStation::GetAlliance() == frc::DriverStation::Alliance::kBlue;
-  if (swervePose->estimatedPose.X().value() != 0)
+  if (swervePose.X().value() != 0)
   {  
     frc::SmartDashboard::PutNumber("X est pose", x);
     frc::SmartDashboard::PutNumber("Y est pose", y);
@@ -59,7 +62,7 @@ void SmartPlanner::SmartPlan(RobotControlData &data)
 
 
   double distance = targetPosition.Norm().value();
-  double idealSpeed = launcher.CalcSpeed(distance);
+  double idealSpeed = 0;
 
 
   frc::Translation2d targetVector(units::meter_t (targetPosition.X().value()/distance * idealSpeed) , units::meter_t (targetPosition.Y().value()/distance * idealSpeed));
@@ -75,13 +78,16 @@ void SmartPlanner::SmartPlan(RobotControlData &data)
 
   
   double speed = shotVector.Norm().value(); //mps
-  speed = launcher.CalcRPM(speed); //rpm
+  speed = 0; //rpm
   launcher.SetLauncherSpeeds(speed,speed);
 
   frc::SmartDashboard::PutNumber("target angle", (m_targetAngle * 180/3.1415)-90);
 
   auto turnSpeed = m_moveToPose.angularRotation(m_Swerve.GetPose().Rotation().Degrees().value(), (m_targetAngle * 180/3.1415)-90);
   // auto turnSpeed = m_moveToPose.angularRotation((m_targetAngle * 180/3.1415)-90,m_Swerve.GetPose().Rotation().Degrees().value());
+
+
+  m_Swerve.Drive(data.swerveInput.xTranslation,data.swerveInput.yTranslation,turnSpeed);
 
 
   m_Swerve.Drive(data.swerveInput.xTranslation,data.swerveInput.yTranslation,turnSpeed);
