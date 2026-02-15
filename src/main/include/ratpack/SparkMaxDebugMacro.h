@@ -22,6 +22,6 @@
     }\
     else\
     {\
-        std::cout << "Set config item in " << retries << "retries" << std::endl;\
+        std::cout << "Set config item in " << retries << " retries" << std::endl;\
     }\
 }

@@ -28,13 +28,6 @@ void ControllerInterface::UpdateSwerveInput(RobotControlData &controlData)
     controlData.swerveInput.xTranslation = -m_pilot.GetLeftY();
     controlData.swerveInput.yTranslation = -m_pilot.GetLeftX();
     controlData.swerveInput.rotation = -m_pilot.GetRightX();    
-
-    if (m_pilot.GetAButton()) 
-    {
-        controlData.swerveInput.autoTarget = true;
-    } else {
-        controlData.swerveInput.autoTarget = false;
-    }
 }
 #include <iostream>
 
@@ -71,14 +64,7 @@ void ControllerInterface::UpdateLauncherInput(RobotControlData &controlData)
     {
         controlData.launcherInput.disableLauncher = false;
         controlData.launcherInput.launcherSpeed = 1000 + m_copilot.GetLeftY()*200;
-        if (m_copilot.GetAButton())
-        {
-            controlData.launcherInput.autoAim = true;
-        }
-        else
-        {
-            controlData.launcherInput.autoAim = false;
-        }
+        controlData.swerveInput.autoTarget = m_copilot.GetAButton();
     }
     else //neutral
     {

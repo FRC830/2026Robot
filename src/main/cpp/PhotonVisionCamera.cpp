@@ -14,22 +14,19 @@ PhotonVisionCamera::PhotonVisionCamera(std::string name, frc::Transform3d robotT
     frc::SmartDashboard::PutData("vision_pose", &m_field);
 }
 
-
 #include <iostream>
 
 void PhotonVisionCamera::PrintVisionInfo()
 {
-    
+
     auto result = m_lastResult.GetBestTarget().GetBestCameraToTarget();
     auto result2 = m_lastResult.GetBestTarget().GetFiducialId();
-    double real = sqrt(double(result.X()) *  double(result.X()) + double(result.Y()) * double(result.Y()) + double(result.Z()) * double(result.Z()));
-    //std::cout << real << std::endl;
+    double real = sqrt(double(result.X()) * double(result.X()) + double(result.Y()) * double(result.Y()) + double(result.Z()) * double(result.Z()));
+    // std::cout << real << std::endl;
     frc::SmartDashboard::PutNumber("distance to tag", real);
     frc::SmartDashboard::PutNumber("apriltag: ", result2);
     frc::SmartDashboard::PutData("vision_pose", &m_field);
 }
-
-
 
 std::optional<photon::EstimatedRobotPose> PhotonVisionCamera::GetPose()
 {
@@ -42,12 +39,16 @@ std::optional<photon::EstimatedRobotPose> PhotonVisionCamera::GetPose()
         if (estimate.has_value())
         {
             m_field.SetRobotPose(estimate.value().estimatedPose.ToPose2d());
+            //std::cout << "has value" << std::endl;
+        }
+        else
+        {
+            //std::cout << "doesnt' have value" << std::endl;
         }
        // std::cout << "updated result" << std::endl;
     }
 
     return estimate;
-
 }
 
 void PhotonVisionCamera::SaveResult()
@@ -72,7 +73,7 @@ int PhotonVisionCamera::GetAprilTagID()
         auto targets = m_lastResult.GetTargets();
         double lowestYaw = 360.0f;
         double targetId = id;
-        for (const auto& target : targets)
+        for (const auto &target : targets)
         {
             if (std::fabs(target.GetYaw()) < lowestYaw)
             {
@@ -86,4 +87,3 @@ int PhotonVisionCamera::GetAprilTagID()
     }
     return id;
 }
-

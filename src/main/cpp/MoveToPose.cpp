@@ -6,90 +6,236 @@
        //  - https://github.com/FRC830/2024Robot/blob/master/src/main/cpp/subsystems/IntakeHAL.cpp (ProfiledMoveToAngle function)
 // TODO: don't worry about doing anything with the drive base for now
 
-frc::ChassisSpeeds MoveToPose::move(
-    frc::Pose2d current,
-    frc::Pose2d desired
-) {
-    m_current = current;
-
-    auto omega = angularRotation(
-        current.Rotation().Degrees().value(),
-        desired.Rotation().Degrees().value()
-    );
-
-    auto translation = linearTranslation(desired);
-
-    return frc::ChassisSpeeds{
-        translation.first,
-        translation.second,
-        omega
-    };
-}
-
+frc::ChassisSpeeds MoveToPose::move(frc::Pose2d current, frc::Pose2d desired) {
+    switch(m_MoveToState){
+        case 0:
+        {
+            m_MoveToState++;
+            m_rotation = 0_deg_per_s;
+            m_translation.first = 0_fps;
+            m_translation.second = 0_fps;
+            break;
+        }
+        case 1:
+        {
+            m_current = current;
+            m_rotation = angularRotation(0, 0);
+            m_translation = linearTranslation(desired);
+            break;
+        }
+        default:
+        {
+            break;
+        }
+    }
+    return frc::ChassisSpeeds{m_translation.first, m_translation.second, m_rotation}; //vx, vy, omega
+};
 
 // #include <iostream>
 
 
-units::degrees_per_second_t MoveToPose::angularRotation(
-    double currentDeg,
-    double desiredDeg
-) {
-    double omega = m_thetaPID.Calculate(currentDeg, desiredDeg);
+units::degrees_per_second_t MoveToPose::angularRotation(double current, double desired) {    
+    /*
+    "Efficient Rotation"
+    double start = current.Degrees().value();
+    double end = desired.Degrees().value();
 
-    // Clamp to max angular speed
-    omega = std::clamp(
-        omega,
-        -ratbot::MoveToPoseConfig::MAX_TURN_SPEED_DEG_PER_SEC,
-         ratbot::MoveToPoseConfig::MAX_TURN_SPEED_DEG_PER_SEC
-    );
+    m_turn = end - start;
+    if (m_turn > 180.0)
+    {
+        m_turn = m_turn - 360.0;
+    }
+    else if (m_turn < -180.0)
+    {
+        m_turn = m_turn + 360.0;
+    }
+    */
 
-    if (m_thetaPID.AtSetpoint()) {
-        omega = 0.0;
-        m_MoveAngleToState = 3;
+    m_turn = desired-current;
+    if (m_turn > 180.0)
+    {
+        m_turn = m_turn - 360.0;
+    }
+    else if (m_turn < -180.0)
+    {
+        m_turn = m_turn + 360.0;
     }
 
-    return units::degrees_per_second_t{omega};
-}
 
 
-std::pair<units::feet_per_second_t, units::feet_per_second_t>
-MoveToPose::linearTranslation(frc::Pose2d desired) {
+    auto val = ((std::fabs(m_turn)/180.0f) * ratbot::MoveToPoseConfig::MAX_TURN_SPEED_DEG_PER_SEC) + ratbot::MoveToPoseConfig::TURN_FEED_FORWARD_DEG_PER_SEC;
+    
+    val = (m_turn > 0.0) ? -val : val;
 
-    double vx = m_xPID.Calculate(
-        m_current.X().value(),
-        desired.X().value()
-    );
+    //std::cout << val << std::endl;
 
-    double vy = m_yPID.Calculate(
-        m_current.Y().value(),
-        desired.Y().value()
-    );
 
-    // Clamp speeds
-    vx = std::clamp(
-        vx,
-        -ratbot::MoveToPoseConfig::MAX_SPEED_M_PER_SEC,
-         ratbot::MoveToPoseConfig::MAX_SPEED_M_PER_SEC
-    );
-
-    vy = std::clamp(
-        vy,
-        -ratbot::MoveToPoseConfig::MAX_SPEED_M_PER_SEC,
-         ratbot::MoveToPoseConfig::MAX_SPEED_M_PER_SEC
-    );
-
-    if (m_xPID.AtSetpoint() && m_yPID.AtSetpoint()) {
-        vx = 0.0;
-        vy = 0.0;
-        m_MoveTranslationToState = 3;
+    if (std::fabs(m_turn) <= 30.0f)
+    {
+        static const double slow_turn_val = 50.0f;
+        val = (m_turn > 0.0) ? -slow_turn_val : slow_turn_val;
+        
+        if (std::fabs(m_turn) <= 3.0f)
+        {
+            val = 0.0f;
+            m_MoveAngleToState = 3;
+        }
     }
 
-    return {
-        units::meters_per_second_t{vx},
-        units::meters_per_second_t{vy}
-    };
-}
 
+
+    return units::angular_velocity::degrees_per_second_t{val};
+    
+    // switch (m_MoveAngleToState)
+    // {
+    //     case 0:
+    //     {
+
+
+            
+    //         double start = m_current.Rotation().Degrees().value();
+    //         double end = desired.Degrees().value();
+
+    //         m_turn = end - start;
+    //         if (m_turn > 180.0)
+    //         {
+    //             m_turn = m_turn - 360.0;
+    //         }
+    //         else if (m_turn < -180.0)
+    //         {
+    //             m_turn = m_turn + 360.0;
+    //         }
+
+
+    //         m_angularVelocity = 0_deg_per_s;
+    //         m_timer.Restart();
+    //         m_MoveAngleToState++;
+    //         break;
+    //     }
+    //     case 1:
+    //     {
+    //         auto setPoint = m_Profile.Calculate(
+    //             m_timer.Get(),
+    //             frc::TrapezoidProfile<units::degrees>::State{units::degree_t{0.0f}, 0_deg_per_s},
+    //             frc::TrapezoidProfile<units::degrees>::State{units::degree_t{m_turn}, 0_deg_per_s}    // insert the better end state here       
+    //         );
+
+    //         m_angularVelocity = setPoint.velocity;
+
+    //         if (m_Profile.IsFinished(m_timer.Get())) {
+    //             m_MoveAngleToState++;
+    //         }
+
+    //         break;
+    //     }
+    //     case 2:
+    //     {
+    //         m_timer.Stop();
+    //         m_MoveAngleToState++;
+    //         break;
+    //     }
+    //     default:
+    //     {
+    //         break;
+    //     }
+    // }
+    // return m_angularVelocity;
+};
+
+std::pair<units::feet_per_second_t, units::feet_per_second_t> MoveToPose::linearTranslation(frc::Pose2d desired) {
+    // double distance = sqrt(pow((double)desired.X() - current.X(), 2.0) + pow(0.0 + desired.Y() - current.Y(), 2.0));
+    double desiredx = desired.X().value();
+    double currentx = m_current.X().value();
+    double desiredy = desired.Y().value();
+    double currenty = m_current.Y().value();
+
+    m_vx = 0;
+    m_vy = 0;
+    
+    double x = (desiredx - currentx) * (desiredx - currentx);
+    double y = (desiredy - currenty) * (desiredy - currenty);
+    
+    m_distance = sqrt(x + y);
+    std::cout << "distance: " << m_distance << std::endl;
+    double theta =  atan2(desiredy-currenty ,  desiredx - currentx);
+
+    m_vxCoeff = cos(theta);
+    m_vyCoeff = sin(theta);
+
+    auto val = ((std::fabs(m_distance) / 2.0f) * ratbot::MoveToPoseConfig::MAX_SPEED_M_PER_SEC) + ratbot::MoveToPoseConfig::SPEED_FEED_FORWARD_M_PER_SEC;
+
+    //m_distance = -m_distance;
+
+    if (std::fabs(m_distance) <= 0.08f)
+    {
+        val = 0.0f;
+    }
+
+    auto vx = units::meters_per_second_t{val*m_vxCoeff};
+    auto vy = units::meters_per_second_t{val*m_vyCoeff};
+
+
+    std::pair<units::feet_per_second_t, units::feet_per_second_t> velocity = {vx, vy};
+    //std::pair<units::meters_per_second_t, units::meters_per_second_t> velocity = {units::meters_per_second_t{0.0f}, units::meters_per_second_t{0.0f}};
+    return velocity; //pair of vx and vy
+    
+    // switch (m_MoveTranslationToState)
+    // {
+    // case 0:
+    // {
+        
+    //     double desiredx = desired.X().value();
+    //     double currentx = m_current.X().value();
+    //     double desiredy = desired.Y().value();
+    //     double currenty = m_current.Y().value();
+
+    //     m_vx = 0;
+    //     m_vy = 0;
+        
+    //     double x = (desiredx - currentx) * (desiredx - currentx);
+    //     double y = (desiredy - currenty) * (desiredy - currenty);
+        
+    //     m_distance = sqrt(x + y);
+    //     double theta =  -atan2(desiredy - currenty, desiredx - currentx);
+    //     m_vxCoeff = cos(theta);
+    //     m_vyCoeff = sin(theta);
+
+    //     m_timerLin.Restart();
+    //     m_MoveTranslationToState++;
+    //     // FIXME: switch statement fall-through, is this intentional?
+    // }
+    // case 1:
+    // {
+    //     auto setDistance = m_ProfileLin.Calculate(
+    //         m_timerLin.Get(),
+    //         frc::TrapezoidProfile<units::foot>::State{units::foot_t{0.0f}, 0_fps},
+    //         frc::TrapezoidProfile<units::foot>::State{units::foot_t{m_distance}, 0_fps}       
+    //     );
+
+
+    //     m_vx = -setDistance.velocity.to<double>() * m_vxCoeff;
+    //     m_vy = -setDistance.velocity.to<double>() * m_vyCoeff;
+
+    //     // make the robot move with vx vy
+
+
+    //     if (m_ProfileLin.IsFinished(m_timerLin.Get())) {
+    //             m_MoveTranslationToState++;
+    //         }
+
+    //     break;
+    // }
+    // case 2:
+    // {
+    //     m_timerLin.Stop();
+    //     m_MoveTranslationToState++;
+    //     break;
+    // }
+    // default:
+    //     break;
+    // }
+    
+};
 
 void MoveToPose::reset()
 {
@@ -97,21 +243,12 @@ void MoveToPose::reset()
     m_MoveAngleToState = 0;
     m_MoveTranslationToState = 0;
     m_MoveToState = 0;
-     m_thetaPID.EnableContinuousInput(-180.0, 180.0);
-    m_thetaPID.SetTolerance(kThetaTolerance.value());
-
-    m_xPID.SetTolerance(kPosTolerance.value());
-    m_yPID.SetTolerance(kPosTolerance.value());
-
-    
 }
 
-bool MoveToPose::isDone() {
-    return m_thetaPID.AtSetpoint()
-        && m_xPID.AtSetpoint()
-        && m_yPID.AtSetpoint();
+bool MoveToPose::isDone()
+{
+    return ( m_MoveTranslationToState > 2);
 }
-
 
 bool MoveToPose::turnIsDone()
 {

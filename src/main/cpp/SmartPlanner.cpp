@@ -3,6 +3,7 @@
 #include <Robot.h>
 #include <frc/smartdashboard/SmartDashboard.h>
 #include <PhotonVisionCamera.h>
+#include <cmath>
 
 SmartPlanner::SmartPlanner(PhotonVisionCamera &cam, WPISwerveDrive &swerve)
     : m_Cam(cam)
@@ -18,7 +19,6 @@ void SmartPlanner::HandleInput(RobotControlData &data)
     
 }
 
-#include <iostream>
 void SmartPlanner::SmartPlan(RobotControlData &data)
 {
   auto camPose = m_Cam.GetPose();
@@ -90,6 +90,7 @@ void SmartPlanner::SmartPlan(RobotControlData &data)
   m_Swerve.Drive(data.swerveInput.xTranslation,data.swerveInput.yTranslation,turnSpeed);
 
 
+  m_Swerve.Drive(data.swerveInput.xTranslation,data.swerveInput.yTranslation,turnSpeed);
 }
 
 void SmartPlanner::followPath()

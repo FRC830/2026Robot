@@ -8,6 +8,7 @@
 #include <frc/geometry/Rotation2d.h>
 #include "ScoringPositionMap.h"
 #include <units/length.h>
+#include <units/angular_velocity.h>
 #include <pathplanner/lib/auto/AutoBuilder.h>
 #include <memory>
 #include <HAL/LauncherHAL.h>
@@ -33,6 +34,7 @@ class SmartPlanner{
         int m_state;
         frc::Pose2d m_targetPose;
         frc::Pose2d m_startPose;
+        double m_targetAngle = 0;
         int m_tagId;
         bool blueAlliance;
         double m_targetAngle;

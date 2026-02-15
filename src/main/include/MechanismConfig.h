@@ -14,26 +14,15 @@ namespace ratbot
     const double VOLTAGE_COMPENSATION = 10.5f;
     namespace VisionConfig
     {
-        constexpr frc::Transform3d ROBOT_TO_CAMERA = frc::Transform3d{frc::Translation3d(0_in, 0_in, 0_in), frc::Rotation3d(0_rad, 0_rad, 0_rad)};
+        constexpr frc::Transform3d ROBOT_TO_CAMERA = frc::Transform3d{frc::Translation3d(14_in, -4_in, 0_in), frc::Rotation3d(0_rad, 0_rad, 0_rad)};
     }
     namespace MoveToPoseConfig
     {
         // TODO: tune values on carpet
-        const double MAX_TURN_SPEED_DEG_PER_SEC = 60.0f;
+        const double MAX_TURN_SPEED_DEG_PER_SEC = 100.0f;
         const double TURN_FEED_FORWARD_DEG_PER_SEC = 20.0f;
         const double MAX_SPEED_M_PER_SEC = 1.32f; // todo: change!!!
         const double SPEED_FEED_FORWARD_M_PER_SEC = 0.1f; //todo: change!!!!!
-        inline double kThetaP = 0.02;
-        inline double kThetaI = 0.0;
-        inline double kThetaD = 0.001;
-
-        inline double kXP = 1.5;
-        inline double kXI = 0.0;
-        inline double kXD = 0.0;
-
-        inline double kYP = 1.5;
-        inline double kYI = 0.0;
-        inline double kYD = 0.0;
     }
     namespace Intake
     {

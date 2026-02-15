@@ -14,7 +14,7 @@ class PhotonVisionCamera
 {
     private:
        std::shared_ptr<photon::PhotonCamera> m_camera;
-       frc::AprilTagFieldLayout m_aprilTagFieldLayout = frc::AprilTagFieldLayout::LoadField(frc::AprilTagField::kDefaultField);
+       frc::AprilTagFieldLayout m_aprilTagFieldLayout = frc::AprilTagFieldLayout::LoadField(frc::AprilTagField::k2026RebuiltWelded);
        frc::Transform3d m_robotToCam;
        std::shared_ptr<photon::PhotonPoseEstimator> m_poseEstimator;
        photon::PhotonPipelineResult m_lastResult;

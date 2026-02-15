@@ -10,3 +10,5 @@ const int LAUNCHER_INDEXER_LEFT_CAN_ID = 41;
 
 const int SPINDEXER_A_CAN_ID = 0;
 const int SPINDEXER_B_CAN_ID = 0;
+
+const int LinActID = 71;
