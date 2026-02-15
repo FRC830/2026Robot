@@ -10,6 +10,7 @@
 #include <units/length.h>
 #include <pathplanner/lib/auto/AutoBuilder.h>
 #include <memory>
+#include <HAL/LauncherHAL.h>
 
 class SmartPlanner{
     public:
@@ -33,6 +34,12 @@ class SmartPlanner{
         frc::Pose2d m_targetPose;
         frc::Pose2d m_startPose;
         int m_tagId;
+        bool blueAlliance;
+        double m_targetAngle;
+        double distToHub;
+        frc::Translation2d targetPosition;
+        Launcher launcher;
+
 
         ScoringPositionMap m_positionMap;
 };
