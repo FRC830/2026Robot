@@ -16,14 +16,16 @@ struct ResetNavx
 
 struct LauncherInput {
     double indexerSpeeds;
-    double launcherSpeed;
+    double launcherRPM;
+    double launcherAngle;
     bool disableLauncher;
     bool autoAim;
 };
 
 struct LauncherOutput{
-    double leftSpeed;
-    double rightSpeed;
+    double leftLauncherRPM;
+    double rightLauncherRPM;
+    double launcherAngle;
     bool launcherAtSpeed;
 };
 

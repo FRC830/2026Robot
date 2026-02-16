@@ -18,8 +18,9 @@ class Launcher
         ~Launcher() = default; 
         void SetLauncherSpeeds(double rightSpeed, double leftSpeed);
         void SetIndexerSpeeds(double indexerSpeed);
-        double GetLeftLauncherSpeed();
-        double GetRightLauncherSpeed();
+        double GetLeftLauncherRPM();
+        double GetRightLauncherRPM();
+        double GetAngle();
         bool AreFlywheelsAtDesiredSpeed();
         void SetAngle(double angle);
         void SetRPM(double rpm);

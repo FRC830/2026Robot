@@ -2,10 +2,12 @@
 #include <rev/config/SparkMaxConfig.h>
 #include "ratpack/SparkMaxDebugMacro.h"
 #include "MechanismConfig.h"
+#include <math.h>
 
 Launcher::Launcher()
 {
     // Additional initialization if needed
+
 }
 void Launcher::SetLauncherSpeeds(double rightSpeed, double leftSpeed)
 {
@@ -31,17 +33,23 @@ void Launcher::SetIndexerSpeeds(double indexerSpeed)
         m_rightIndexer->GetClosedLoopController().SetReference(0, rev::spark::SparkLowLevel::ControlType::kDutyCycle);
     }
 }
-double Launcher::GetRightLauncherSpeed()
+double Launcher::GetRightLauncherRPM()
 {
     return m_rightLauncher->GetEncoder().GetVelocity();
 }
-double Launcher::GetLeftLauncherSpeed()
+double Launcher::GetLeftLauncherRPM()
 {
     return m_leftLauncher->GetEncoder().GetVelocity();
 }
+
+
+double Launcher::GetAngle()
+{
+    return m_verticalServo1.Get();
+}
 bool Launcher::AreFlywheelsAtDesiredSpeed()
 {
-    return ((std::fabs(GetRightLauncherSpeed() - m_desiredRightLauncherSpeed)<=SMALL_NUM)&&(std::fabs(GetLeftLauncherSpeed() - m_desiredLeftLauncherSpeed)<=SMALL_NUM));
+    return ((std::fabs(GetRightLauncherRPM() - m_desiredRightLauncherSpeed)<=SMALL_NUM)&&(std::fabs(GetLeftLauncherRPM() - m_desiredLeftLauncherSpeed)<=SMALL_NUM));
 }
 
 void Launcher::SetAngle(double angle)

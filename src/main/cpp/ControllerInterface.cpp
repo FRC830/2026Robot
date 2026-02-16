@@ -4,15 +4,15 @@
 void ControllerInterface::UpdateRobotControlData(RobotControlData &controlData)
 {
 
-    UpdateSwerveInput(controlData);
-    UpdateNavxInput(controlData);
-
+    //UpdateSwerveInput(controlData);
+    // UpdateNavxInput(controlData);
+    UpdateLauncherInput(controlData);
     // code for the VibrateController function
-    if (m_timer.Get().value()>=m_globalDuration)
-    {
-        m_pilot.SetRumble(frc::GenericHID::RumbleType::kLeftRumble, 0.0);
-        m_pilot.SetRumble(frc::GenericHID::RumbleType::kRightRumble, 0.0);
-    }
+    // if (m_timer.Get().value()>=m_globalDuration)
+    // {
+    //     m_pilot.SetRumble(frc::GenericHID::RumbleType::kLeftRumble, 0.0);
+    //     m_pilot.SetRumble(frc::GenericHID::RumbleType::kRightRumble, 0.0);
+    // }
 };
 
 
@@ -56,23 +56,18 @@ void ControllerInterface::UpdateIntakeInput(RobotControlData &controlData)
 }
 void ControllerInterface::UpdateLauncherInput(RobotControlData &controlData)
 { //during passing and launching
-     if (m_copilot.GetLeftTriggerAxis() > 0.1) //passing
-    {
-        controlData.launcherInput.disableLauncher = false;
-        controlData.launcherInput.launcherSpeed = 1000 + m_copilot.GetLeftY()*200;
-    } else if (m_copilot.GetLeftY() > 0.1) //launching
-    {
-        controlData.launcherInput.disableLauncher = false;
-        controlData.launcherInput.launcherSpeed = 1000 + m_copilot.GetLeftY()*200;
-        controlData.swerveInput.autoTarget = m_copilot.GetAButton();
+    if(m_copilot.GetYButton()){
+        controlData.launcherInput.launcherAngle += 63;
     }
-    else //neutral
-    {
-        controlData.launcherInput.disableLauncher = true;
-        controlData.launcherInput.launcherSpeed = 0.0;
+    if(m_copilot.GetXButton()){
+        controlData.launcherInput.launcherAngle -= 63;
     }
-    
-    controlData.launcherInput.indexerSpeeds = 1.0f;
+    if(m_copilot.GetBButton()){
+        controlData.launcherInput.launcherRPM += 25;
+    }
+    if(m_copilot.GetAButton()){
+        controlData.launcherInput.launcherRPM -= 25;
+    }
 }
 void ControllerInterface::UpdateSpindexerInput(RobotControlData &controlData)
 {

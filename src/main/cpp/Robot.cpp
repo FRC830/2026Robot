@@ -105,7 +105,7 @@ void Robot::TeleopPeriodic() {
 
   // }
 
-  launcher.SetAngle(m_pilot.GetRightY()*5);
+  //launcher.SetAngle(m_pilot.GetRightY()*5);
     
 
  // _swerve.Drive(0, 0,0);

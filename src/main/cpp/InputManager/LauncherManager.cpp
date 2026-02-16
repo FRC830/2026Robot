@@ -1,20 +1,48 @@
 #include "InputManager/LauncherManager.h"
 
-
 void LauncherManager::HandleInput(RobotControlData &robotControlData){
     if (robotControlData.launcherInput.disableLauncher){
-        m_launcherSpeed = 0.0;
+        ResetState();
     }
     else{
-        m_launcherSpeed = robotControlData.launcherInput.launcherSpeed; //configure max speed
+        m_launcherAngle = robotControlData.launcherInput.launcherAngle;
+        m_launcherRPM = robotControlData.launcherInput.launcherRPM; //configure max speed
     }
-    m_Launcher.SetLauncherSpeeds(m_launcherSpeed, -m_launcherSpeed);
+    
+    m_Launcher.SetRPM(m_launcherRPM);
+    m_Launcher.SetAngle(m_launcherAngle);
     m_Launcher.SetIndexerSpeeds(robotControlData.launcherInput.indexerSpeeds);
-    robotControlData.launcherOutput.leftSpeed = m_Launcher.GetLeftLauncherSpeed();
-    robotControlData.launcherOutput.rightSpeed = m_Launcher.GetRightLauncherSpeed();
+    robotControlData.launcherOutput.leftLauncherRPM = m_Launcher.GetLeftLauncherRPM();
+    robotControlData.launcherOutput.rightLauncherRPM = m_Launcher.GetRightLauncherRPM();
     robotControlData.launcherOutput.launcherAtSpeed = m_Launcher.AreFlywheelsAtDesiredSpeed();
+    robotControlData.launcherOutput.launcherAngle = m_Launcher.GetAngle();
+    frc::SmartDashboard::PutNumber("LeftLauncherRPM",m_Launcher.GetLeftLauncherRPM());
+    frc::SmartDashboard::PutNumber("RightLauncherRPM",m_Launcher.GetRightLauncherRPM());
+    frc::SmartDashboard::PutNumber("LauncherAngle",m_Launcher.GetAngle());
+    
+}
+/*
+LauncherParam calcLaunch(double distance){
+    if(distance > map1 && distance < map2){
+
+        return LauncherParam{theta1,rpm1};
+    }
+    else if (distance > map2 && distance < map3)
+    {
+        return LauncherParam{theta2,rpm2};
+    }
+    else
+    
+}
+*/
+void LauncherManager::ResetState(){
+    m_launcherRPM = 0.0;
+    m_launcherAngle = 0.0;
 }
 
-void LauncherManager::ResetState(){
-    m_launcherSpeed = 0.0;
+LauncherManager::LauncherManager(RobotControlData &Data)
+{
+    m_launcherRPM = 1000;
+
+
 }
