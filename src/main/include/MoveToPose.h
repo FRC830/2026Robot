@@ -14,6 +14,9 @@
 #include <units/length.h>
 #include <units/velocity.h>
 #include <units/acceleration.h>
+#include <frc/controller/PIDController.h>
+
+
 //#include <units/math.h>
 
 
@@ -38,6 +41,7 @@ class MoveToPose
         double m_vyCoeff;
         double m_vx;
         double m_vy;
+        double tempSpeed = 720;
         units::degrees_per_second_t m_angularVelocity;
         units::degrees_per_second_t m_rotation;
         std::pair<units::feet_per_second_t, units::feet_per_second_t> m_translation;
@@ -48,16 +52,19 @@ class MoveToPose
         std::pair<units::feet_per_second_t, units::feet_per_second_t> linearTranslation(frc::Pose2d desired);
 
         // --- PID Controllers ---
-        frc::PIDController m_thetaPID{1, 0.0, 0.001};   // rotation (deg → deg/s)
+        
+
+        frc::PIDController m_thetaPID{0.3, 0.0, 0.05};   // rotation (deg → deg/s)
         frc::PIDController m_xPID{1.5, 0.0, 0.0};          // X position (m → m/s)
         frc::PIDController m_yPID{1.5, 0.0, 0.0};          // Y position (m → m/s)
+        
 
         // Tolerances
         static constexpr units::degree_t kThetaTolerance = 2_deg;
         static constexpr units::meter_t kPosTolerance = 0.05_m;
 
     public:
-        MoveToPose() = default;
+        MoveToPose();
         ~MoveToPose() = default;
 
         // Uses swerve odometry to generate the 'initial' pose

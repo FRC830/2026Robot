@@ -37,7 +37,6 @@ class SmartPlanner{
         double m_targetAngle = 0;
         int m_tagId;
         bool blueAlliance;
-        double m_targetAngle;
         double distToHub;
         frc::Translation2d targetPosition;
         Launcher launcher;

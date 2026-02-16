@@ -208,7 +208,7 @@ frc::ChassisSpeeds WPISwerveDrive::GetRobotRelativeSpeeds()
 
 void WPISwerveDrive::UpdatePoseWithVision(frc::Pose2d pose2d, units::second_t timestamp)
 {
-    frc::Pose2d pose{frc::Translation2d{pose2d.X(), pose2d.Y()}, m_gyro->GetHeading()};
+    frc::Pose2d pose{frc::Translation2d{pose2d.X(), pose2d.Y()}, pose2d.Rotation()};
     if (!m_visionResetOccurred)
     {
         m_estimator->ResetPose(pose);
