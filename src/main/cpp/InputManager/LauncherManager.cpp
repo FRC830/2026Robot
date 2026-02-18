@@ -21,6 +21,19 @@ void LauncherManager::HandleInput(RobotControlData &robotControlData){
     frc::SmartDashboard::PutNumber("LauncherAngle",m_Launcher.GetAngle());
     
 }
+
+LauncherParam LauncherManager::Calculate(frc::Pose2d current, frc::Pose2d target, frc::Translation2d velocity)
+{
+    LauncherParam calc;
+    
+    //frc::Twist2d(velocity.X()*m_phaseDelay, velocity.Y()*m_phaseDelay, velocity.Angle()*m_phaseDelay);
+
+    // for(int i; i<6; i++){
+    //     calc.timeOfFlight = timeOfFlightMap.
+    // }
+    return calc;
+}
+
 /*
 LauncherParam calcLaunch(double distance){
     if(distance > map1 && distance < map2){
@@ -43,6 +56,9 @@ void LauncherManager::ResetState(){
 LauncherManager::LauncherManager(RobotControlData &Data)
 {
     m_launcherRPM = 1000;
-
+    //put some points here
+    hoodAngleMap.insert({'point','angle'});
+    flywheelRPMMap.insert({'point','rpm'});
+    timeOfFlightMap.insert({'point','TOF'});
 
 }
