@@ -111,6 +111,7 @@ void Robot::TeleopPeriodic() {
  // _swerve.Drive(0, 0,0);
 
   _controller_interface.UpdateRobotControlData(_robot_control_data);
+  m_launcherManager.HandleInput(_robot_control_data);
 }
 
 void Robot::TeleopExit() {}

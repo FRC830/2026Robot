@@ -10,7 +10,7 @@ struct LauncherParam{
 class LauncherManager
 {
 public:
-    LauncherManager(RobotControlData &Data);
+    LauncherManager() = default;
     ~LauncherManager() = default;
     LauncherParam calcLaunch(double distance);
 
@@ -18,6 +18,6 @@ public:
     void HandleInput(RobotControlData &robotControlData);
 private:
     Launcher m_Launcher;
-    double m_launcherRPM;
+    double m_launcherRPM = 1000;
     double m_launcherAngle;
 };

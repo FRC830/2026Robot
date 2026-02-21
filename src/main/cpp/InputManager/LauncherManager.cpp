@@ -40,9 +40,3 @@ void LauncherManager::ResetState(){
     m_launcherAngle = 0.0;
 }
 
-LauncherManager::LauncherManager(RobotControlData &Data)
-{
-    m_launcherRPM = 1000;
-
-
-}

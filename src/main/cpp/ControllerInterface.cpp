@@ -57,10 +57,10 @@ void ControllerInterface::UpdateIntakeInput(RobotControlData &controlData)
 void ControllerInterface::UpdateLauncherInput(RobotControlData &controlData)
 { //during passing and launching
     if(m_copilot.GetYButton()){
-        controlData.launcherInput.launcherAngle += 63;
+        controlData.launcherInput.launcherAngle += 10;
     }
     if(m_copilot.GetXButton()){
-        controlData.launcherInput.launcherAngle -= 63;
+        controlData.launcherInput.launcherAngle -= 10;
     }
     if(m_copilot.GetBButton()){
         controlData.launcherInput.launcherRPM += 25;
