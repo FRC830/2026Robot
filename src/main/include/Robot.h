@@ -25,6 +25,8 @@
 #include "InputManager/LauncherManager.h"
 #include "SmartPlanner.h"
 #include "ratpack/swerve/SwerveConfig.h"
+#include "InputManager/IntakeManager.h"
+#include "InputManager/SpindexerManager.h"
 
 class Robot : public frc::TimedRobot {
  public:
@@ -75,6 +77,8 @@ class Robot : public frc::TimedRobot {
 
   //Launcher launcher;
   LauncherManager m_launcherManager;
+  SpindexerManager m_spindexer;
+  IntakeManager m_intake;
 
   double m_targetAngle = 0;
 };

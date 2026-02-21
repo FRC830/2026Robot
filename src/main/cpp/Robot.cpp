@@ -112,6 +112,8 @@ void Robot::TeleopPeriodic() {
 
   _controller_interface.UpdateRobotControlData(_robot_control_data);
   m_launcherManager.HandleInput(_robot_control_data);
+  m_spindexer.HandleInput(_robot_control_data);
+  m_intake.HandleInput(_robot_control_data);
 }
 
 void Robot::TeleopExit() {}
