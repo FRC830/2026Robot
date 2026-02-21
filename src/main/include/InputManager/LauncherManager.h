@@ -26,7 +26,7 @@ public:
     void AddFlywheelRPMPoint();
     void AddTimeOfFlightPoint();
     
-    LauncherParam Calculate(frc::Pose2d current, frc::Pose2d target, frc::Translation2d velocity);
+    LauncherParam Calculate(double distance, frc::Pose2d current, frc::Translation2d velocity);
 
 private:
     Launcher m_Launcher;
@@ -35,6 +35,9 @@ private:
     double m_phaseDelay;
     double m_minDistance;
     double m_maxDistance;
-
-
+    
+    wpi::interpolating_map<double, double> hoodAngleMap;
+    wpi::interpolating_map<double, double> flywheelRPMMap;
+    wpi::interpolating_map<double, double> timeOfFlightMap;
+    
 };
