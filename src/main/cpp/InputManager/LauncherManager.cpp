@@ -53,12 +53,10 @@ void LauncherManager::ResetState(){
     m_launcherAngle = 0.0;
 }
 
-LauncherManager::LauncherManager(RobotControlData &Data)
+LauncherManager::LauncherManager()
 {
     m_launcherRPM = 1000;
     //put some points here
-    hoodAngleMap.insert({'point','angle'});
-    flywheelRPMMap.insert({'point','rpm'});
-    timeOfFlightMap.insert({'point','TOF'});
+
 
 }

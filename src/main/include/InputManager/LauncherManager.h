@@ -15,7 +15,7 @@ struct LauncherParam{
 class LauncherManager
 {
 public:
-    LauncherManager(RobotControlData &Data);
+    LauncherManager();
     ~LauncherManager() = default;
     LauncherParam calcLaunch(double distance);
 
@@ -30,13 +30,11 @@ public:
 
 private:
     Launcher m_Launcher;
-    double m_launcherRPM;
+    double m_launcherRPM = 1000;
     double m_launcherAngle;
     double m_phaseDelay;
     double m_minDistance;
     double m_maxDistance;
-    std::map<double, double> hoodAngleMap;
-    std::map<double, double> flywheelRPMMap;
-    std::map<double, double> timeOfFlightMap;
+
 
 };

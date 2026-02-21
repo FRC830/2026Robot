@@ -22,6 +22,7 @@
 #include "ControllerInterface.h"
 #include "RobotControlData.h"
 #include "MoveToPose.h"
+#include "InputManager/LauncherManager.h"
 #include "SmartPlanner.h"
 #include "ratpack/swerve/SwerveConfig.h"
 
@@ -73,6 +74,7 @@ class Robot : public frc::TimedRobot {
   frc::XboxController m_pilot{2};
 
   //Launcher launcher;
+  LauncherManager m_launcherManager;
 
   double m_targetAngle = 0;
 };
