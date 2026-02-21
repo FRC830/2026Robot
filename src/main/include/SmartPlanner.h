@@ -14,6 +14,7 @@
 #include <HAL/LauncherHAL.h>
 #include <frc/geometry/Translation2d.h>
 #include <frc/geometry/Rotation2d.h>
+#include "InputManager/LauncherManager.h"
 
 
 class SmartPlanner{
@@ -43,7 +44,7 @@ class SmartPlanner{
         double distToHub = 0;
         frc::Translation2d targetPosition;
 
-        Launcher launcher;
+       // LauncherManager launcherManager;
         
 
         ScoringPositionMap m_positionMap;

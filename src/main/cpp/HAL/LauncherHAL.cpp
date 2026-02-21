@@ -64,7 +64,7 @@ bool Launcher::AreFlywheelsAtDesiredSpeed()
 void Launcher::SetAngle(double angle)
 {
     m_verticalServo1.SetPosition(angle/180.0);
-    m_verticalServo2.Set(angle*63);
+    m_verticalServo2.SetPosition(angle/180.0);
 }
 
 void Launcher::SetRPM(double wheel_rpm)

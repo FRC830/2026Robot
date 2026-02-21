@@ -29,7 +29,6 @@ void ControllerInterface::UpdateSwerveInput(RobotControlData &controlData)
     controlData.swerveInput.yTranslation = -m_pilot.GetLeftX();
     controlData.swerveInput.rotation = -m_pilot.GetRightX();    
 }
-#include <iostream>
 
 void ControllerInterface::UpdateIntakeInput(RobotControlData &controlData)
 { //used during intake, outtake, and passing states
@@ -54,18 +53,20 @@ void ControllerInterface::UpdateIntakeInput(RobotControlData &controlData)
     }
 
 }
+
+#include <iostream>
 void ControllerInterface::UpdateLauncherInput(RobotControlData &controlData)
 { //during passing and launching
-    if(m_copilot.GetYButton()){
-        controlData.launcherInput.launcherAngle += 10;
+    if(m_copilot.GetYButtonPressed()){
+        controlData.launcherInput.launcherAngle += 5;
     }
-    if(m_copilot.GetXButton()){
-        controlData.launcherInput.launcherAngle -= 10;
+    if(m_copilot.GetXButtonPressed()){
+        controlData.launcherInput.launcherAngle -= 5;
     }
-    if(m_copilot.GetBButton()){
+    if(m_copilot.GetBButtonPressed()){
         controlData.launcherInput.launcherRPM += 25;
     }
-    if(m_copilot.GetAButton()){
+    if(m_copilot.GetAButtonPressed()){
         controlData.launcherInput.launcherRPM -= 25;
     }
 }

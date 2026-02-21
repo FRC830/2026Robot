@@ -1,7 +1,8 @@
 #include "InputManager/LauncherManager.h"
 
 void LauncherManager::HandleInput(RobotControlData &robotControlData){
-    if (robotControlData.launcherInput.disableLauncher){
+    
+    if (false){
         ResetState();
     }
     else{

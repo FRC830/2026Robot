@@ -59,7 +59,7 @@ void SmartPlanner::SmartPlan(RobotControlData &data)
 
 
   double distance = targetPosition.Norm().value();
-  //double idealSpeed = launcher.CalcSpeed(distance);
+  //double idealSpeed = launcherManager.CalcSpeed(distance);
 
 
   frc::Translation2d targetVector(units::meter_t (targetPosition.X().value()/distance * 1) , units::meter_t (targetPosition.Y().value()/distance * 1));
@@ -68,15 +68,15 @@ void SmartPlanner::SmartPlan(RobotControlData &data)
   double swerveY = m_Swerve.GetRobotRelativeSpeeds().vy();
 
   frc::Translation2d shotVector(units::meter_t (targetVector.X().value() - swerveX), units::meter_t (targetVector.Y().value() - swerveY));
-  //launcher spinning
+  //launcherManager spinning
 
   // LOOK HERE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
   //m_targetAngle = shotVector.Angle().Degrees().value();
 
   
   double speed = shotVector.Norm().value(); //mps
-  //speed = launcher.CalcRPM(speed); //rpm
-  //launcher.SetLauncherSpeeds(speed,speed);
+  //speed = launcherManager.CalcRPM(speed); //rpm
+  //launcherManagerManager.SetLauncherSpeeds(speed,speed);
 
   frc::SmartDashboard::PutNumber("target angle", (m_targetAngle * 180/3.1415)-90);
 
