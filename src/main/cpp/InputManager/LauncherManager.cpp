@@ -40,12 +40,15 @@ LauncherParam LauncherManager::Calculate(double distance, frc::Pose2d current, f
         timeOfFlight = timeOfFlightMap.operator[](distance);
         double offsetX = velocity.X().value() * calc.timeOfFlight;
         double offsetY = velocity.Y().value() * calc.timeOfFlight;
-        lookaheadPose = frc::Pose2d(current.Translation().operator+(frc::Translation2d(units::meter_t(offsetX),units::meter_t(offsetY))), current.Rotation());
-        
+        //lookaheadPose = frc::Pose2d(current.Translation().operator+(frc::Translation2d(units::meter_t(offsetX),units::meter_t(offsetY))), current.Rotation());
+
         bool blueAlliance = frc::DriverStation::GetAlliance() == frc::DriverStation::Alliance::kBlue;
 
-        double x = lookaheadPose.X().value();
-        double y = lookaheadPose.Y().value();
+        //double x = lookaheadPose.X().value();
+        //double y = lookaheadPose.Y().value();
+        
+        double x = current.X().value();
+        double y = current.Y().value();
 
         if (blueAlliance)
         {
@@ -60,7 +63,8 @@ LauncherParam LauncherManager::Calculate(double distance, frc::Pose2d current, f
             
         lookaheadLauncherToTargetDistance = targetPosition.Norm().value() * m_phaseDelay;
     }
-    aimAngle = atan2(targetPosition.Y().value()-lookaheadPose.Y().value(), targetPosition.X().value()-lookaheadPose.X().value());
+    //aimAngle = atan2(targetPosition.Y().value()-lookaheadPose.Y().value(), targetPosition.X().value()-lookaheadPose.X().value());
+    aimAngle = atan2(targetPosition.Y().value()-current.Y().value(), targetPosition.X().value()-current.X().value());
     flywheelRPM = flywheelRPMMap.operator[](distance);
     hoodAngle = hoodAngleMap.operator[](distance);
 
@@ -99,8 +103,8 @@ LauncherManager::LauncherManager()
     double RPM = 67;
     double t = 67;
     hoodAngleMap.insert(dist, angle);
-    flywheelRPMMap.insert(dist,RPM);
-    timeOfFlightMap.insert(dist,t);
+    flywheelRPMMap.insert(dist, RPM);
+    timeOfFlightMap.insert(dist, t);
 
 
 }
