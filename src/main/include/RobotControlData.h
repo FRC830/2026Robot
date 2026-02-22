@@ -29,10 +29,14 @@ struct LauncherOutput{
     bool launcherAtSpeed;
 };
 
-struct SpindexerData
+struct SpindexerInput
+{
+    bool enableSpindexer;
+};
+
+struct SpindexerOutput
 {
     double RPM;
-    double joystick;
 };
 
 struct IntakeInput
@@ -46,7 +50,8 @@ struct RobotControlData {
     ResetNavx resetNavx;
     LauncherInput launcherInput;
     LauncherOutput launcherOutput;
-    SpindexerData spindexer;
+    SpindexerInput spindexerInput;
+    SpindexerOutput spindexerOutput;
     IntakeInput intakeInput;
 };
 

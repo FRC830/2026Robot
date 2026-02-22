@@ -25,6 +25,7 @@
 #include "InputManager/LauncherManager.h"
 #include "SmartPlanner.h"
 #include "ratpack/swerve/SwerveConfig.h"
+
 #include "InputManager/IntakeManager.h"
 #include "InputManager/SpindexerManager.h"
 
