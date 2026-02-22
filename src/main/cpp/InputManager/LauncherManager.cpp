@@ -56,7 +56,7 @@ void LauncherManager::ResetState(){
 
 LauncherManager::LauncherManager()
 {
-    m_launcherRPM = 1000;
+    m_launcherRPM = 0;
     //put some points here
 
 

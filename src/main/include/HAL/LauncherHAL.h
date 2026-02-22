@@ -14,6 +14,7 @@
 #include <frc/Servo.h>
 #include <memory.h>
 
+
 class Launcher
 {
     public:
@@ -43,8 +44,9 @@ class Launcher
 
         double m_desiredLeftIndexerSpeed;
         double m_desiredLeftLauncherSpeed; 
+        
         double m_desiredRightIndexerSpeed;
         double m_desiredRightLauncherSpeed; 
-        const double GEAR_RATIO = 2; // placeholder
+        const double GEAR_RATIO = double(19/30.0); // placeholder
         const double SMALL_NUM = 10; //change variable name accordingly; make a more suitable name                            
 };
