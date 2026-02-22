@@ -32,8 +32,8 @@ class Launcher
     private:
         std::shared_ptr<rev::spark::SparkMax> m_Indexer = std::make_shared<rev::spark::SparkMax>(LAUNCHER_INDEXER_CAN_ID, rev::spark::SparkMax::MotorType::kBrushless);        
         
-        ctre::phoenix6::hardware::TalonFX m_rightLauncher{LAUNCHER_FLYWHEEL_RIGHT_CAN_ID};
-        ctre::phoenix6::hardware::TalonFX m_leftLauncher{LAUNCHER_FLYWHEEL_LEFT_CAN_ID};
+        std::shared_ptr<ctre::phoenix6::hardware::TalonFX> m_rightLauncher = std::make_shared<ctre::phoenix6::hardware::TalonFX>(LAUNCHER_FLYWHEEL_RIGHT_CAN_ID);
+        std::shared_ptr<ctre::phoenix6::hardware::TalonFX> m_leftLauncher = std::make_shared<ctre::phoenix6::hardware::TalonFX>(LAUNCHER_FLYWHEEL_LEFT_CAN_ID);
 
 
         

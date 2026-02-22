@@ -21,35 +21,55 @@ Launcher::Launcher()
     flywheel_config
         .WithSlot0(slot0Configs)
         .WithMotorOutput(arm_output_config);
+    
+    
+    ctre::phoenix::StatusCode status = ctre::phoenix::StatusCode::StatusCodeNotInitialized;
+    for (int i = 0; i < 5; ++i) {
+        status = m_leftLauncher->GetConfigurator().Apply(flywheel_config);
+        if (status.IsOK()) break;
+    }
+    status = ctre::phoenix::StatusCode::StatusCodeNotInitialized;
+    for (int i = 0; i < 5; ++i) {
+        status = m_rightLauncher->GetConfigurator().Apply(flywheel_config);
+        if (status.IsOK()) break;
+    }
 
 }
 void Launcher::SetLauncherSpeeds(double rightSpeed, double leftSpeed)
 {
     m_desiredRightLauncherSpeed = rightSpeed;
     m_desiredLeftLauncherSpeed = leftSpeed;
-
+    if (rightSpeed == 0 ){
+        m_rightLauncher->Set(0);
+        m_leftLauncher->Set(0);
+        return;
+    } // Don't use PID to go to 0 to avoid stripping belts
     // Don't use PID to go to 0 to avoid stripping belts
-    m_rightLauncher.SetControl(ctre::phoenix6::controls::VelocityDutyCycle(units::angular_velocity::turns_per_second_t(rightSpeed/60.0)));
-    m_leftLauncher.SetControl(ctre::phoenix6::controls::VelocityDutyCycle(units::angular_velocity::turns_per_second_t(leftSpeed/60.0)));
+    m_rightLauncher->SetControl(ctre::phoenix6::controls::VelocityDutyCycle(units::angular_velocity::turns_per_second_t(rightSpeed/60.0)));
+    m_leftLauncher->SetControl(ctre::phoenix6::controls::VelocityDutyCycle(units::angular_velocity::turns_per_second_t(leftSpeed/60.0)));
+    // m_rightLauncher->Set(-1);
+    // m_leftLauncher->Set(1);
+
+
 }
 void Launcher::SetIndexerSpeeds(double indexerSpeed)
 {
-    if (AreFlywheelsAtDesiredSpeed())
-    {     
+    // if (AreFlywheelsAtDesiredSpeed())
+    // {     
         m_Indexer->GetClosedLoopController().SetReference(indexerSpeed, rev::spark::SparkLowLevel::ControlType::kDutyCycle);
-        
-    } else
-    {
-        m_Indexer->GetClosedLoopController().SetReference(0, rev::spark::SparkLowLevel::ControlType::kDutyCycle);
-    }
+
+    // } else
+    // {
+    //     m_Indexer->GetClosedLoopController().SetReference(0, rev::spark::SparkLowLevel::ControlType::kDutyCycle);
+    // }
 }
 double Launcher::GetRightLauncherRPM()
 {
-    return m_rightLauncher.GetVelocity().GetValueAsDouble() * 60.0;
+    return m_rightLauncher->GetVelocity().GetValueAsDouble() * 60.0;
 }
 double Launcher::GetLeftLauncherRPM()
 {
-    return m_leftLauncher.GetVelocity().GetValueAsDouble() * 60.0;
+    return m_leftLauncher->GetVelocity().GetValueAsDouble() * 60.0;
 }
 
 

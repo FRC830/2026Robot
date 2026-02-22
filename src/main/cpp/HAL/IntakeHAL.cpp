@@ -1,5 +1,5 @@
 #include "HAL/IntakeHAL.h"
-
+#include <frc/smartdashboard/SmartDashboard.h>
 void IntakeHAL::RunIntake(int direction)
 {
     m_rollerMotor.Set(direction * ratbot::Intake::INTAKE_ROLLER_SPEED);
@@ -7,6 +7,7 @@ void IntakeHAL::RunIntake(int direction)
 void IntakeHAL::MoveIntake(int direction)
 {
     m_angleMotor.Set(direction * ratbot::Intake::INTAKE_ANGLE_SPEED);
+    frc::SmartDashboard::PutNumber("IntakeAngle", m_angleMotor.GetAbsoluteEncoder().GetPosition());
 }
 
 void IntakeHAL::SequenceDown()
@@ -19,8 +20,8 @@ void IntakeHAL::SequenceDown()
     {
         MoveIntake(0);
     }
-
 }
+
 void IntakeHAL::SequenceStore()
 {
     if (m_angleMotor.GetAbsoluteEncoder().GetPosition() > 0 + deadzone)

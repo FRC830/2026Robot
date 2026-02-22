@@ -3,8 +3,8 @@
 
 void LauncherManager::HandleInput(RobotControlData &robotControlData){
     
-    if (false){
-        ResetState();
+    if (robotControlData.launcherInput.disableLauncher){
+        m_launcherRPM = 0;
     }
     else{
         m_launcherAngle = robotControlData.launcherInput.launcherAngle;
@@ -92,7 +92,7 @@ void LauncherManager::ResetState(){
 
 LauncherManager::LauncherManager()
 {
-    m_launcherRPM = 1000;
+    m_launcherRPM = 0;
     //put some points here, for now placeholders
     double dist = 67;
     double angle = 67;
