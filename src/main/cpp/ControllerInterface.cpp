@@ -39,11 +39,13 @@ void ControllerInterface::UpdateIntakeInput(RobotControlData &controlData)
         {
             controlData.intakeInput.intakeState = false; //down
             controlData.intakeInput.intakeDirection = -1; //in
+            m_statusIntake = true;
         }
         else //if the intake is currently down, then raise it and stop the rollers
         {
             controlData.intakeInput.intakeState = true; //up
             controlData.intakeInput.intakeDirection = 0; //stop
+            m_statusIntake = false;
         }
 
     }
@@ -53,22 +55,28 @@ void ControllerInterface::UpdateIntakeInput(RobotControlData &controlData)
         {
             controlData.intakeInput.intakeState = false; //down
             controlData.intakeInput.intakeDirection = -1; //in
+            m_statusIntake = true;
         }
         else //if the intake is currently down, then raise it and stop the rollers
         {
             controlData.intakeInput.intakeState = true; //up
             controlData.intakeInput.intakeDirection = 0; //stop
+            m_statusIntake = false;
         }
     }
     else if (m_copilot.GetRightX() <-0.1) //manual outtake
     {
         controlData.intakeInput.intakeState = false; //down
         controlData.intakeInput.intakeDirection = 1; //out
+        m_statusIntake = false;
     }
     else //neutral
     {
-        controlData.intakeInput.intakeState = true; //up
-        controlData.intakeInput.intakeDirection = 0; //stop
+        if (!m_statusIntake)
+        {    
+            controlData.intakeInput.intakeState = true; //up
+            controlData.intakeInput.intakeDirection = 0; //stop
+        }
     }
     // else if (m_copilot.GetRightY() > 0.1) //outtake
     // {
@@ -90,12 +98,14 @@ void ControllerInterface::UpdateIntakeInput(RobotControlData &controlData)
 #include <iostream>
 void ControllerInterface::UpdateLauncherInput(RobotControlData &controlData)
 { //during passing and launching
+    
     if(m_copilot.GetYButtonPressed()){
         controlData.launcherInput.launcherAngle = 144;
     }
     if(m_copilot.GetXButtonPressed()){
         controlData.launcherInput.launcherAngle = 36;
     }
+    // *** DEBUG CODE ***
     // if(m_copilot.GetBButtonPressed()){
     //     controlData.launcherInput.launcherRPM -= 100;
     // }
@@ -129,12 +139,14 @@ void ControllerInterface::UpdateLauncherInput(RobotControlData &controlData)
             controlData.launcherInput.launcherRPM = -6000;
             controlData.launcherInput.indexerSpeeds = -2000;
             std::cout << "Launcher Enabled" << std::endl;
+            m_statusLauncher = true;
         }
         else //if the launcher is currently enabled, disable it
         {
             controlData.launcherInput.disableLauncher = true; //disable launcher
             controlData.launcherInput.indexerSpeeds = 0;
             std::cout << "Launcher Disabled" << std::endl;
+            m_statusLauncher = false;
         }
 
     }
@@ -144,20 +156,23 @@ void ControllerInterface::UpdateLauncherInput(RobotControlData &controlData)
         controlData.launcherInput.disableLauncher = false; //enable launcher
         controlData.launcherInput.launcherRPM = -(1+m_copilot.GetLeftX()) * 6000; //scale the left X axis to a range of 0 to -6000 RPM
         controlData.launcherInput.indexerSpeeds = -2000; //scale the left X axis to a range of 0 to -2000 RPM
+        m_statusLauncher = false;
     }
          
     else
     {
-        controlData.launcherInput.disableLauncher = true; //disable launcher
-        controlData.launcherInput.launcherRPM = 0; //if the left X axis is not being used, set the launcher RPM to 0
+        if (!m_statusLauncher){
+            controlData.launcherInput.disableLauncher = true; //disable launcher
+            controlData.launcherInput.launcherRPM = 0; //if the left X axis is not being used, set the launcher RPM to 0
+        }
     }
 
 }
 void ControllerInterface::UpdateSpindexerInput(RobotControlData &controlData)
 {
-    if(m_copilot.GetBButtonPressed()){
-        controlData.spindexerInput.enableSpindexer = !controlData.spindexerInput.enableSpindexer;  
-    }
+    // if(m_copilot.GetBButtonPressed()){
+    //     controlData.spindexerInput.enableSpindexer = !controlData.spindexerInput.enableSpindexer;  
+    // }
 }
 
 
