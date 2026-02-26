@@ -29,16 +29,16 @@ frc::Rotation3d Pigeon2::GetYawPitchRoll()
 
 frc::Rotation2d Pigeon2::GetHeading()
 {
-    // frc::Rotation2d rawHeading = GetRawHeading();
-    // double heading = double((rawHeading - m_zero_heading).Degrees());
+    frc::Rotation2d rawHeading = GetRawHeading();
+    double heading = double((rawHeading - m_zero_heading).Degrees());
 
-    // if (heading < 0) 
-    // {
-    //     heading += 360.0f;
-    // }
+    if (heading < 0) 
+    {
+        heading += 360.0f;
+    }
 
-    // return frc::Rotation2d(units::degree_t(heading));
-    return m_gyro->GetRotation2d();
+    return frc::Rotation2d(units::degree_t(heading));
+    // return m_gyro->GetRotation2d();
 }
 
 frc::Rotation2d Pigeon2::GetRawHeading() 
