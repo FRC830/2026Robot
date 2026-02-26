@@ -16,21 +16,27 @@ struct ResetNavx
 
 struct LauncherInput {
     double indexerSpeeds;
-    double launcherSpeed;
+    double launcherRPM;
+    double launcherAngle;
     bool disableLauncher;
     bool autoAim;
 };
 
 struct LauncherOutput{
-    double leftSpeed;
-    double rightSpeed;
+    double leftLauncherRPM;
+    double rightLauncherRPM;
+    double launcherAngle;
     bool launcherAtSpeed;
 };
 
-struct SpindexerData
+struct SpindexerInput
+{
+    bool enableSpindexer;
+};
+
+struct SpindexerOutput
 {
     double RPM;
-    double joystick;
 };
 
 struct IntakeInput
@@ -44,7 +50,8 @@ struct RobotControlData {
     ResetNavx resetNavx;
     LauncherInput launcherInput;
     LauncherOutput launcherOutput;
-    SpindexerData spindexer;
+    SpindexerInput spindexerInput;
+    SpindexerOutput spindexerOutput;
     IntakeInput intakeInput;
 };
 

@@ -26,5 +26,7 @@ class ControllerInterface
         double m_slowmodefactor = 0.25;
         double m_globalDuration = 0.0;
         bool variable = false;
+        bool m_statusLauncher = false;
+        bool m_statusIntake = false;
 
 };

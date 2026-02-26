@@ -3,7 +3,7 @@
 #include <rev/SparkMax.h>
 #include <iostream>
 #include <algorithm>
-
+/*
 LinearActuator::LinearActuator() 
 {
     //setbounds
@@ -13,7 +13,7 @@ void LinearActuator::setPosition(double pos)
 {
     const double lower = 0.0;
     setPos = std::clamp(pos, lower, m_length);
-    m_LinearActuator.SetSpeed(((setPos/m_length *2)-1));
+    //m_LinearActuator.SetSpeed(((setPos/m_length *2)-1));
  
 }
 
@@ -34,4 +34,4 @@ double LinearActuator::getPosition(){
 
 bool LinearActuator::isFinished(){
     return curPos == setPos;
-}
+}*/

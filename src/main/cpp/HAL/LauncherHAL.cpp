@@ -2,57 +2,94 @@
 #include <rev/config/SparkMaxConfig.h>
 #include "ratpack/SparkMaxDebugMacro.h"
 #include "MechanismConfig.h"
+#include <math.h>
 
 Launcher::Launcher()
 {
+    // Additional initialization if needed
+    ctre::phoenix6::configs::TalonFXConfiguration flywheel_config{};
+
+    ctre::phoenix6::configs::Slot0Configs &slot0Configs = flywheel_config.Slot0
+        .WithKP(ratbot::LauncherConfig::Flywheel::P)
+        .WithKI(ratbot::LauncherConfig::Flywheel::I)
+        .WithKD(ratbot::LauncherConfig::Flywheel::D)
+        .WithKG(ratbot::LauncherConfig::Flywheel::F);
+    ctre::phoenix6::configs::MotorOutputConfigs &arm_output_config = flywheel_config.MotorOutput
+        .WithInverted(ratbot::LauncherConfig::Flywheel::INVERTED)
+        .WithNeutralMode(ratbot::LauncherConfig::Flywheel::IDLE_MODE);
+    
+    flywheel_config
+        .WithSlot0(slot0Configs)
+        .WithMotorOutput(arm_output_config);
+    
+    
+    ctre::phoenix::StatusCode status = ctre::phoenix::StatusCode::StatusCodeNotInitialized;
+    for (int i = 0; i < 5; ++i) {
+        status = m_leftLauncher->GetConfigurator().Apply(flywheel_config);
+        if (status.IsOK()) break;
+    }
+    status = ctre::phoenix::StatusCode::StatusCodeNotInitialized;
+    for (int i = 0; i < 5; ++i) {
+        status = m_rightLauncher->GetConfigurator().Apply(flywheel_config);
+        if (status.IsOK()) break;
+    }
 
 }
 void Launcher::SetLauncherSpeeds(double rightSpeed, double leftSpeed)
 {
     m_desiredRightLauncherSpeed = rightSpeed;
     m_desiredLeftLauncherSpeed = leftSpeed;
-
+    if (rightSpeed == 0 ){
+        m_rightLauncher->Set(0);
+        m_leftLauncher->Set(0);
+        return;
+    } // Don't use PID to go to 0 to avoid stripping belts
     // Don't use PID to go to 0 to avoid stripping belts
-    auto rightControlType = (std::fabs(rightSpeed) <= 1.0f) ? rev::spark::SparkLowLevel::ControlType::kDutyCycle : rev::spark::SparkLowLevel::ControlType::kVelocity;
-    auto leftControlType = (std::fabs(leftSpeed) <= 1.0f) ? rev::spark::SparkLowLevel::ControlType::kDutyCycle : rev::spark::SparkLowLevel::ControlType::kVelocity;
+    m_rightLauncher->SetControl(ctre::phoenix6::controls::VelocityDutyCycle(units::angular_velocity::turns_per_second_t(rightSpeed/60.0)));
+    m_leftLauncher->SetControl(ctre::phoenix6::controls::VelocityDutyCycle(units::angular_velocity::turns_per_second_t(leftSpeed/60.0)));
+    // m_rightLauncher->Set(-1);
+    // m_leftLauncher->Set(1);
 
-    m_rightLauncher.GetClosedLoopController().SetReference(rightSpeed, rightControlType);
-    m_leftLauncher.GetClosedLoopController().SetReference(leftSpeed, leftControlType);
+
 }
 void Launcher::SetIndexerSpeeds(double indexerSpeed)
 {
-    if (AreFlywheelsAtDesiredSpeed())
-    {      
-        m_leftIndexer.GetClosedLoopController().SetReference(indexerSpeed, rev::spark::SparkLowLevel::ControlType::kDutyCycle);
-        m_rightIndexer.GetClosedLoopController().SetReference(indexerSpeed, rev::spark::SparkLowLevel::ControlType::kDutyCycle);
-    } else
-    {
-        m_leftIndexer.GetClosedLoopController().SetReference(0, rev::spark::SparkLowLevel::ControlType::kDutyCycle);
-        m_rightIndexer.GetClosedLoopController().SetReference(0, rev::spark::SparkLowLevel::ControlType::kDutyCycle);
-    }
+    // if (AreFlywheelsAtDesiredSpeed())
+    // {     
+        m_Indexer->GetClosedLoopController().SetReference(indexerSpeed, rev::spark::SparkLowLevel::ControlType::kDutyCycle);
+
+    // } else
+    // {
+    //     m_Indexer->GetClosedLoopController().SetReference(0, rev::spark::SparkLowLevel::ControlType::kDutyCycle);
+    // }
 }
-double Launcher::GetRightLauncherSpeed()
+double Launcher::GetRightLauncherRPM()
 {
-    return m_rightLauncher.GetEncoder().GetVelocity();
+    return m_rightLauncher->GetVelocity().GetValueAsDouble() * 60.0;
 }
-double Launcher::GetLeftLauncherSpeed()
+double Launcher::GetLeftLauncherRPM()
 {
-    return m_leftLauncher.GetEncoder().GetVelocity();
+    return m_leftLauncher->GetVelocity().GetValueAsDouble() * 60.0;
+}
+
+
+double Launcher::GetAngle()
+{
+    return m_verticalServo1.Get();
 }
 bool Launcher::AreFlywheelsAtDesiredSpeed()
 {
-    return ((std::fabs(GetRightLauncherSpeed() - m_desiredRightLauncherSpeed)<=SMALL_NUM)&&(std::fabs(GetLeftLauncherSpeed() - m_desiredLeftLauncherSpeed)<=SMALL_NUM));
+    return ((std::fabs(GetRightLauncherRPM() - m_desiredRightLauncherSpeed)<=SMALL_NUM)&&(std::fabs(GetLeftLauncherRPM() - m_desiredLeftLauncherSpeed)<=SMALL_NUM));
 }
 
-
-double Launcher::CalcRPM(double speed)
+void Launcher::SetAngle(double angle)
 {
-    // get rpm by using rpm v speed backwards
-    return 1000;
+    m_verticalServo1.SetPosition(angle/180.0);
+    m_verticalServo2.SetPosition(angle/180.0);
 }
 
-double Launcher::CalcSpeed(double distance)
+void Launcher::SetRPM(double wheel_rpm)
 {
-    // get mps by using distance v rpm and then rpm v speed
-    return 1;
+    double launcher_rpm = wheel_rpm/GEAR_RATIO;
+    SetLauncherSpeeds(launcher_rpm, -launcher_rpm);
 }
