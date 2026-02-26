@@ -178,8 +178,8 @@ class WPISwerveDrive : public SwerveDrive
         // ###########################################################
         // #                     Swerve Drive                        #
         // ###########################################################
-        const double ROBOT_WIDTH_M = 0.50165; // 19.75 inches
-        const double ROBOT_LENGTH_M = 0.62865; // 24.75 inches
+        const double ROBOT_WIDTH_M = 0.617;
+        const double ROBOT_LENGTH_M = 0.617;
 
         const frc::Translation2d fl_position{units::meter_t{ROBOT_LENGTH_M / 2.0}, units::meter_t{ROBOT_WIDTH_M / 2.0}};
         const frc::Translation2d fr_position{units::meter_t{ROBOT_LENGTH_M / 2.0}, units::meter_t{-ROBOT_WIDTH_M / 2.0}};
