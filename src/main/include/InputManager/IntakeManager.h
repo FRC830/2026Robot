@@ -7,7 +7,7 @@
 class IntakeManager
 {
     public:
-        IntakeManager() = default;
+        IntakeManager();
         ~IntakeManager() = default;
         
         void ResetState();

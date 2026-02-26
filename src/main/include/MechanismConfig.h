@@ -28,20 +28,20 @@ namespace ratbot
     {
         const double INTAKE_ROLLER_SPEED = 0.8;
         const double INTAKE_ANGLE_SPEED = 0.1;
-        const double DOWN_LOCATION = 0.25;
+        const double DOWN_LOCATION = 0;
     }
     namespace LauncherConfig
     {
         namespace Flywheel
         {
-            const double P = 0.3;
+            const double P = 0.00025;
             const double I = 0.0;
-            const double D = 0.01;
-            const double F = 0.2;
+            const double D = 0.35;
+            const double F = 0.0;
             const double VEL_CONV_FACTOR = 1.0;
-            const double CURRENT_LIM = 40.0;
-            constexpr ctre::phoenix6::signals::InvertedValue INVERTED = false; 
-            constexpr ctre::phoenix6::signals::NeutralModeValue IDLE_MODE = ctre::phoenix6::signals::NeutralModeValue::Coast;
+            const double CURRENT_LIM = 30.0;
+            const bool INVERTED = true;
+            constexpr rev::spark::SparkBaseConfig::IdleMode IDLE_MODE = rev::spark::SparkBaseConfig::IdleMode::kCoast;
         }
 
         namespace Indexer
