@@ -106,12 +106,12 @@ void ControllerInterface::UpdateLauncherInput(RobotControlData &controlData)
         controlData.launcherInput.launcherAngle = 36;
     }
     // *** DEBUG CODE ***
-    // if(m_copilot.GetBButtonPressed()){
-    //     controlData.launcherInput.launcherRPM -= 100;
-    // }
-    // if(m_copilot.GetAButtonPressed()){
-    //     controlData.launcherInput.launcherRPM += 100;
-    // }
+    if(m_copilot.GetBButtonPressed()){
+        controlData.launcherInput.launcherRPM -= 100;
+    }
+    if(m_copilot.GetAButtonPressed()){
+        controlData.launcherInput.launcherRPM += 100;
+    }
     if(m_copilot.GetLeftBumperButtonPressed()) //auto-aiming
     {
         controlData.launcherInput.autoAim = !controlData.launcherInput.autoAim; //toggle auto-aiming on and off
@@ -136,7 +136,7 @@ void ControllerInterface::UpdateLauncherInput(RobotControlData &controlData)
         if (controlData.launcherInput.disableLauncher) //if the launcher is currently disabled, enable it and set to default values
         {
             controlData.launcherInput.disableLauncher = false; //enable launcher and set to default values
-            controlData.launcherInput.launcherRPM = -6000;
+            controlData.launcherInput.launcherRPM = -4500;
             controlData.launcherInput.indexerSpeeds = -2000;
             std::cout << "Launcher Enabled" << std::endl;
             m_statusLauncher = true;
