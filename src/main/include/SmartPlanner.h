@@ -12,10 +12,6 @@
 #include <pathplanner/lib/auto/AutoBuilder.h>
 #include <memory>
 #include <HAL/LauncherHAL.h>
-#include <frc/geometry/Translation2d.h>
-#include <frc/geometry/Rotation2d.h>
-#include "InputManager/LauncherManager.h"
-
 
 class SmartPlanner{
     public:
@@ -41,11 +37,10 @@ class SmartPlanner{
         double m_targetAngle = 0;
         int m_tagId;
         bool blueAlliance;
-        double distToHub = 0;
+        double distToHub;
         frc::Translation2d targetPosition;
+        Launcher launcher;
 
-       // LauncherManager launcherManager;
-        
 
         ScoringPositionMap m_positionMap;
 };
