@@ -18,7 +18,7 @@ Robot::Robot() {
 
   SwerveInit();
 
-  m_smartPlanner = std::make_shared<SmartPlanner>(*m_cam, _swerve);
+  m_smartPlanner = std::make_shared<SmartPlanner>(*m_cam, _swerve, m_launcher);
   
   m_autoChooser = pathplanner::AutoBuilder::buildAutoChooser();
   frc::SmartDashboard::PutData("Auto Chooser", &m_autoChooser);
@@ -105,15 +105,12 @@ void Robot::TeleopPeriodic() {
 
   // }
 
-  //launcher.SetAngle(m_pilot.GetRightY()*5);
+  m_smartPlanner->HandleInput(_robot_control_data);
     
 
  // _swerve.Drive(0, 0,0);
 
   _controller_interface.UpdateRobotControlData(_robot_control_data);
-  m_launcherManager.HandleInput(_robot_control_data);
-  m_spindexer.HandleInput(_robot_control_data);
-  m_intake.HandleInput(_robot_control_data);
 }
 
 void Robot::TeleopExit() {}

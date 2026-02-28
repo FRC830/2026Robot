@@ -12,10 +12,13 @@
 #include <pathplanner/lib/auto/AutoBuilder.h>
 #include <memory>
 #include <HAL/LauncherHAL.h>
+#include <frc/geometry/Translation2d.h>
+#include <frc/geometry/Rotation2d.h>
+
 
 class SmartPlanner{
     public:
-        SmartPlanner(PhotonVisionCamera &cam, WPISwerveDrive &swerve);
+        SmartPlanner(PhotonVisionCamera &cam, WPISwerveDrive &swerve, Launcher &launcher);
         ~SmartPlanner() = default;
 
         void HandleInput(RobotControlData &data);
@@ -37,10 +40,11 @@ class SmartPlanner{
         double m_targetAngle = 0;
         int m_tagId;
         bool blueAlliance;
-        double distToHub;
+        double distToHub = 0;
         frc::Translation2d targetPosition;
-        Launcher launcher;
 
+        Launcher &m_launcher;
+        
 
         ScoringPositionMap m_positionMap;
 };
