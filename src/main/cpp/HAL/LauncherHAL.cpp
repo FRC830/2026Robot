@@ -93,3 +93,21 @@ void Launcher::SetRPM(double wheel_rpm)
     double launcher_rpm = wheel_rpm/GEAR_RATIO;
     SetLauncherSpeeds(launcher_rpm, -launcher_rpm);
 }
+
+double Launcher::CalcSpeed(double distance)
+{
+    // Calculate the ideal launch speed (m/s) for a given distance (m)
+    // Using projectile motion: v = sqrt(distance * g / sin(2 * launch_angle))
+    // Placeholder: simple linear approximation, tune on real robot
+    const double SPEED_PER_METER = 5.0; // m/s per meter of distance (placeholder)
+    return distance * SPEED_PER_METER;
+}
+
+double Launcher::CalcRPM(double speed)
+{
+    // Convert a linear ball speed (m/s) to flywheel RPM
+    // v = (RPM * pi * wheel_diameter) / 60
+    // RPM = (v * 60) / (pi * wheel_diameter)
+    const double WHEEL_DIAMETER = 0.1016; // 4 inch wheel in meters (placeholder)
+    return (speed * 60.0) / (M_PI * WHEEL_DIAMETER);
+}
