@@ -100,18 +100,18 @@ void ControllerInterface::UpdateLauncherInput(RobotControlData &controlData)
 { //during passing and launching
     
     if(m_copilot.GetYButtonPressed()){
-        controlData.launcherInput.launcherAngle = 144;
+        controlData.launcherInput.launcherAngle += 10;
     }
     if(m_copilot.GetXButtonPressed()){
-        controlData.launcherInput.launcherAngle = 36;
+        controlData.launcherInput.launcherAngle -= 10;
     }
     // *** DEBUG CODE ***
-    if(m_copilot.GetBButtonPressed()){
-        controlData.launcherInput.launcherRPM -= 100;
-    }
-    if(m_copilot.GetAButtonPressed()){
-        controlData.launcherInput.launcherRPM += 100;
-    }
+    // if(m_copilot.GetBButtonPressed()){
+    //     controlData.launcherInput.launcherRPM -= 100;
+    // }
+    // if(m_copilot.GetAButtonPressed()){
+    //     controlData.launcherInput.launcherRPM += 100;
+    // }
     if(m_copilot.GetLeftBumperButtonPressed()) //auto-aiming
     {
         controlData.launcherInput.autoAim = !controlData.launcherInput.autoAim; //toggle auto-aiming on and off

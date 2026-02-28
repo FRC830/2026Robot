@@ -5,9 +5,10 @@
 #include <PhotonVisionCamera.h>
 #include <cmath>
 
-SmartPlanner::SmartPlanner(PhotonVisionCamera &cam, WPISwerveDrive &swerve)
-    : m_Cam(cam)
-    , m_Swerve(swerve)
+SmartPlanner::SmartPlanner(PhotonVisionCamera &cam, WPISwerveDrive &swerve, Launcher* launcher)
+  : m_Cam(cam)
+  , m_Swerve(swerve)
+  , m_Launcher(launcher)
 {}
 
 
@@ -81,7 +82,11 @@ void SmartPlanner::SmartPlan(RobotControlData &data)
   
   double speed = shotVector.Norm().value(); //mps
   speed = 0; //rpm
-  // launcher.SetLauncherSpeeds(speed,speed);
+  // If a launcher was provided, command it from the planner (guarded)
+  // if (m_Launcher)
+  // {
+  //   m_Launcher->SetLauncherSpeeds(speed, speed);
+  // }
 
   frc::SmartDashboard::PutNumber("target angle", (m_targetAngle * 180/3.1415));
   auto turnSpeed = m_moveToPose.angularRotation(m_Swerve.GetPose().Rotation().Degrees().value(),(m_targetAngle * 180/3.1415));

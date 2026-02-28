@@ -18,7 +18,7 @@ Robot::Robot() {
 
   SwerveInit();
 
-  m_smartPlanner = std::make_shared<SmartPlanner>(*m_cam, _swerve);
+  m_smartPlanner = std::make_shared<SmartPlanner>(*m_cam, _swerve, m_launcherManager.GetLauncher());
   
   m_autoChooser = pathplanner::AutoBuilder::buildAutoChooser();
   frc::SmartDashboard::PutData("Auto Chooser", &m_autoChooser);

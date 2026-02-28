@@ -15,7 +15,7 @@
 
 class SmartPlanner{
     public:
-        SmartPlanner(PhotonVisionCamera &cam, WPISwerveDrive &swerve);
+    SmartPlanner(PhotonVisionCamera &cam, WPISwerveDrive &swerve, Launcher* launcher);
         ~SmartPlanner() = default;
 
         void HandleInput(RobotControlData &data);
@@ -28,8 +28,9 @@ class SmartPlanner{
         pathplanner::PathConstraints m_constraints = pathplanner::PathConstraints{1.0_mps, 1.0_mps_sq, 1.6_rad_per_s, units::radians_per_second_squared_t{0.8}};
         std::unique_ptr<frc2::CommandPtr> m_path;
         PhotonVisionCamera &m_Cam;
-        MoveToPose m_moveToPose;
+    MoveToPose m_moveToPose;
         WPISwerveDrive &m_Swerve;
+    Launcher* m_Launcher = nullptr;
         int m_pathstate;
         int m_state;
         frc::Pose2d m_targetPose;

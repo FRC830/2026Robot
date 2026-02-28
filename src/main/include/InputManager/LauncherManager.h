@@ -28,6 +28,10 @@ public:
     
     LauncherParam Calculate(double distance, frc::Pose2d current, frc::Translation2d velocity);
 
+    // Return a pointer to the internal Launcher instance so other subsystems
+    // can use the same hardware controller instead of creating their own.
+    Launcher* GetLauncher() { return &m_Launcher; }
+
 private:
     Launcher m_Launcher;
     double m_launcherRPM = 1000;
