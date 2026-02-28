@@ -105,7 +105,10 @@ void Robot::TeleopPeriodic() {
 
   // }
 
-  m_smartPlanner->HandleInput(_robot_control_data);
+  // m_smartPlanner->HandleInput(_robot_control_data);
+  m_launcherManager.HandleInput(_robot_control_data);
+  m_spindexer.HandleInput(_robot_control_data);
+  m_intake.HandleInput(_robot_control_data);
     
 
  // _swerve.Drive(0, 0,0);

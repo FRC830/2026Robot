@@ -22,9 +22,12 @@
 #include "ControllerInterface.h"
 #include "RobotControlData.h"
 #include "MoveToPose.h"
+#include "InputManager/LauncherManager.h"
 #include "SmartPlanner.h"
-#include "HAL/LauncherHAL.h"
 #include "ratpack/swerve/SwerveConfig.h"
+
+#include "InputManager/IntakeManager.h"
+#include "InputManager/SpindexerManager.h"
 
 class Robot : public frc::TimedRobot {
  public:
@@ -73,5 +76,9 @@ class Robot : public frc::TimedRobot {
   std::shared_ptr<SmartPlanner> m_smartPlanner;
 
   double m_targetAngle = 0;
+
+  LauncherManager m_launcherManager;
+  SpindexerManager m_spindexer;
+  IntakeManager m_intake;
 
 };

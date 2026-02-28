@@ -4,10 +4,11 @@
 void ControllerInterface::UpdateRobotControlData(RobotControlData &controlData)
 {
 
-    //UpdateSwerveInput(controlData);
+    UpdateSwerveInput(controlData);
     // UpdateNavxInput(controlData);
     UpdateLauncherInput(controlData);
     UpdateIntakeInput(controlData);
+    UpdateSpindexerInput(controlData);
     // code for the VibrateController function
     // if (m_timer.Get().value()>=m_globalDuration)
     // {
@@ -168,11 +169,14 @@ void ControllerInterface::UpdateLauncherInput(RobotControlData &controlData)
     }
 
 }
+#include <iostream>
 void ControllerInterface::UpdateSpindexerInput(RobotControlData &controlData)
 {
-    // if(m_copilot.GetBButtonPressed()){
-    //     controlData.spindexerInput.enableSpindexer = !controlData.spindexerInput.enableSpindexer;  
-    // }
+    if(m_copilot.GetBButtonPressed())
+    {
+        controlData.spindexerInput.enableSpindexer = !controlData.spindexerInput.enableSpindexer;  
+        std::cout << "asdf" << std::endl;
+    }
 }
 
 
