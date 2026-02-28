@@ -8,6 +8,7 @@ void ControllerInterface::UpdateRobotControlData(RobotControlData &controlData)
     // UpdateNavxInput(controlData);
     UpdateLauncherInput(controlData);
     UpdateIntakeInput(controlData);
+    UpdateSpindexerInput(controlData);
     // code for the VibrateController function
     // if (m_timer.Get().value()>=m_globalDuration)
     // {
@@ -47,7 +48,6 @@ void ControllerInterface::UpdateIntakeInput(RobotControlData &controlData)
             controlData.intakeInput.intakeDirection = 0; //stop
             m_statusIntake = false;
         }
-
     }
     if(m_copilot.GetXButtonPressed())
     {
@@ -170,9 +170,9 @@ void ControllerInterface::UpdateLauncherInput(RobotControlData &controlData)
 }
 void ControllerInterface::UpdateSpindexerInput(RobotControlData &controlData)
 {
-    // if(m_copilot.GetBButtonPressed()){
-    //     controlData.spindexerInput.enableSpindexer = !controlData.spindexerInput.enableSpindexer;  
-    // }
+    if(m_copilot.GetBButtonPressed()){
+        controlData.spindexerInput.enableSpindexer = !controlData.spindexerInput.enableSpindexer;  
+    }
 }
 
 
