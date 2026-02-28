@@ -4,7 +4,7 @@
 void ControllerInterface::UpdateRobotControlData(RobotControlData &controlData)
 {
 
-    //UpdateSwerveInput(controlData);
+    UpdateSwerveInput(controlData);
     // UpdateNavxInput(controlData);
     UpdateLauncherInput(controlData);
     UpdateIntakeInput(controlData);

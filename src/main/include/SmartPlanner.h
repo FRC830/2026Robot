@@ -39,7 +39,7 @@ class SmartPlanner{
         bool blueAlliance;
         double distToHub;
         frc::Translation2d targetPosition;
-        Launcher launcher;
+        //Launcher launcher;
 
 
         ScoringPositionMap m_positionMap;

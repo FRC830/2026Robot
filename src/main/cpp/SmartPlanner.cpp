@@ -81,7 +81,7 @@ void SmartPlanner::SmartPlan(RobotControlData &data)
   
   double speed = shotVector.Norm().value(); //mps
   speed = 0; //rpm
-  launcher.SetLauncherSpeeds(speed,speed);
+  // launcher.SetLauncherSpeeds(speed,speed);
 
   frc::SmartDashboard::PutNumber("target angle", (m_targetAngle * 180/3.1415));
   auto turnSpeed = m_moveToPose.angularRotation(m_Swerve.GetPose().Rotation().Degrees().value(),(m_targetAngle * 180/3.1415));
