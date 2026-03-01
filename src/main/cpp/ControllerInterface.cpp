@@ -121,7 +121,7 @@ void ControllerInterface::UpdateLauncherInput(RobotControlData &controlData)
         if (controlData.launcherInput.disableLauncher) //if the launcher is currently disabled, enable it and set to default values
         {
             controlData.launcherInput.disableLauncher = false; //enable launcher and set to default values
-            controlData.launcherInput.launcherRPM = -3500;
+            controlData.launcherInput.launcherRPM = 3500;
             controlData.launcherInput.indexerSpeeds = -5000;
             std::cout << "Launcher Enabled" << std::endl;
            
@@ -139,7 +139,7 @@ void ControllerInterface::UpdateLauncherInput(RobotControlData &controlData)
     else if (m_copilot.GetLeftX() > 0.1 || m_copilot.GetLeftX() < -0.1) //manual control of launcher RPM and indexer speeds using the left X axis
     {
         controlData.launcherInput.disableLauncher = false; //enable launcher
-        controlData.launcherInput.launcherRPM = -(1+m_copilot.GetLeftX()) * 6000; //scale the left X axis to a range of 0 to -6000 RPM
+        controlData.launcherInput.launcherRPM = (1+m_copilot.GetLeftX()) * 6000; //scale the left X axis to a range of 0 to 6000 RPM
         controlData.launcherInput.indexerSpeeds = -2000; //scale the left X axis to a range of 0 to -2000 RPM
         
         m_statusLauncher = false;
