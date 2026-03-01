@@ -23,7 +23,8 @@ Robot::Robot() {
   m_autoChooser = pathplanner::AutoBuilder::buildAutoChooser();
   frc::SmartDashboard::PutData("Auto Chooser", &m_autoChooser);
 
-  _swerve.SetShouldSwerveLock(true);
+  _swerve.SetShouldSwerveLock(true); 
+
 }
 
 void Robot::RobotPeriodic() {
@@ -38,6 +39,11 @@ void Robot::DisabledPeriodic() {}
 void Robot::DisabledExit() {}
 
 void Robot::AutonomousInit() {
+  
+  m_launcherManager.ResetState();
+  m_intake.ResetState();
+  m_spindexer.ResetState(_robot_control_data);
+  
   m_state = 0;
   m_auto = m_autoChooser.GetSelected();
 
@@ -88,7 +94,10 @@ void Robot::AutonomousPeriodic() {
 void Robot::AutonomousExit() {}
 
 void Robot::TeleopInit() {
-
+  
+  m_launcherManager.ResetState();
+  m_intake.ResetState();
+  m_spindexer.ResetState(_robot_control_data);
 
 }
 

@@ -26,7 +26,7 @@ namespace ratbot
     }
     namespace Intake
     {
-        const double INTAKE_ROLLER_SPEED = 0.8;
+        const double INTAKE_ROLLER_SPEED = 0.95;
         const double INTAKE_ANGLE_SPEED = 0.1;
         const double DOWN_LOCATION = 0.25;
     }
@@ -34,10 +34,10 @@ namespace ratbot
     {
         namespace Flywheel
         {
-            const double P = 0.25;
+            const double P = 0.1;
             const double I = 0.0;
             const double D = 0.0;
-            const double F = 0.02;
+            const double F = 0.45;
             const double VEL_CONV_FACTOR = 1.0;
             const double CURRENT_LIM = 30.0;
             constexpr ctre::phoenix6::signals::InvertedValue INVERTED = false; 

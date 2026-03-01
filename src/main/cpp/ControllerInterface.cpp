@@ -1,4 +1,5 @@
 #include "ControllerInterface.h"
+#include <frc/smartdashboard/SmartDashboard.h>
 #include <iostream>
 
 void ControllerInterface::UpdateRobotControlData(RobotControlData &controlData)
@@ -34,12 +35,12 @@ void ControllerInterface::UpdateSwerveInput(RobotControlData &controlData)
 
 void ControllerInterface::UpdateIntakeInput(RobotControlData &controlData)
 { //used during intake, outtake, and passing states
-    if(m_copilot.GetRightBumperPressed())
+    if(m_copilot.GetRightBumperPressed())// instake
     {
         if (controlData.intakeInput.intakeState == true) //if the intake is currently up, then lower it and set to intake
         {
             controlData.intakeInput.intakeState = false; //down
-            controlData.intakeInput.intakeDirection = -1; //in
+            controlData.intakeInput.intakeDirection = 1; //in
             m_statusIntake = true;
         }
         else //if the intake is currently down, then raise it and stop the rollers
@@ -49,10 +50,16 @@ void ControllerInterface::UpdateIntakeInput(RobotControlData &controlData)
             m_statusIntake = false;
         }
     }
-    else if (m_copilot.GetRightX() <-0.5) //manual outtake
+    else if (m_copilot.GetRightX() <-0.1) //manual outtake
     {
         controlData.intakeInput.intakeState = false; //down
-        controlData.intakeInput.intakeDirection = 1; //out
+        controlData.intakeInput.intakeDirection = -1; //out
+        m_statusIntake = false;
+    }
+    else if (!m_statusIntake)
+    {
+        controlData.intakeInput.intakeState = true; //up
+        controlData.intakeInput.intakeDirection = 0; //stop
         m_statusIntake = false;
     }
 
@@ -77,19 +84,19 @@ void ControllerInterface::UpdateIntakeInput(RobotControlData &controlData)
 void ControllerInterface::UpdateLauncherInput(RobotControlData &controlData)
 { //during passing and launching
     
-    if(m_copilot.GetYButtonPressed()){
-        controlData.launcherInput.launcherAngle += 10;
-    }
-    if(m_copilot.GetXButtonPressed()){
-        controlData.launcherInput.launcherAngle -= 10;
-    }
+    // if(m_copilot.GetYButtonPressed()){
+    //     controlData.launcherInput.launcherAngle += 10;
+    // }
+    // if(m_copilot.GetXButtonPressed()){
+    //     controlData.launcherInput.launcherAngle -= 10;
+    // }
     // *** DEBUG CODE ***
-    // if(m_copilot.GetBButtonPressed()){
-    //     controlData.launcherInput.launcherRPM -= 100;
-    // }
-    // if(m_copilot.GetAButtonPressed()){
-    //     controlData.launcherInput.launcherRPM += 100;
-    // }
+    if(m_copilot.GetYButtonPressed()){
+        controlData.launcherInput.launcherRPM -= 100;
+    }
+    if(m_copilot.GetAButtonPressed()){
+        controlData.launcherInput.launcherRPM += 100;
+    }
     // if(m_copilot.GetLeftBumperButtonPressed()) //auto-aiming
     // {
     //     controlData.launcherInput.autoAim = !controlData.launcherInput.autoAim; //toggle auto-aiming on and off
@@ -109,20 +116,23 @@ void ControllerInterface::UpdateLauncherInput(RobotControlData &controlData)
     //     // }
     // }
     
-    if (m_copilot.GetLeftBumperPressed()) //passing
+    if (m_copilot.GetLeftBumperPressed()) //launch
     {
         if (controlData.launcherInput.disableLauncher) //if the launcher is currently disabled, enable it and set to default values
         {
             controlData.launcherInput.disableLauncher = false; //enable launcher and set to default values
             controlData.launcherInput.launcherRPM = -4500;
-            controlData.launcherInput.indexerSpeeds = -2000;
+            controlData.launcherInput.indexerSpeeds = -5000;
             std::cout << "Launcher Enabled" << std::endl;
+           
+            m_statusLauncher=true;
         }
         else //if the launcher is currently enabled, disable it
         {
             controlData.launcherInput.disableLauncher = true; //disable launcher
             controlData.launcherInput.indexerSpeeds = 0;
             std::cout << "Launcher Disabled" << std::endl;
+            m_statusLauncher=false;
         }
 
     }
@@ -131,9 +141,17 @@ void ControllerInterface::UpdateLauncherInput(RobotControlData &controlData)
         controlData.launcherInput.disableLauncher = false; //enable launcher
         controlData.launcherInput.launcherRPM = -(1+m_copilot.GetLeftX()) * 6000; //scale the left X axis to a range of 0 to -6000 RPM
         controlData.launcherInput.indexerSpeeds = -2000; //scale the left X axis to a range of 0 to -2000 RPM
+        
         m_statusLauncher = false;
     }
-
+    
+    else if (!m_statusLauncher)
+    {
+        controlData.launcherInput.disableLauncher = true;
+        controlData.launcherInput.launcherRPM = 0;
+        controlData.launcherInput.indexerSpeeds = 0;
+    }
+    frc::SmartDashboard::PutNumber("Goal Launcher RPM", controlData.launcherInput.launcherRPM);
 
 }
 void ControllerInterface::UpdateSpindexerInput(RobotControlData &controlData)

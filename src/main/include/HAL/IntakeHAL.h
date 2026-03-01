@@ -17,8 +17,10 @@ class IntakeHAL
         void SequenceStore();
 
     private:
-        rev::spark::SparkMax m_rollerMotor{INTAKE_ROLLER_CAN_ID, rev::spark::SparkMax::MotorType::kBrushless};
+        std::shared_ptr<ctre::phoenix6::hardware::TalonFX> m_rollerMotor = std::make_shared<ctre::phoenix6::hardware::TalonFX>(INTAKE_ROLLER_CAN_ID);
         rev::spark::SparkMax m_angleMotor{INTAKE_ANGLE_CAN_ID, rev::spark::SparkMax::MotorType::kBrushless};
         int m_intakeState = 0;
         double deadzone = 0.02;
 };
+
+

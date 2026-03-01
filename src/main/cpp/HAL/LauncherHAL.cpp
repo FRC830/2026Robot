@@ -91,5 +91,5 @@ void Launcher::SetAngle(double angle)
 void Launcher::SetRPM(double wheel_rpm)
 {
     double launcher_rpm = wheel_rpm/GEAR_RATIO;
-    SetLauncherSpeeds(launcher_rpm, -launcher_rpm);
+    SetLauncherSpeeds(-launcher_rpm, launcher_rpm);
 }
