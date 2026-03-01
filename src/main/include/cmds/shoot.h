@@ -18,4 +18,5 @@ public:
 private:
     RobotControlData& m_data;
     int m_state;
+    frc::Timer m_timer;
 };

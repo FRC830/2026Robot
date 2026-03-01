@@ -16,9 +16,18 @@ void shoot::Initialize()
 void shoot::Execute()
 {
     m_data.launcherInput.autoAim = true;
+    m_data.launcherInput.disableLauncher = false;
+    m_data.spindexer.RPM = ratbot::Spindexer::DEFAULT_SPEED;
+    // run launcher calc
 }
 
 bool shoot::IsFinished()
 {
-    
+    units::second_t time = 10.0_s;
+    m_timer.Start();
+    return (m_timer.Get() >= time); // shoot for 10 seconds
+}
+
+void shoot::End(bool interrupted)
+{
 }

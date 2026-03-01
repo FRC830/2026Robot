@@ -7,14 +7,20 @@
 #include <pathplanner/lib/auto/AutoBuilder.h>
 #include <frc2/command/CommandScheduler.h>
 #include <frc/smartdashboard/SmartDashboard.h>
+#include <pathplanner/lib/auto/NamedCommands.h>
+
 #include <frc/DriverStation.h>
 #include "MechanismConfig.h"
 #include <frc/geometry/Pose2d.h>
+
+#include "cmds/shoot.h"
 //#include <pathplanner/lib/auto/NamedCommands.h>
 
 
 Robot::Robot() {
   m_cam = std::make_shared<PhotonVisionCamera>("cam1", ratbot::VisionConfig::ROBOT_TO_CAMERA);
+
+  pathplanner::NamedCommands::registerCommand("shoot", std::make_shared<shoot>(_robot_control_data));
 
   SwerveInit();
 
