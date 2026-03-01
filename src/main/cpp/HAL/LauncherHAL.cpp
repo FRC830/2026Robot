@@ -13,7 +13,8 @@ Launcher::Launcher()
         .WithKP(ratbot::LauncherConfig::Flywheel::P)
         .WithKI(ratbot::LauncherConfig::Flywheel::I)
         .WithKD(ratbot::LauncherConfig::Flywheel::D)
-        .WithKV(ratbot::LauncherConfig::Flywheel::F);
+        .WithKV(ratbot::LauncherConfig::Flywheel::kV)
+        .WithKA(ratbot::LauncherConfig::Flywheel::kA);
     ctre::phoenix6::configs::MotorOutputConfigs &arm_output_config = flywheel_config.MotorOutput
         .WithInverted(ratbot::LauncherConfig::Flywheel::INVERTED)
         .WithNeutralMode(ratbot::LauncherConfig::Flywheel::IDLE_MODE);

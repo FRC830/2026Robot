@@ -37,7 +37,8 @@ namespace ratbot
             const double P = 0.0;
             const double I = 0.0;
             const double D = 0.0;
-            const double F = 0.5;
+            const double kV = 0.0105;
+            const double kA = 0.008;
             const double VEL_CONV_FACTOR = 1.0;
             const double CURRENT_LIM = 30.0;
             constexpr ctre::phoenix6::signals::InvertedValue INVERTED = true; 
