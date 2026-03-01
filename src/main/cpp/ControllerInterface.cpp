@@ -121,7 +121,7 @@ void ControllerInterface::UpdateLauncherInput(RobotControlData &controlData)
         if (controlData.launcherInput.disableLauncher) //if the launcher is currently disabled, enable it and set to default values
         {
             controlData.launcherInput.disableLauncher = false; //enable launcher and set to default values
-            controlData.launcherInput.launcherRPM = -4500;
+            controlData.launcherInput.launcherRPM = -3500;
             controlData.launcherInput.indexerSpeeds = -5000;
             std::cout << "Launcher Enabled" << std::endl;
            

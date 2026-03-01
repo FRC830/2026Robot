@@ -34,13 +34,13 @@ namespace ratbot
     {
         namespace Flywheel
         {
-            const double P = 0.1;
+            const double P = 0.0;
             const double I = 0.0;
             const double D = 0.0;
-            const double F = 0.45;
+            const double F = 0.5;
             const double VEL_CONV_FACTOR = 1.0;
             const double CURRENT_LIM = 30.0;
-            constexpr ctre::phoenix6::signals::InvertedValue INVERTED = false; 
+            constexpr ctre::phoenix6::signals::InvertedValue INVERTED = true; 
             constexpr ctre::phoenix6::signals::NeutralModeValue IDLE_MODE = ctre::phoenix6::signals::NeutralModeValue::Coast;
         }
 

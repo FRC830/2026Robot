@@ -28,11 +28,9 @@ Launcher::Launcher()
         status = m_leftLauncher->GetConfigurator().Apply(flywheel_config);
         if (status.IsOK()) break;
     }
-    status = ctre::phoenix::StatusCode::StatusCodeNotInitialized;
-    for (int i = 0; i < 5; ++i) {
-        status = m_rightLauncher->GetConfigurator().Apply(flywheel_config);
-        if (status.IsOK()) break;
-    }
+    m_rightLauncher->GetConfigurator().Apply(flywheel_config);
+
+
 
 }
 void Launcher::SetLauncherSpeeds(double rightSpeed, double leftSpeed)
@@ -45,8 +43,11 @@ void Launcher::SetLauncherSpeeds(double rightSpeed, double leftSpeed)
         return;
     } // Don't use PID to go to 0 to avoid stripping belts
     // Don't use PID to go to 0 to avoid stripping belts
-    m_rightLauncher->SetControl(ctre::phoenix6::controls::VelocityDutyCycle(units::angular_velocity::turns_per_second_t(rightSpeed/60.0)));
+    // m_rightLauncher->SetControl(ctre::phoenix6::controls::StrictFollower{m_leftLauncher->GetDeviceID()});
     m_leftLauncher->SetControl(ctre::phoenix6::controls::VelocityDutyCycle(units::angular_velocity::turns_per_second_t(leftSpeed/60.0)));
+    m_rightLauncher->SetControl(ctre::phoenix6::controls::Follower{m_leftLauncher->GetDeviceID(), ctre::phoenix6::signals::MotorAlignmentValue::Opposed});
+
+    
     // m_rightLauncher->Set(-1);
     // m_leftLauncher->Set(1);
 
@@ -55,6 +56,7 @@ void Launcher::SetLauncherSpeeds(double rightSpeed, double leftSpeed)
 void Launcher::SetIndexerSpeeds(double indexerSpeed)
 {
     // if (AreFlywheelsAtDesiredSpeed())
+
     // {     
         m_Indexer->GetClosedLoopController().SetReference(indexerSpeed, rev::spark::SparkLowLevel::ControlType::kDutyCycle);
 
@@ -90,6 +92,6 @@ void Launcher::SetAngle(double angle)
 
 void Launcher::SetRPM(double wheel_rpm)
 {
-    double launcher_rpm = wheel_rpm/GEAR_RATIO;
-    SetLauncherSpeeds(-launcher_rpm, launcher_rpm);
+    double launcher_rpm = wheel_rpm;
+    SetLauncherSpeeds(launcher_rpm, -launcher_rpm);
 }
