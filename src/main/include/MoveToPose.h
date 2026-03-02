@@ -15,6 +15,7 @@
 #include <units/velocity.h>
 #include <units/acceleration.h>
 #include <frc/controller/PIDController.h>
+#include <frc/controller/SimpleMotorFeedforward.h>
 
 
 //#include <units/math.h>
@@ -51,14 +52,18 @@ class MoveToPose
         // Trapezoid move to handle linear translation to desired pose
         std::pair<units::feet_per_second_t, units::feet_per_second_t> linearTranslation(frc::Pose2d desired);
 
+        // --- Feedforward (for angular velocity control) ---
+        frc::SimpleMotorFeedforward<units::degrees> m_thetaff{
+            units::volt_t(0.0),      // kS (static friction)
+            units::unit_t<units::compound_unit<units::volts, units::inverse<units::degrees_per_second>>>(0.0),  // kV
+            units::unit_t<units::compound_unit<units::volts, units::inverse<units::degrees_per_second_squared>>>(0.0)  // kA
+        };
+
         // --- PID Controllers ---
+        frc::PIDController m_thetaPID{0.3, 0.0, 0.05};   // rotation
+        frc::PIDController m_xPID{1.5, 0.0, 0.0};          // X position
+        frc::PIDController m_yPID{1.5, 0.0, 0.0};          // Y position
         
-
-        frc::PIDController m_thetaPID{0.3, 0.0, 0.05};   // rotation (deg → deg/s)
-        frc::PIDController m_xPID{1.5, 0.0, 0.0};          // X position (m → m/s)
-        frc::PIDController m_yPID{1.5, 0.0, 0.0};          // Y position (m → m/s)
-        
-
         // Tolerances
         static constexpr units::degree_t kThetaTolerance = 2_deg;
         static constexpr units::meter_t kPosTolerance = 0.05_m;

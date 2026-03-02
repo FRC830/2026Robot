@@ -12,6 +12,7 @@ MoveToPose::MoveToPose()
     frc::SmartDashboard::PutNumber("D_thing", 0.01);
     frc::SmartDashboard::PutNumber("P_thing", 7.0);
     frc::SmartDashboard::PutNumber("max speeds", 2880);
+    frc::SmartDashboard::PutNumber("feedforward", 0.0);
 }
 
 
@@ -45,28 +46,35 @@ frc::ChassisSpeeds MoveToPose::move(frc::Pose2d current, frc::Pose2d desired) {
 
 units::degrees_per_second_t MoveToPose::angularRotation(double currentDeg,double desiredDeg) {
 
-    double omega = m_thetaPID.Calculate(desiredDeg, currentDeg);
-        // omega = std::clamp(omega,-ratbot::MoveToPoseConfig::MAX_TURN_SPEED_DEG_PER_SEC,ratbot::MoveToPoseConfig::MAX_TURN_SPEED_DEG_PER_SEC);
-        double speed = frc::SmartDashboard::GetValue("max speeds").GetDouble();
-        
-        omega = std::clamp(omega,-speed,speed);
+    // PID calculates the velocity needed to close the error
+    double pidOutput = m_thetaPID.Calculate(currentDeg, desiredDeg);
+    pidOutput = std::clamp(pidOutput, -ratbot::MoveToPoseConfig::MAX_TURN_SPEED_DEG_PER_SEC, ratbot::MoveToPoseConfig::MAX_TURN_SPEED_DEG_PER_SEC);
 
-        if (m_thetaPID.AtSetpoint()) 
-        {
-            //omega = 0.0;    
-        }
+    // Feedforward adds voltage compensation for friction & inertia
+    // Convert pidOutput (deg/s) to feedforward voltage
+    auto ffVoltage = m_thetaff.Calculate(
+        units::degrees_per_second_t(pidOutput),
+        units::degrees_per_second_squared_t(0)  // acceleration (0 for steady-state)
+    );
+    
+    // Scale feedforward voltage back to velocity contribution
+    // Typical: divide by kV to convert volts back to velocity units
+    double ffVelocity = ffVoltage.value() / 0.02;  // divide by kV (0.02)
 
+    if (m_thetaPID.AtSetpoint()) 
+    {
+        //omega = 0.0;    
+    }
 
     double p = double(frc::SmartDashboard::GetValue("P_thing").GetDouble());
     double d = double(frc::SmartDashboard::GetValue("D_thing").GetDouble());
     m_thetaPID.SetP(p);
     m_thetaPID.SetD(d);
 
+    return units::degrees_per_second_t{pidOutput + ffVelocity};
 
 
-
-
-    return units::degrees_per_second_t{omega};
+    return units::degrees_per_second_t{omega + ff};
 }
 
 std::pair<units::feet_per_second_t, units::feet_per_second_t> MoveToPose::linearTranslation(frc::Pose2d desired) {
