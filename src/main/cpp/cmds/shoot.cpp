@@ -11,6 +11,8 @@ void shoot::Initialize()
     m_data.launcherInput.indexerSpeeds = 0;
     m_data.launcherInput.launcherSpeed = 0;
     m_data.launcherInput.autoAim = false;
+    m_timer.Restart();
+
 }
 
 void shoot::Execute()
@@ -24,10 +26,10 @@ void shoot::Execute()
 bool shoot::IsFinished()
 {
     units::second_t time = 10.0_s;
-    m_timer.Start();
     return (m_timer.Get() >= time); // shoot for 10 seconds
 }
 
 void shoot::End(bool interrupted)
 {
+    m_timer.Stop();
 }
