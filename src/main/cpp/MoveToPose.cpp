@@ -6,6 +6,16 @@
        //  - https://github.com/FRC830/2024Robot/blob/master/src/main/cpp/subsystems/IntakeHAL.cpp (ProfiledMoveToAngle function)
 // TODO: don't worry about doing anything with the drive base for now
 
+MoveToPose::MoveToPose()
+{
+    m_thetaPID.EnableContinuousInput(-180,180);
+    frc::SmartDashboard::PutNumber("D_thing", 0.0);
+    frc::SmartDashboard::PutNumber("K_p", 9.0);
+    frc::SmartDashboard::PutNumber("max speeds", 60);
+    m_thetaPID.SetTolerance(kThetaTolerance.value());
+}
+
+
 frc::ChassisSpeeds MoveToPose::move(frc::Pose2d current, frc::Pose2d desired) {
     switch(m_MoveToState){
         case 0:
@@ -34,113 +44,32 @@ frc::ChassisSpeeds MoveToPose::move(frc::Pose2d current, frc::Pose2d desired) {
 // #include <iostream>
 
 
-units::degrees_per_second_t MoveToPose::angularRotation(double current, double desired) {    
-    /*
-    "Efficient Rotation"
-    double start = current.Degrees().value();
-    double end = desired.Degrees().value();
+units::degrees_per_second_t MoveToPose::angularRotation(double currentDeg,double desiredDeg) {
 
-    m_turn = end - start;
-    if (m_turn > 180.0)
-    {
-        m_turn = m_turn - 360.0;
-    }
-    else if (m_turn < -180.0)
-    {
-        m_turn = m_turn + 360.0;
-    }
-    */
-
-    m_turn = desired-current;
-    if (m_turn > 180.0)
-    {
-        m_turn = m_turn - 360.0;
-    }
-    else if (m_turn < -180.0)
-    {
-        m_turn = m_turn + 360.0;
-    }
-
-
-
-    auto val = ((std::fabs(m_turn)/180.0f) * ratbot::MoveToPoseConfig::MAX_TURN_SPEED_DEG_PER_SEC) + ratbot::MoveToPoseConfig::TURN_FEED_FORWARD_DEG_PER_SEC;
+    double omega = m_thetaPID.Calculate( currentDeg,desiredDeg);
+    // omega = std::clamp(omega,-ratbot::MoveToPoseConfig::MAX_TURN_SPEED_DEG_PER_SEC,ratbot::MoveToPoseConfig::MAX_TURN_SPEED_DEG_PER_SEC);
+    double speed = frc::SmartDashboard::GetValue("max speeds").GetDouble();
     
-    val = (m_turn > 0.0) ? -val : val;
+    omega = std::clamp(omega,-speed,speed);
+    m_thetaPID.SetSetpoint(desiredDeg);
 
-    //std::cout << val << std::endl;
-
-
-    if (std::fabs(m_turn) <= 30.0f)
+    if (m_thetaPID.AtSetpoint()) 
     {
-        static const double slow_turn_val = 30.0f;
-        val = (m_turn > 0.0) ? -slow_turn_val : slow_turn_val;
-        
-        if (std::fabs(m_turn) <= 5.0f)
-        {
-            val = 0.0f;
-            m_MoveAngleToState = 3;
-        }
+        omega = 0.0;    
     }
 
 
-
-    return units::angular_velocity::degrees_per_second_t{val};
-    
-    // switch (m_MoveAngleToState)
-    // {
-    //     case 0:
-    //     {
+    double p = double(frc::SmartDashboard::GetValue("K_p").GetDouble());
+    double d = double(frc::SmartDashboard::GetValue("D_thing").GetDouble());
+    m_thetaPID.SetP(p);
+    m_thetaPID.SetD(d);
 
 
-            
-    //         double start = m_current.Rotation().Degrees().value();
-    //         double end = desired.Degrees().value();
-
-    //         m_turn = end - start;
-    //         if (m_turn > 180.0)
-    //         {
-    //             m_turn = m_turn - 360.0;
-    //         }
-    //         else if (m_turn < -180.0)
-    //         {
-    //             m_turn = m_turn + 360.0;
-    //         }
 
 
-    //         m_angularVelocity = 0_deg_per_s;
-    //         m_timer.Restart();
-    //         m_MoveAngleToState++;
-    //         break;
-    //     }
-    //     case 1:
-    //     {
-    //         auto setPoint = m_Profile.Calculate(
-    //             m_timer.Get(),
-    //             frc::TrapezoidProfile<units::degrees>::State{units::degree_t{0.0f}, 0_deg_per_s},
-    //             frc::TrapezoidProfile<units::degrees>::State{units::degree_t{m_turn}, 0_deg_per_s}    // insert the better end state here       
-    //         );
 
-    //         m_angularVelocity = setPoint.velocity;
-
-    //         if (m_Profile.IsFinished(m_timer.Get())) {
-    //             m_MoveAngleToState++;
-    //         }
-
-    //         break;
-    //     }
-    //     case 2:
-    //     {
-    //         m_timer.Stop();
-    //         m_MoveAngleToState++;
-    //         break;
-    //     }
-    //     default:
-    //     {
-    //         break;
-    //     }
-    // }
-    // return m_angularVelocity;
-};
+    return units::degrees_per_second_t{omega};
+}
 
 std::pair<units::feet_per_second_t, units::feet_per_second_t> MoveToPose::linearTranslation(frc::Pose2d desired) {
     // double distance = sqrt(pow((double)desired.X() - current.X(), 2.0) + pow(0.0 + desired.Y() - current.Y(), 2.0));
