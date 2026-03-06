@@ -49,27 +49,27 @@ void ControllerInterface::UpdateIntakeInput(RobotControlData &controlData)
             m_statusIntake = false;
         }
     }
-    if(m_copilot.GetXButtonPressed())
-    {
-        if (controlData.intakeInput.intakeState == true) //if the intake is currently up, then lower it and set to intake
-        {
-            controlData.intakeInput.intakeState = false; //down
-            controlData.intakeInput.intakeDirection = -1; //in
-            m_statusIntake = true;
-        }
-        else //if the intake is currently down, then raise it and stop the rollers
-        {
-            controlData.intakeInput.intakeState = true; //up
-            controlData.intakeInput.intakeDirection = 0; //stop
-            m_statusIntake = false;
-        }
-    }
-    else if (m_copilot.GetRightX() <-0.1) //manual outtake
-    {
-        controlData.intakeInput.intakeState = false; //down
-        controlData.intakeInput.intakeDirection = 1; //out
-        m_statusIntake = false;
-    }
+    // if(m_copilot.GetXButtonPressed())
+    // {
+    //     if (controlData.intakeInput.intakeState == true) //if the intake is currently up, then lower it and set to intake
+    //     {
+    //         controlData.intakeInput.intakeState = false; //down
+    //         controlData.intakeInput.intakeDirection = -1; //in
+    //         m_statusIntake = true;
+    //     }
+    //     else //if the intake is currently down, then raise it and stop the rollers
+    //     {
+    //         controlData.intakeInput.intakeState = true; //up
+    //         controlData.intakeInput.intakeDirection = 0; //stop
+    //         m_statusIntake = false;
+    //     }
+    // }
+    // else if (m_copilot.GetRightX() <-0.1) //manual outtake
+    // {
+    //     controlData.intakeInput.intakeState = false; //down
+    //     controlData.intakeInput.intakeDirection = 1; //out
+    //     m_statusIntake = false;
+    // }
     else //neutral
     {
         if (!m_statusIntake)
