@@ -77,7 +77,7 @@ class Robot : public frc::TimedRobot {
   frc::XboxController m_pilot{2};
 
   //Launcher launcher;
-  LauncherManager m_launcherManager;
+  std::shared_ptr<LauncherManager> m_launcherManager;
   SpindexerManager m_spindexer;
   IntakeManager m_intake;
 

@@ -17,16 +17,13 @@ class LauncherManager
 public:
     LauncherManager();
     ~LauncherManager() = default;
-    LauncherParam calcLaunch(double distance);
 
     void ResetState();
     void HandleInput(RobotControlData &robotControlData);
     
-    void AddHoodAnglePoint();
-    void AddFlywheelRPMPoint();
-    void AddTimeOfFlightPoint();
+
     
-    LauncherParam Calculate(double distance, frc::Pose2d current, frc::Translation2d velocity);
+    LauncherParam Calculate(double distance, frc::Pose2d current, double velocityX, double velocityY);
 
     // Return a pointer to the internal Launcher instance so other subsystems
     // can use the same hardware controller instead of creating their own.
@@ -34,7 +31,7 @@ public:
 
 private:
     Launcher m_Launcher;
-    double m_launcherRPM = 1000;
+    double m_launcherRPM;
     double m_launcherAngle;
     double m_phaseDelay;
     double m_minDistance;
@@ -43,5 +40,7 @@ private:
     wpi::interpolating_map<double, double> hoodAngleMap;
     wpi::interpolating_map<double, double> flywheelRPMMap;
     wpi::interpolating_map<double, double> timeOfFlightMap;
+
+
     
 };

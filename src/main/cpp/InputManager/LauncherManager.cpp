@@ -24,7 +24,7 @@ void LauncherManager::HandleInput(RobotControlData &robotControlData){
     
 }
 
-LauncherParam LauncherManager::Calculate(double distance, frc::Pose2d current, frc::Translation2d velocity)
+LauncherParam LauncherManager::Calculate(double distance, frc::Pose2d current, double velocityX, double velocityY)
 {
     LauncherParam calc;
     
@@ -38,8 +38,8 @@ LauncherParam LauncherManager::Calculate(double distance, frc::Pose2d current, f
 
     for(int i = 0; i<6; i++){
         timeOfFlight = timeOfFlightMap.operator[](distance);
-        double offsetX = velocity.X().value() * calc.timeOfFlight;
-        double offsetY = velocity.Y().value() * calc.timeOfFlight;
+        double offsetX = velocityX * calc.timeOfFlight;
+        double offsetY = velocityY * calc.timeOfFlight;
         //lookaheadPose = frc::Pose2d(current.Translation().operator+(frc::Translation2d(units::meter_t(offsetX),units::meter_t(offsetY))), current.Rotation());
 
         bool blueAlliance = frc::DriverStation::GetAlliance() == frc::DriverStation::Alliance::kBlue;
@@ -61,7 +61,7 @@ LauncherParam LauncherManager::Calculate(double distance, frc::Pose2d current, f
             targetPosition= frc::Translation2d(units::length::meter_t(11.915 - x),units::length::meter_t(4.035 - y));
         }
             
-        lookaheadLauncherToTargetDistance = targetPosition.Norm().value() * m_phaseDelay;
+        lookaheadLauncherToTargetDistance = targetPosition.Norm().value();
     }
     //aimAngle = atan2(targetPosition.Y().value()-lookaheadPose.Y().value(), targetPosition.X().value()-lookaheadPose.X().value());
     aimAngle = atan2(targetPosition.Y().value()-current.Y().value(), targetPosition.X().value()-current.X().value());
@@ -98,13 +98,17 @@ LauncherManager::LauncherManager()
 {
     m_launcherRPM = 0;
     //put some points here, for now placeholders
-    double dist = 67;
-    double angle = 67;
-    double RPM = 67;
-    double t = 67;
-    hoodAngleMap.insert(dist, angle);
-    flywheelRPMMap.insert(dist, RPM);
-    timeOfFlightMap.insert(dist, t);
+
+
+    hoodAngleMap.insert(1,1);
+    hoodAngleMap.insert(2,2);
+    hoodAngleMap.insert(3,3);
+    flywheelRPMMap.insert(1, 1);
+    flywheelRPMMap.insert(2, 2);
+    flywheelRPMMap.insert(3, 3);
+    timeOfFlightMap.insert(1, 1);
+    timeOfFlightMap.insert(2, 2);
+    timeOfFlightMap.insert(3, 3);
 
 
 }
