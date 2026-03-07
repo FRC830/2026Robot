@@ -58,8 +58,8 @@ void WPISwerveDrive::Configure(SwerveConfig &config){
         [this](){return GetRobotRelativeSpeeds(); },
         [this](frc::ChassisSpeeds speeds) {Drive(speeds);},
         std::make_shared<pathplanner::PPHolonomicDriveController>( 
-            pathplanner::PIDConstants(5.0, 0.0, 0.0), // Translation PID constants
-            pathplanner::PIDConstants(2.0, 0.0, 0.0) // Rotation PID constants
+            pathplanner::PIDConstants(0.0, 0.0, 0.0), // Translation PID constants
+            pathplanner::PIDConstants(0.0, 0.0, 0.0) // Rotation PID constants
         ),
         pathplanner_config,
         []() { return true;},
