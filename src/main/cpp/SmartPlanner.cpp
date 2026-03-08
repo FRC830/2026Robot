@@ -65,9 +65,6 @@ void SmartPlanner::SmartPlan(RobotControlData &data)
 
   double distance = targetPosition.Norm().value();
   double idealSpeed = 0;
-
-
-  frc::Translation2d targetVector(units::meter_t (targetPosition.X().value()/distance * 1) , units::meter_t (targetPosition.Y().value()/distance * 1));
   
   double swerveX = m_Swerve.GetRobotRelativeSpeeds().vx();
   double swerveY = m_Swerve.GetRobotRelativeSpeeds().vy();

@@ -78,6 +78,10 @@ void WPISwerveDrive::Drive(double x_position, double y_position, double rotation
     auto val = ApplyCylindricalDeadzone(x_position, y_position);
     x_position = val.first;
     y_position = val.second;
+    double D_inches = 4.0; // replace with your wheel diameter
+    double D_feet = D_inches / 12.0;
+    frc::SmartDashboard::PutNumber("desired mps", (x_position * m_maxDriveSpeed ));
+    // frc::SmartDashboard::PutNumber("desired rpm", (x_position*18.0*12.0/2.0)*180/3.14);
     rotation = ApplyDeadzone(rotation);
 
      Drive(

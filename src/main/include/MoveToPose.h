@@ -60,7 +60,7 @@ class MoveToPose
         
 
         // Tolerances
-        static constexpr units::degree_t kThetaTolerance = 2_deg;
+        static constexpr units::degree_t kThetaTolerance = 1.5_deg;
         static constexpr units::meter_t kPosTolerance = 0.05_m;
 
     public:

@@ -121,14 +121,12 @@ void ControllerInterface::UpdateLauncherInput(RobotControlData &controlData)
         controlData.launcherInput.launcherRPM = -3000;
         controlData.launcherInput.indexerSpeeds = -0.8;
         controlData.launcherInput.autoAim = true;
-        m_statusLauncher=true;
     } else if (controlData.states.Passing)
     {
         controlData.launcherInput.disableLauncher = false; //enable launcher and set to default values
         controlData.launcherInput.launcherRPM = -3000;
         controlData.launcherInput.indexerSpeeds = -0.8;
         controlData.launcherInput.autoAim = false;
-        m_statusLauncher=true;
 
         if(m_copilot.GetYButtonPressed()) //hood angle down
         {
@@ -149,20 +147,17 @@ void ControllerInterface::UpdateLauncherInput(RobotControlData &controlData)
         controlData.launcherInput.launcherRPM = 750;
         controlData.launcherInput.indexerSpeeds = 0.333;
         controlData.launcherInput.autoAim = false;
-        m_statusLauncher=true;
     } else if (controlData.states.Intaking)
     {
         controlData.launcherInput.disableLauncher = true;
         controlData.launcherInput.launcherRPM = 0;
         controlData.launcherInput.indexerSpeeds = 0.333;
         controlData.launcherInput.autoAim = false;
-        m_statusLauncher=true;
     } else {
         controlData.launcherInput.disableLauncher = true; //disable launcher
         controlData.launcherInput.indexerSpeeds = 0;
         controlData.launcherInput.launcherRPM = 0;
         controlData.launcherInput.autoAim = false;
-        m_statusLauncher=false;
     }
 
     frc::SmartDashboard::PutNumber("Goal Launcher RPM", controlData.launcherInput.launcherRPM);
