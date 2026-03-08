@@ -35,11 +35,5 @@ void LauncherManager::ResetState(){
 LauncherManager::LauncherManager()
 {
     m_launcherRPM = 0;
-    //put some points here, for now placeholders
-    double dist = 67;
-    double angle = 67;
-    double RPM = 67;
-    double t = 67;
-
 
 }
