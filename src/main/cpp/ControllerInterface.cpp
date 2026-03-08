@@ -35,7 +35,7 @@ void ControllerInterface::UpdateSwerveInput(RobotControlData &controlData)
 
 void ControllerInterface::UpdateIntakeInput(RobotControlData &controlData)
 { //used during intake, outtake, and passing states
-    if(m_copilot.GetRightBumperPressed())// instake
+    if(m_copilot.GetRightBumperPressed() || m_copilot.GetLeftBumperPressed())//Launch or passing
     {
         if (controlData.intakeInput.intakeState == true) //if the intake is currently up, then lower it and set to intake
         {
@@ -45,93 +45,81 @@ void ControllerInterface::UpdateIntakeInput(RobotControlData &controlData)
         }
         else //if the intake is currently down, then raise it and stop the rollers
         {
-            controlData.intakeInput.intakeState = true; //up
+            //controlData.intakeInput.intakeState = true; //up
             controlData.intakeInput.intakeDirection = 0; //stop
             m_statusIntake = false;
         }
     }
-    else if (m_copilot.GetRightX() <-0.1) //manual outtake
+    else if (m_copilot.GetBButtonPressed()) //jam button
+    {
+        if (controlData.intakeInput.intakeDirection == 1)
+        {
+            controlData.intakeInput.intakeDirection = -1;
+        }else
+        {
+            controlData.intakeInput.intakeDirection = 1; //maybe change to 0
+        }
+        m_statusIntake = !m_statusIntake;
+    }
+    else if (m_copilot.GetRightX() < -0.1) //manual outtake
     {
         controlData.intakeInput.intakeState = false; //down
         controlData.intakeInput.intakeDirection = -1; //out
         m_statusIntake = false;
     }
-    else if (!m_statusIntake)
+    else if (m_copilot.GetStartButtonPressed()) //intake up
     {
         controlData.intakeInput.intakeState = true; //up
         controlData.intakeInput.intakeDirection = 0; //stop
         m_statusIntake = false;
     }
+    else if (!m_statusIntake)
+    {
+        //controlData.intakeInput.intakeState = true; //up
+        controlData.intakeInput.intakeDirection = 0; //stop
+        m_statusIntake = false;
+    }
 
-    // else if (m_copilot.GetRightY() > 0.1) //outtake
-    // {
-    //     controlData.intakeInput.intakeState = false; //down
-    //     controlData.intakeInput.intakeDirection = -1; //out
-    // }
-    // else if (m_copilot.GetRightY() < 0.1) //intake
-    // {
-    //     controlData.intakeInput.intakeState = false; //down
-    //     controlData.intakeInput.intakeDirection = 1; //in
-    // } else //neutral
-    // {
-    //     controlData.intakeInput.intakeState = true; //up
-    //     controlData.intakeInput.intakeDirection = 0; //stop
-    // }
 
 }
 
 #include <iostream>
 void ControllerInterface::UpdateLauncherInput(RobotControlData &controlData)
-{ //during passing and launching
+{ 
     
-    // if(m_copilot.GetYButtonPressed()){
-    //     controlData.launcherInput.launcherAngle += 10;
-    // }
-    // if(m_copilot.GetXButtonPressed()){
-    //     controlData.launcherInput.launcherAngle -= 10;
-    // }
-    // *** DEBUG CODE ***
-    if(m_copilot.GetYButtonPressed()){
-        controlData.launcherInput.launcherRPM -= 100;
-    }
-    if(m_copilot.GetAButtonPressed()){
-        controlData.launcherInput.launcherRPM += 100;
-    }
-    // if(m_copilot.GetLeftBumperButtonPressed()) //auto-aiming
-    // {
-    //     controlData.launcherInput.autoAim = !controlData.launcherInput.autoAim; //toggle auto-aiming on and off
-    //     // *** TEST CODE ***
-    //     // if (controlData.launcherInput.disableLauncher) //if the launcher is currently disabled, enable it and set to default values
-    //     // {
-    //     //     controlData.launcherInput.disableLauncher = false; //enable launcher and set to default values
-    //     //     controlData.launcherInput.launcherRPM = -6000;
-    //     //     controlData.launcherInput.indexerSpeeds = -2000;
-    //     //     std::cout << "Launcher Enabled" << std::endl;
-    //     // }
-    //     // else //if the launcher is currently enabled, disable it
-    //     // {
-    //     //     controlData.launcherInput.disableLauncher = true; //disable launcher
-    //     //     controlData.launcherInput.indexerSpeeds = 0;
-    //     //     std::cout << "Launcher Disabled" << std::endl;
-    //     // }
-    // }
-    
-    if (m_copilot.GetLeftBumperPressed()) //launch
+    if (m_copilot.GetLeftBumperPressed()) //launch w/ auto-aiming
     {
         if (controlData.launcherInput.disableLauncher) //if the launcher is currently disabled, enable it and set to default values
         {
             controlData.launcherInput.disableLauncher = false; //enable launcher and set to default values
             controlData.launcherInput.launcherRPM = 3500;
-            controlData.launcherInput.enableIndexer = true;
-            std::cout << "Launcher Enabled" << std::endl;
-           
+            controlData.launcherInput.indexerSpeeds = -0.8;
+            controlData.launcherInput.autoAim = true;
             m_statusLauncher=true;
         }
         else //if the launcher is currently enabled, disable it
         {
             controlData.launcherInput.disableLauncher = true; //disable launcher
-            controlData.launcherInput.enableIndexer = false;
-            std::cout << "Launcher Disabled" << std::endl;
+            controlData.launcherInput.indexerSpeeds = 0;
+            controlData.launcherInput.autoAim = false;
+            m_statusLauncher=false;
+        }
+
+    } else if (m_copilot.GetRightBumperPressed()) //Passing w/out auto-aiming
+    {
+        if (controlData.launcherInput.disableLauncher) //if the launcher is currently disabled, enable it and set to default values
+        {
+            controlData.launcherInput.disableLauncher = false; //enable launcher and set to default values
+            controlData.launcherInput.launcherRPM = 3500;
+            controlData.launcherInput.indexerSpeeds = -0.8;
+            controlData.launcherInput.autoAim = false;
+            m_statusLauncher=true;
+        }
+        else //if the launcher is currently enabled, disable it
+        {
+            controlData.launcherInput.disableLauncher = true; //disable launcher
+            controlData.launcherInput.indexerSpeeds = 0;
+            controlData.launcherInput.autoAim = false;
             m_statusLauncher=false;
         }
 
@@ -139,25 +127,73 @@ void ControllerInterface::UpdateLauncherInput(RobotControlData &controlData)
     else if (m_copilot.GetLeftX() > 0.1 || m_copilot.GetLeftX() < -0.1) //manual control of launcher RPM and indexer speeds using the left X axis
     {
         controlData.launcherInput.disableLauncher = false; //enable launcher
-        controlData.launcherInput.launcherRPM = (1+m_copilot.GetLeftX()) * 6000; //scale the left X axis to a range of 0 to 6000 RPM
-        controlData.launcherInput.enableIndexer = true; //scale the left X axis to a range of 0 to -2000 RPM
+        controlData.launcherInput.launcherRPM = (1+m_copilot.GetLeftX()) * 300; //scale the left X axis to a range of 0 to 6000 RPM
+        controlData.launcherInput.indexerSpeeds = -0.333; //scale the left X axis to a range of 0 to -2000 RPM
         
         m_statusLauncher = false;
     }
-    
+    else if (m_copilot.GetBButton()) //jam button
+    {
+         if (controlData.launcherInput.disableLauncher) //if the launcher is currently disabled, enable it and set to default values
+        {
+            controlData.launcherInput.disableLauncher = false; //enable launcher and set to default values
+            controlData.launcherInput.launcherRPM = -750;
+            controlData.launcherInput.indexerSpeeds = 0.333;
+            controlData.launcherInput.autoAim = false;
+            m_statusLauncher=true;
+        }
+        else //if the launcher is currently enabled, disable it
+        {
+            controlData.launcherInput.disableLauncher = true; //disable launcher
+            controlData.launcherInput.indexerSpeeds = 0;
+            controlData.launcherInput.autoAim = false;
+            m_statusLauncher=false;
+        }
+    }
+    else if (m_copilot.GetXButtonPressed()) //Intake
+    {
+        if (!m_statusLauncher) //intake run indexer wheels, but not intaking
+        {
+            m_statusLauncher = true;
+            controlData.launcherInput.launcherRPM = 0;
+            controlData.launcherInput.indexerSpeeds = 0.333;
+        } else
+         {
+            m_statusLauncher = false;
+            controlData.launcherInput.indexerSpeeds = 0;
+        }
+    }
     else if (!m_statusLauncher)
     {
         controlData.launcherInput.disableLauncher = true;
         controlData.launcherInput.launcherRPM = 0;
-        controlData.launcherInput.enableIndexer = false;
+        controlData.launcherInput.indexerSpeeds = 0;
+    }
+    if(m_copilot.GetYButtonPressed()) //hood angle down
+    {
+        controlData.launcherInput.launcherRPM -= 100;
+    }
+    if(m_copilot.GetAButtonPressed()) //hood angle up
+    {
+        controlData.launcherInput.launcherRPM += 100;
     }
     frc::SmartDashboard::PutNumber("Goal Launcher RPM", controlData.launcherInput.launcherRPM);
 
 }
 void ControllerInterface::UpdateSpindexerInput(RobotControlData &controlData)
 {
-    if(m_copilot.GetBButtonPressed()){
-        controlData.spindexerInput.enableSpindexer = !controlData.spindexerInput.enableSpindexer;  
+    if(m_copilot.GetLeftBumperPressed()) //launch w/ autoaimer
+    {
+        controlData.spindexerInput.enableSpindexer = !controlData.spindexerInput.enableSpindexer;
+    } else if (m_copilot.GetRightBumperPressed()) //passing w/o autoaimer
+    {
+        controlData.spindexerInput.enableSpindexer = !controlData.spindexerInput.enableSpindexer;
+    } else if (m_copilot.GetBButtonPressed()) //jam button
+    {
+        controlData.spindexerInput.enableSpindexer = false;
+    } else if (m_copilot.GetXButtonPressed()) //intake
+    {
+        controlData.spindexerInput.enableSpindexer = !controlData.spindexerInput.enableSpindexer;
     }
 }
 
