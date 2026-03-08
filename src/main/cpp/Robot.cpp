@@ -103,7 +103,16 @@ void Robot::TeleopInit() {
 }
 
 void Robot::TeleopPeriodic() {
-
+  // frc::SmartDashboard::PutNumber("desired speed", (_robot_control_data.swerveInput.xTranslation*18.0/2.0)*180/3.14);
+  if (_robot_control_data.launcherInput.autoAim)
+  {
+    m_smartPlanner->HandleInput(_robot_control_data);
+  }
+  else{
+     _swerve.Drive(_robot_control_data.swerveInput.xTranslation, _robot_control_data.swerveInput.yTranslation, _robot_control_data.swerveInput.rotation);
+  }
+  // _swerve.Drive(_robot_control_data.swerveInput.xTranslation, _robot_control_data.swerveInput.yTranslation, _robot_control_data.swerveInput.rotation);
+  // frc::SmartDashboard::PutNumber("Desired Speed", _gyro.Ge)
   // Start normal teleop
   m_cam->SaveResult();
   // if (_robot_control_data.swerveInput.autoTarget == false)
@@ -121,9 +130,6 @@ void Robot::TeleopPeriodic() {
  _swerve.Drive(_robot_control_data.swerveInput.xTranslation, _robot_control_data.swerveInput.yTranslation, _robot_control_data.swerveInput.rotation);
 
   _controller_interface.UpdateRobotControlData(_robot_control_data);
-  m_launcherManager.HandleInput(_robot_control_data);
-  m_spindexer.HandleInput(_robot_control_data);
-  m_intake.HandleInput(_robot_control_data);
 }
 
 void Robot::TeleopExit() {}

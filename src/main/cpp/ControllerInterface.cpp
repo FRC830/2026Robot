@@ -85,11 +85,20 @@ void ControllerInterface::UpdateNavxInput(RobotControlData &controlData)
 
 void ControllerInterface::UpdateSwerveInput(RobotControlData &controlData)
 {  
-    
+    if (m_pilot.GetAButton())
+    {
+        controlData.swerveInput.xTranslation = -0.2;
+        controlData.swerveInput.yTranslation = 0.0;
+        controlData.swerveInput.rotation = 0.0;
+        return;
+    }
+
+    controlData.launcherInput.autoAim = m_pilot.GetBButton();
     controlData.swerveInput.xTranslation = -m_pilot.GetLeftY();
     controlData.swerveInput.yTranslation = -m_pilot.GetLeftX();
     controlData.swerveInput.rotation = -m_pilot.GetRightX();    
 }
+#include <iostream>
 
 void ControllerInterface::UpdateIntakeInput(RobotControlData &controlData)
 { 
@@ -180,7 +189,6 @@ void ControllerInterface::UpdateSpindexerInput(RobotControlData &controlData)
     }
     frc::SmartDashboard::PutBoolean("Spindexer Enabled", controlData.spindexerInput.enableSpindexer);
 }
-
 
 void ControllerInterface::VibrateController(double intensity, double duration)
 {

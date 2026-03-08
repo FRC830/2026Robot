@@ -200,17 +200,17 @@ class WPISwerveDrive : public SwerveDrive
         const double WHEEL_DIAMETER_FT = 0.333; // 4 inches
         const double MOTOR_ROT_TO_FT = (WHEEL_DIAMETER_FT * 3.14159) / DRIVE_GEAR_RATIO;
 
-        const double DRIVE_P = 0.08;
+        const double DRIVE_P = 0.01;
         const double DRIVE_I = 0.0;
-        const double DRIVE_D = 0.1;
-        const double DRIVE_FF = 0.0;
+        const double DRIVE_D = 0.0;
+        const double DRIVE_FF = 0.75;
 
         // --------------------------Gyro-----------------------------
         const bool GYRO_INVERTED = true;
         const frc::Rotation2d GYRO_ZERO_HEADING{units::degree_t{0.0f}};
 
         // --------------------------Swerve---------------------------
-        const double MAX_DRIVE_SPEED_FPS = 7.0;
+        const double MAX_DRIVE_SPEED_FPS = 15.0;
         const double MAX_ANGULAR_VELOCITY_DEGPS = 540.0;
         const double CONTROLLER_DEADZONE = 0.1;
         const int TURN_MOTOR_CURRENT_LIMIT = 20;

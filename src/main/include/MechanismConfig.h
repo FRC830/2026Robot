@@ -28,7 +28,7 @@ namespace ratbot
     {
         const double INTAKE_ROLLER_SPEED = 0.95;
         const double INTAKE_ANGLE_SPEED = 0.1;
-        const double DOWN_LOCATION = 0.25;
+        const double DOWN_LOCATION = 0;
     }
     namespace LauncherConfig
     {
