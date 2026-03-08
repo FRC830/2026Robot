@@ -98,7 +98,7 @@ void ControllerInterface::UpdateIntakeInput(RobotControlData &controlData)
 #include <iostream>
 void ControllerInterface::UpdateLauncherInput(RobotControlData &controlData)
 { //during passing and launching
-    
+
     if(m_copilot.GetYButtonPressed()){
         controlData.launcherInput.launcherAngle += 10;
     }

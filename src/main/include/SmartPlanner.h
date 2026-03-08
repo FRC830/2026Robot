@@ -13,10 +13,11 @@
 #include <memory>
 #include <HAL/LauncherHAL.h>
 #include "InputManager/LauncherManager.h"
+#include "LauncherCalc.h"
 
 class SmartPlanner{
     public:
-    SmartPlanner(PhotonVisionCamera &cam, WPISwerveDrive &swerve, LauncherManager &launcher);
+    SmartPlanner(PhotonVisionCamera &cam, WPISwerveDrive &swerve);
         ~SmartPlanner() = default;
 
         void HandleInput(RobotControlData &data);
@@ -32,6 +33,8 @@ class SmartPlanner{
     MoveToPose m_moveToPose;
         WPISwerveDrive &m_Swerve;
     // Launcher* m_Launcher = nullptr;
+        LauncherCalc m_calc;
+        
         int m_pathstate;
         int m_state;
         frc::Pose2d m_targetPose;
@@ -43,6 +46,5 @@ class SmartPlanner{
         frc::Translation2d targetPosition;
         //Launcher launcher;
 
-        LauncherManager* m_Launcher = nullptr;
         ScoringPositionMap m_positionMap;
 };

@@ -4,17 +4,13 @@
 #include <frc/smartdashboard/SmartDashboard.h>
 #include <PhotonVisionCamera.h>
 #include <cmath>
-#include "InputManager/LauncherManager.h"
 
 
-SmartPlanner::SmartPlanner(PhotonVisionCamera &cam, WPISwerveDrive &swerve, LauncherManager &launcher)
+
+SmartPlanner::SmartPlanner(PhotonVisionCamera &cam, WPISwerveDrive &swerve)
   : m_Cam(cam)
   , m_Swerve(swerve)
-  , m_Launcher(launcher)
 {}  
-
-
-
 
 void SmartPlanner::HandleInput(RobotControlData &data)
 {
@@ -84,6 +80,8 @@ void SmartPlanner::SmartPlan(RobotControlData &data)
   
   double speed = shotVector.Norm().value(); //mps
   speed = 0; //rpm
+
+  LauncherParam stuff = m_calc.Calculate(distance, swervePose, swerveX, swerveY);
   // If a launcher was provided, command it from the planner (guarded)
   // if (m_Launcher)
   // {
@@ -91,7 +89,7 @@ void SmartPlanner::SmartPlan(RobotControlData &data)
   // }
   // LauncherParam stuff = asdf;
   std::cout << "distance:" << distance << std::endl;
-  // std::cout << "rpm: " << stuff.flywheelRPM << std::endl;
+  std::cout << "rpm: " << stuff.flywheelRPM << std::endl;
 
   frc::SmartDashboard::PutNumber("target angle", (m_targetAngle * 180/3.1415));
   auto turnSpeed = m_moveToPose.angularRotation(m_Swerve.GetPose().Rotation().Degrees().value(),(m_targetAngle * 180/3.1415));
