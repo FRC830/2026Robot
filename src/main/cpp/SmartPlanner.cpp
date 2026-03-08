@@ -78,10 +78,10 @@ void SmartPlanner::SmartPlan(RobotControlData &data)
   m_launchParam = m_launcherCalc.Calculate(distance, swervePose, swerveX, swerveY); //rpm
   data.launcherInput.launcherRPM = -m_launchParam.flywheelRPM;
   data.launcherInput.launcherAngle = m_launchParam.hoodAngle;
-  data.launcherInput.enableIndexer = true;
+  data.launcherInput.indexerSpeeds = -0.8;
   // std::cout << "rpm " << data.launcherInput.launcherRPM << std::endl;
   // std::cout << "angle " << data.launcherInput.launcherAngle << std::endl;
-  // std::cout << "ind started " << data.launcherInput.enableIndexer << std::endl;
+  // std::cout << "ind speed " << data.launcherInput.indexerSpeeds << std::endl;
   // If a launcher was provided, command it from the planner (guarded)
 
   frc::SmartDashboard::PutNumber("target angle", (m_targetAngle * 180/3.1415));

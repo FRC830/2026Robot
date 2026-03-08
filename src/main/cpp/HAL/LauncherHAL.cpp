@@ -52,12 +52,12 @@ void Launcher::SetLauncherSpeeds(double rightSpeed, double leftSpeed)
 
 
 }
-void Launcher::SetIndexerSpeeds()
+void Launcher::SetIndexerSpeeds(double speed)
 {
     // if (AreFlywheelsAtDesiredSpeed())
 
     // {     
-        m_Indexer->Set(m_defaultIndexerSpeed);
+        m_Indexer->Set(std::clamp(speed, -1.0, 1.0));
 
     // } else
     // {
