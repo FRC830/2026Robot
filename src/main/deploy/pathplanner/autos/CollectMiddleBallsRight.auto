@@ -1,0 +1,37 @@
+{
+  "version": "2025.0",
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "path",
+          "data": {
+            "pathName": "CollectMiddleBallsRight1"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "CollectMiddleBallsRight2"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "CollectMiddleBallsRight3"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "CollectMiddleBallsRight4"
+          }
+        }
+      ]
+    }
+  },
+  "resetOdom": true,
+  "folder": null,
+  "choreoAuto": false
+}
