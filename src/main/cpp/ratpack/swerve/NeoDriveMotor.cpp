@@ -37,7 +37,7 @@ void NeoDriveMotor::SetVelocity(units::velocity::feet_per_second_t v) {
 
 
     // TODO - return PID to not need a scaling factor to get to desired setpoint
-    m_PID->SetReference(1.6666667 * v.to<double>(), rev::spark::SparkLowLevel::ControlType::kVelocity);
+    m_PID->SetReference(v.to<double>(), rev::spark::SparkLowLevel::ControlType::kVelocity);
 
 };
 

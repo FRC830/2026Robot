@@ -96,7 +96,8 @@ void Robot::TeleopPeriodic() {
 
   // Start normal teleop
   m_cam->SaveResult();
-  m_smartPlanner->HandleInput(_robot_control_data);
+  // m_smartPlanner->HandleInput(_robot_control_data);
+  _swerve.Drive(_robot_control_data.swerveInput.xTranslation, _robot_control_data.swerveInput.yTranslation, _robot_control_data.swerveInput.rotation);
 
   _controller_interface.UpdateRobotControlData(_robot_control_data);
 }
