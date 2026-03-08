@@ -15,7 +15,7 @@ struct ResetNavx
 };
 
 struct LauncherInput {
-    double indexerSpeeds;
+    bool enableIndexer;
     double launcherRPM;
     double launcherAngle;
     bool disableLauncher;

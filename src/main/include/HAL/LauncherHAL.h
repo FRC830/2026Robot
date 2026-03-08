@@ -21,7 +21,7 @@ class Launcher
         Launcher();
         ~Launcher() = default; 
         void SetLauncherSpeeds(double rightSpeed, double leftSpeed);
-        void SetIndexerSpeeds(double indexerSpeed);
+        void SetIndexerSpeeds();
         double GetLeftLauncherRPM();
         double GetRightLauncherRPM();
         double GetAngle();
@@ -44,6 +44,7 @@ class Launcher
 
         double m_desiredLeftIndexerSpeed;
         double m_desiredLeftLauncherSpeed; 
+        double m_defaultIndexerSpeed = 0.8;
         
         double m_desiredRightIndexerSpeed;
         double m_desiredRightLauncherSpeed; 

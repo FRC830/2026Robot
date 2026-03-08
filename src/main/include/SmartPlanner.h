@@ -12,10 +12,11 @@
 #include <pathplanner/lib/auto/AutoBuilder.h>
 #include <memory>
 #include <HAL/LauncherHAL.h>
+#include "LauncherCalc.h"
 
 class SmartPlanner{
     public:
-    SmartPlanner(PhotonVisionCamera &cam, WPISwerveDrive &swerve, Launcher* launcher);
+    SmartPlanner(PhotonVisionCamera &cam, WPISwerveDrive &swerve);
         ~SmartPlanner() = default;
 
         void HandleInput(RobotControlData &data);
@@ -30,7 +31,6 @@ class SmartPlanner{
         PhotonVisionCamera &m_Cam;
     MoveToPose m_moveToPose;
         WPISwerveDrive &m_Swerve;
-    Launcher* m_Launcher = nullptr;
         int m_pathstate;
         int m_state;
         frc::Pose2d m_targetPose;
@@ -40,7 +40,9 @@ class SmartPlanner{
         bool blueAlliance;
         double distToHub;
         frc::Translation2d targetPosition;
-        //Launcher launcher;
+        LauncherCalc m_launcherCalc;
+        LauncherParam m_launchParam;
+        
 
 
         ScoringPositionMap m_positionMap;

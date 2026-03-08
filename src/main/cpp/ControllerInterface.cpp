@@ -122,7 +122,7 @@ void ControllerInterface::UpdateLauncherInput(RobotControlData &controlData)
         {
             controlData.launcherInput.disableLauncher = false; //enable launcher and set to default values
             controlData.launcherInput.launcherRPM = 3500;
-            controlData.launcherInput.indexerSpeeds = -5000;
+            controlData.launcherInput.enableIndexer = true;
             std::cout << "Launcher Enabled" << std::endl;
            
             m_statusLauncher=true;
@@ -130,7 +130,7 @@ void ControllerInterface::UpdateLauncherInput(RobotControlData &controlData)
         else //if the launcher is currently enabled, disable it
         {
             controlData.launcherInput.disableLauncher = true; //disable launcher
-            controlData.launcherInput.indexerSpeeds = 0;
+            controlData.launcherInput.enableIndexer = false;
             std::cout << "Launcher Disabled" << std::endl;
             m_statusLauncher=false;
         }
@@ -140,7 +140,7 @@ void ControllerInterface::UpdateLauncherInput(RobotControlData &controlData)
     {
         controlData.launcherInput.disableLauncher = false; //enable launcher
         controlData.launcherInput.launcherRPM = (1+m_copilot.GetLeftX()) * 6000; //scale the left X axis to a range of 0 to 6000 RPM
-        controlData.launcherInput.indexerSpeeds = -2000; //scale the left X axis to a range of 0 to -2000 RPM
+        controlData.launcherInput.enableIndexer = true; //scale the left X axis to a range of 0 to -2000 RPM
         
         m_statusLauncher = false;
     }
@@ -149,7 +149,7 @@ void ControllerInterface::UpdateLauncherInput(RobotControlData &controlData)
     {
         controlData.launcherInput.disableLauncher = true;
         controlData.launcherInput.launcherRPM = 0;
-        controlData.launcherInput.indexerSpeeds = 0;
+        controlData.launcherInput.enableIndexer = false;
     }
     frc::SmartDashboard::PutNumber("Goal Launcher RPM", controlData.launcherInput.launcherRPM);
 
