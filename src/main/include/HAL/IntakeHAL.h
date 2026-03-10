@@ -16,6 +16,7 @@ class IntakeHAL
         void MoveIntake(int direction);
         void SequenceDown();
         void SequenceStore();
+        double GetIntakeAngle();
 
     private:
         rev::spark::SparkMax m_rollerMotor{INTAKE_ROLLER_CAN_ID, rev::spark::SparkMax::MotorType::kBrushless};

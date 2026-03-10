@@ -10,6 +10,11 @@ IntakeHAL::IntakeHAL()
     m_zeroPos = encoder.Get();
 }
 
+double IntakeHAL::GetIntakeAngle()
+{
+    return encoder.Get() - m_zeroPos;
+}
+
 void IntakeHAL::RunIntake(int direction)
 {
     m_rollerMotor.Set(direction * ratbot::Intake::INTAKE_ROLLER_SPEED);
