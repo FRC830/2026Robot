@@ -13,10 +13,18 @@ void LauncherManager::HandleInput(RobotControlData &robotControlData){
     
     m_Launcher.SetRPM(m_launcherRPM);
     m_Launcher.SetAngle(m_launcherAngle);
-    m_Launcher.SetIndexerSpeeds(robotControlData.launcherInput.indexerSpeeds);
+
     robotControlData.launcherOutput.leftLauncherRPM = m_Launcher.GetLeftLauncherRPM();
     robotControlData.launcherOutput.rightLauncherRPM = m_Launcher.GetRightLauncherRPM();
     robotControlData.launcherOutput.launcherAtSpeed = m_Launcher.AreFlywheelsAtDesiredSpeed();
+if (robotControlData.launcherOutput.launcherAtSpeed)
+    {
+        m_Launcher.SetIndexerSpeeds(robotControlData.launcherInput.indexerSpeeds);
+    }
+    else
+    {
+        m_Launcher.SetIndexerSpeeds(0);
+    }
     robotControlData.launcherOutput.launcherAngle = m_Launcher.GetAngle();
     frc::SmartDashboard::PutNumber("LeftLauncherRPM",m_Launcher.GetLeftLauncherRPM());
     frc::SmartDashboard::PutNumber("RightLauncherRPM",m_Launcher.GetRightLauncherRPM());
