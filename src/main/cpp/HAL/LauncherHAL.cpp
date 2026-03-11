@@ -34,10 +34,13 @@ Launcher::Launcher()
 
 
 }
+
+#include <iostream>
 void Launcher::SetLauncherSpeeds(double rightSpeed, double leftSpeed)
 {
     m_desiredRightLauncherSpeed = rightSpeed;
     m_desiredLeftLauncherSpeed = leftSpeed;
+    std::cout << "desired " << m_desiredLeftLauncherSpeed << std::endl;
     if (rightSpeed == 0 && leftSpeed == 0){
         m_rightLauncher->Set(0);
         m_leftLauncher->Set(0);

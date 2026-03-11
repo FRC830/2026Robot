@@ -72,7 +72,7 @@ class WPISwerveDrive : public SwerveDrive
         // --------------------Absolute Encoder-----------------------
         const int FL_ABS_ENC_PORT = 3;
         const bool FL_ABS_ENC_INVERTED = false;
-        const frc::Rotation2d FL_ZERO_HEADING{units::degree_t{7.294f}};
+        const frc::Rotation2d FL_ZERO_HEADING{units::degree_t{187.294f}};
 
         ctre::phoenix6::hardware::CANcoder fl_abs_enc{FL_ABS_ENC_PORT};
 
@@ -200,21 +200,21 @@ class WPISwerveDrive : public SwerveDrive
         const double WHEEL_DIAMETER_FT = 0.333; // 4 inches
         const double MOTOR_ROT_TO_FT = (WHEEL_DIAMETER_FT * 3.14159) / DRIVE_GEAR_RATIO;
 
-        const double DRIVE_P = 0.08;
+        const double DRIVE_P = 0.01;
         const double DRIVE_I = 0.0;
-        const double DRIVE_D = 0.1;
-        const double DRIVE_FF = 0.0;
+        const double DRIVE_D = 0.0;
+        const double DRIVE_FF = 0.83;
 
         // --------------------------Gyro-----------------------------
         const bool GYRO_INVERTED = true;
         const frc::Rotation2d GYRO_ZERO_HEADING{units::degree_t{0.0f}};
 
         // --------------------------Swerve---------------------------
-        const double MAX_DRIVE_SPEED_FPS = 7.0;
-        const double MAX_ANGULAR_VELOCITY_DEGPS = 540.0;
+        const double MAX_DRIVE_SPEED_FPS = 15.0;
+        const double MAX_ANGULAR_VELOCITY_DEGPS = 360.0;
         const double CONTROLLER_DEADZONE = 0.1;
-        const int TURN_MOTOR_CURRENT_LIMIT = 20;
-        const int DRIVE_MOTOR_CURRENT_LIMIT = 30;
+        const int TURN_MOTOR_CURRENT_LIMIT = 40;
+        const int DRIVE_MOTOR_CURRENT_LIMIT = 50;
         const double SWERVE_VOLTAGE_COMPENSATION = 10.5;
         const bool IS_DRIVE_IN_COAST = false;
         const bool IS_ROBOT_ORIENTED_DRIVE = false;

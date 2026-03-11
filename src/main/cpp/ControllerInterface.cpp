@@ -86,9 +86,9 @@ void ControllerInterface::UpdateNavxInput(RobotControlData &controlData)
 void ControllerInterface::UpdateSwerveInput(RobotControlData &controlData)
 {  
     
-    controlData.swerveInput.xTranslation = -m_pilot.GetLeftY();
-    controlData.swerveInput.yTranslation = -m_pilot.GetLeftX();
-    controlData.swerveInput.rotation = -m_pilot.GetRightX();    
+    controlData.swerveInput.xTranslation = -m_pilot.GetLeftY() * 2;
+    controlData.swerveInput.yTranslation = -m_pilot.GetLeftX() * 2;
+    controlData.swerveInput.rotation = -m_pilot.GetRightX() * 2;    
 }
 
 void ControllerInterface::UpdateIntakeInput(RobotControlData &controlData)
@@ -115,6 +115,7 @@ void ControllerInterface::UpdateIntakeInput(RobotControlData &controlData)
 #include <iostream>
 void ControllerInterface::UpdateLauncherInput(RobotControlData &controlData)
 { 
+    controlData.launcherInput.autoAim = false;
     if (controlData.states.Launching)
     {
         controlData.launcherInput.disableLauncher = false; //enable launcher and set to default values
