@@ -72,7 +72,7 @@ class WPISwerveDrive : public SwerveDrive
         // --------------------Absolute Encoder-----------------------
         const int FL_ABS_ENC_PORT = 3;
         const bool FL_ABS_ENC_INVERTED = false;
-        const frc::Rotation2d FL_ZERO_HEADING{units::degree_t{7.294f}};
+        const frc::Rotation2d FL_ZERO_HEADING{units::degree_t{187.294f}};
 
         ctre::phoenix6::hardware::CANcoder fl_abs_enc{FL_ABS_ENC_PORT};
 
@@ -203,7 +203,7 @@ class WPISwerveDrive : public SwerveDrive
         const double DRIVE_P = 0.01;
         const double DRIVE_I = 0.0;
         const double DRIVE_D = 0.0;
-        const double DRIVE_FF = 0.75;
+        const double DRIVE_FF = 0.83;
 
         // --------------------------Gyro-----------------------------
         const bool GYRO_INVERTED = true;
