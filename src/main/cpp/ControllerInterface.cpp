@@ -1,9 +1,11 @@
 #include "ControllerInterface.h"
+#include <frc/smartdashboard/SmartDashboard.h>
 #include <iostream>
+#include <string>
 
 void ControllerInterface::UpdateRobotControlData(RobotControlData &controlData)
 {
-
+    UpdateStates(controlData);
     UpdateSwerveInput(controlData);
     // UpdateNavxInput(controlData);
     UpdateLauncherInput(controlData);
@@ -17,7 +19,64 @@ void ControllerInterface::UpdateRobotControlData(RobotControlData &controlData)
     // }
 };
 
+void ControllerInterface::UpdateStates(RobotControlData &controlData)
+{
+    
+    if (m_copilot.GetRightBumperPressed()) // Passing
+    {
+        controlData.states.Passing = !controlData.states.Passing;
+        controlData.states.Intaking = false; // Ensure Intaking is false when Launching is toggled
+        controlData.states.Jam = false; // Ensure Jam is false when Launching is toggled
+        controlData.states.Launching = false; // Ensure Launching is false when Passing is toggled
+        controlData.states.Defense = false; // Ensure Defense is false when Intaking is toggled
+        state = (controlData.states.Passing) ? "Passing" : "No State";
+    } 
+     else if (m_copilot.GetLeftBumperPressed()) // Launching
+    {
+        controlData.states.Launching = !controlData.states.Launching;
+        controlData.states.Passing = false; // Ensure Passing is false when Launching is toggled
+        controlData.states.Intaking = false; // Ensure Intaking is false when Launching is toggled
+        controlData.states.Jam = false; // Ensure Jam is false when Launching is toggled
+        controlData.states.Defense = false; // Ensure Defense is false when Intaking is toggled
+        state = (controlData.states.Launching) ? "Launching" : "No State";
+    }
+     else if (m_copilot.GetBButtonPressed()) // Jam
+    {
+        controlData.states.Jam = !controlData.states.Jam;
+        controlData.states.Passing = false; // Ensure Passing is false when Launching is toggled
+        controlData.states.Intaking = false; // Ensure Intaking is false when Launching is toggled
+        controlData.states.Launching = false; // Ensure Launching is false when Passing is toggled
+        controlData.states.Defense = false; // Ensure Defense is false when Intaking is toggled
+        state = (controlData.states.Jam) ? "Jam" : "No State";
+    }
+     else if (m_copilot.GetXButtonPressed()) // Intaking
+    {
+        controlData.states.Intaking = !controlData.states.Intaking;
+        controlData.states.Passing = false; // Ensure Passing is false when Launching is toggled
+        controlData.states.Jam = false; // Ensure Jam is false when Launching is toggled
+        controlData.states.Launching = false; // Ensure Launching is false when Passing is toggled
+        controlData.states.Defense = false; // Ensure Defense is false when Intaking is toggled
+        state = (controlData.states.Intaking) ? "Intaking" : "No State";
+    }
+    else if (m_copilot.GetStartButtonPressed()) // Defense
+    {
+        controlData.states.Defense = !controlData.states.Defense;
+        controlData.states.Passing = false; // Ensure Passing is false when Defense is toggled
+        controlData.states.Intaking = false; // Ensure Intaking is false when Defense is toggled
+        controlData.states.Jam = false; // Ensure Jam is false when Defense is toggled
+        controlData.states.Launching = false; // Ensure Launching is false when Defense is toggled
+        state = (controlData.states.Defense) ? "Defense" : "No State";
+    }
+    // controlData.states.Passing = false; // Ensure Passing is false when Launching is toggled
+    // controlData.states.Intaking = false; // Ensure Intaking is false when Launching is toggled
+    // controlData.states.Jam = false; // Ensure Jam is false when Launching is toggled
+    // controlData.states.Launching = false; // Ensure Launching is false when Passing is toggled
+    // controlData.states.Defense = false; // Ensure Defense is false when Intaking is toggled
+    
 
+    frc::SmartDashboard::PutString("Current State", state);
+
+}
 
 void ControllerInterface::UpdateNavxInput(RobotControlData &controlData)
 {
@@ -33,150 +92,89 @@ void ControllerInterface::UpdateSwerveInput(RobotControlData &controlData)
 }
 
 void ControllerInterface::UpdateIntakeInput(RobotControlData &controlData)
-{ //used during intake, outtake, and passing states
-    if (m_copilot.GetRightBumperPressed()) //passing
-    {
-        if (controlData.intakeInput.intakeState == true) //if the intake is currently up, then lower it and set to intake
-        {
-            controlData.intakeInput.intakeState = false; //down
-            controlData.intakeInput.intakeDirection = -1; //in
-            m_statusIntake = true;
-        }
-        else //if the intake is currently down, then raise it and stop the rollers
-        {
-            controlData.intakeInput.intakeState = true; //up
-            controlData.intakeInput.intakeDirection = 0; //stop
-            m_statusIntake = false;
-        }
-
-    }
-    if(m_copilot.GetXButtonPressed())
-    {
-        if (controlData.intakeInput.intakeState == true) //if the intake is currently up, then lower it and set to intake
-        {
-            controlData.intakeInput.intakeState = false; //down
-            controlData.intakeInput.intakeDirection = -1; //in
-            m_statusIntake = true;
-        }
-        else //if the intake is currently down, then raise it and stop the rollers
-        {
-            controlData.intakeInput.intakeState = true; //up
-            controlData.intakeInput.intakeDirection = 0; //stop
-            m_statusIntake = false;
-        }
-    }
-    else if (m_copilot.GetRightX() <-0.1) //manual outtake
+{ 
+    if (controlData.states.Passing || controlData.states.Launching || controlData.states.Intaking) // on if launching or passing or intaking
     {
         controlData.intakeInput.intakeState = false; //down
-        controlData.intakeInput.intakeDirection = 1; //out
-        m_statusIntake = false;
-    }
-    else //neutral
+        controlData.intakeInput.intakeDirection = 1; //in
+    } else if (controlData.states.Jam || (m_copilot.GetRightY() < -0.1)) //jam or manual outtake
     {
-        if (!m_statusIntake)
-        {    
-            controlData.intakeInput.intakeState = true; //up
-            controlData.intakeInput.intakeDirection = 0; //stop
-        }
+        controlData.intakeInput.intakeDirection = -1; //out
+    } else if (controlData.states.Defense) //Defense
+    {
+        controlData.intakeInput.intakeState = true; //up
+        controlData.intakeInput.intakeDirection = 0; //stop
+    } else
+    {
+        controlData.intakeInput.intakeDirection = 0; //stop
     }
-    // else if (m_copilot.GetRightY() > 0.1) //outtake
-    // {
-    //     controlData.intakeInput.intakeState = false; //down
-    //     controlData.intakeInput.intakeDirection = -1; //out
-    // }
-    // else if (m_copilot.GetRightY() < 0.1) //intake
-    // {
-    //     controlData.intakeInput.intakeState = false; //down
-    //     controlData.intakeInput.intakeDirection = 1; //in
-    // } else //neutral
-    // {
-    //     controlData.intakeInput.intakeState = true; //up
-    //     controlData.intakeInput.intakeDirection = 0; //stop
-    // }
-
+    frc::SmartDashboard::PutBoolean("Intake state", controlData.intakeInput.intakeState);
+    frc::SmartDashboard::PutNumber("Intake direction", controlData.intakeInput.intakeDirection);
 }
 
 #include <iostream>
 void ControllerInterface::UpdateLauncherInput(RobotControlData &controlData)
-{ //during passing and launching
-    
-    if(m_copilot.GetYButtonPressed()){
-        controlData.launcherInput.launcherAngle = 144;
-    }
-    if(m_copilot.GetXButtonPressed()){
-        controlData.launcherInput.launcherAngle = 36;
-    }
-    // *** DEBUG CODE ***
-    // if(m_copilot.GetBButtonPressed()){
-    //     controlData.launcherInput.launcherRPM -= 100;
-    // }
-    // if(m_copilot.GetAButtonPressed()){
-    //     controlData.launcherInput.launcherRPM += 100;
-    // }
-    if(m_copilot.GetLeftBumperButtonPressed()) //auto-aiming
+{ 
+    if (controlData.states.Launching)
     {
-        controlData.launcherInput.autoAim = !controlData.launcherInput.autoAim; //toggle auto-aiming on and off
-        // *** TEST CODE ***
-        // if (controlData.launcherInput.disableLauncher) //if the launcher is currently disabled, enable it and set to default values
-        // {
-        //     controlData.launcherInput.disableLauncher = false; //enable launcher and set to default values
-        //     controlData.launcherInput.launcherRPM = -6000;
-        //     controlData.launcherInput.indexerSpeeds = -2000;
-        //     std::cout << "Launcher Enabled" << std::endl;
-        // }
-        // else //if the launcher is currently enabled, disable it
-        // {
-        //     controlData.launcherInput.disableLauncher = true; //disable launcher
-        //     controlData.launcherInput.indexerSpeeds = 0;
-        //     std::cout << "Launcher Disabled" << std::endl;
-        // }
-    }
-    
-    else if (m_copilot.GetRightBumperPressed()) //passing
+        controlData.launcherInput.disableLauncher = false; //enable launcher and set to default values
+        controlData.launcherInput.launcherRPM = -3000;
+        controlData.launcherInput.indexerSpeeds = -0.8;
+        controlData.launcherInput.autoAim = true;
+    } else if (controlData.states.Passing)
     {
-        if (controlData.launcherInput.disableLauncher) //if the launcher is currently disabled, enable it and set to default values
+        controlData.launcherInput.disableLauncher = false; //enable launcher and set to default values
+        controlData.launcherInput.launcherRPM = -3000;
+        controlData.launcherInput.indexerSpeeds = -0.8;
+        controlData.launcherInput.autoAim = false;
+
+        if(m_copilot.GetYButtonPressed()) //hood angle down
         {
-            controlData.launcherInput.disableLauncher = false; //enable launcher and set to default values
-            controlData.launcherInput.launcherRPM = -6000;
-            controlData.launcherInput.indexerSpeeds = -2000;
-            std::cout << "Launcher Enabled" << std::endl;
-            m_statusLauncher = true;
+            controlData.launcherInput.launcherRPM -= 100;
         }
-        else //if the launcher is currently enabled, disable it
+        if(m_copilot.GetAButtonPressed()) //hood angle up
         {
-            controlData.launcherInput.disableLauncher = true; //disable launcher
-            controlData.launcherInput.indexerSpeeds = 0;
-            std::cout << "Launcher Disabled" << std::endl;
-            m_statusLauncher = false;
+            controlData.launcherInput.launcherRPM += 100;
+        }
+        if (m_copilot.GetLeftY() > 0.1 || m_copilot.GetLeftY() < -0.1) //manual control of launcher RPM and indexer speeds using the left X axis
+        {
+            controlData.launcherInput.launcherRPM = (1-m_copilot.GetLeftY()) * (-3000); //scale the left X axis to a range of 0 to 6000 RPM
         }
 
-    }
-    
-    else if (m_copilot.GetLeftX() > 0.1 || m_copilot.GetLeftX() < -0.1) //manual control of launcher RPM and indexer speeds using the left X axis
+    } else if (controlData.states.Jam)
     {
-        controlData.launcherInput.disableLauncher = false; //enable launcher
-        controlData.launcherInput.launcherRPM = -(1+m_copilot.GetLeftX()) * 6000; //scale the left X axis to a range of 0 to -6000 RPM
-        controlData.launcherInput.indexerSpeeds = -2000; //scale the left X axis to a range of 0 to -2000 RPM
-        m_statusLauncher = false;
-    }
-         
-    else
+        controlData.launcherInput.disableLauncher = false; //enable launcher and set to default values
+        controlData.launcherInput.launcherRPM = 750;
+        controlData.launcherInput.indexerSpeeds = 0.333;
+        controlData.launcherInput.autoAim = false;
+    } else if (controlData.states.Intaking)
     {
-        if (!m_statusLauncher){
-            controlData.launcherInput.disableLauncher = true; //disable launcher
-            controlData.launcherInput.launcherRPM = 0; //if the left X axis is not being used, set the launcher RPM to 0
-        }
+        controlData.launcherInput.disableLauncher = true;
+        controlData.launcherInput.launcherRPM = 0;
+        controlData.launcherInput.indexerSpeeds = 0.333;
+        controlData.launcherInput.autoAim = false;
+    } else {
+        controlData.launcherInput.disableLauncher = true; //disable launcher
+        controlData.launcherInput.indexerSpeeds = 0;
+        controlData.launcherInput.launcherRPM = 0;
+        controlData.launcherInput.autoAim = false;
     }
+
+    frc::SmartDashboard::PutNumber("Goal Launcher RPM", controlData.launcherInput.launcherRPM);
+    frc::SmartDashboard::PutNumber("Indexer Speeds", controlData.launcherInput.indexerSpeeds);
 
 }
 #include <iostream>
 void ControllerInterface::UpdateSpindexerInput(RobotControlData &controlData)
 {
-    if(m_copilot.GetBButtonPressed())
+    if (controlData.states.Launching || controlData.states.Passing || controlData.states.Intaking)
     {
-        controlData.spindexerInput.enableSpindexer = !controlData.spindexerInput.enableSpindexer;  
-        std::cout << "asdf" << std::endl;
+        controlData.spindexerInput.enableSpindexer = true;
+    } else
+    {
+        controlData.spindexerInput.enableSpindexer = false;
     }
+    frc::SmartDashboard::PutBoolean("Spindexer Enabled", controlData.spindexerInput.enableSpindexer);
 }
 
 
@@ -186,4 +184,15 @@ void ControllerInterface::VibrateController(double intensity, double duration)
     m_timer.Restart();
     m_pilot.SetRumble(frc::GenericHID::RumbleType::kLeftRumble, intensity);
     m_pilot.SetRumble(frc::GenericHID::RumbleType::kRightRumble, intensity);
+}
+
+void ControllerInterface::ResetState(RobotControlData &controlData)
+{
+    state = "Starting up";
+    controlData.states.Launching = false;
+    controlData.states.Passing = false;
+    controlData.states.Intaking = false;
+    controlData.states.Jam = false;
+    controlData.states.Defense = false;
+
 }

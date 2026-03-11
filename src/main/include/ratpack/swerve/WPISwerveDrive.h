@@ -72,12 +72,12 @@ class WPISwerveDrive : public SwerveDrive
         // --------------------Absolute Encoder-----------------------
         const int FL_ABS_ENC_PORT = 3;
         const bool FL_ABS_ENC_INVERTED = false;
-        const frc::Rotation2d FL_ZERO_HEADING{units::degree_t{268.76f}};
+        const frc::Rotation2d FL_ZERO_HEADING{units::degree_t{7.294f}};
 
         ctre::phoenix6::hardware::CANcoder fl_abs_enc{FL_ABS_ENC_PORT};
 
         // -----------------------Turn Motor--------------------------
-        const int FL_TURN_MTR_ID = 15;
+        const int FL_TURN_MTR_ID = 8;
         const bool FL_TURN_MTR_INVERTED = true;
 
         rev::spark::SparkMax fl_turn_mtr{FL_TURN_MTR_ID, rev::spark::SparkMax::MotorType::kBrushless};
@@ -85,7 +85,7 @@ class WPISwerveDrive : public SwerveDrive
         rev::spark::SparkClosedLoopController fl_turn_pid = fl_turn_mtr.GetClosedLoopController();
 
         // -----------------------Drive Motor-------------------------
-        const int FL_DRIVE_MTR_ID = 18;
+        const int FL_DRIVE_MTR_ID = 7;
         const double FL_POSITION_CORRECTION_FACTOR = 1.0;
 
         rev::spark::SparkMax fl_drive_mtr{FL_DRIVE_MTR_ID, rev::spark::SparkMax::MotorType::kBrushless};
@@ -99,12 +99,12 @@ class WPISwerveDrive : public SwerveDrive
         // --------------------Absolute Encoder-----------------------
         const int FR_ABS_ENC_PORT = 6;
         const bool FR_ABS_ENC_INVERTED = false;
-        const frc::Rotation2d FR_ZERO_HEADING{units::degree_t{270.61f}};
+        const frc::Rotation2d FR_ZERO_HEADING{units::degree_t{246.44f}};
 
         ctre::phoenix6::hardware::CANcoder fr_abs_enc{FR_ABS_ENC_PORT};
 
         // -----------------------Turn Motor--------------------------
-        const int FR_TURN_MTR_ID = 17;
+        const int FR_TURN_MTR_ID = 2;
         const bool FR_TURN_MTR_INVERTED = true;
 
         rev::spark::SparkMax fr_turn_mtr{FR_TURN_MTR_ID, rev::spark::SparkMax::MotorType::kBrushless};
@@ -112,7 +112,7 @@ class WPISwerveDrive : public SwerveDrive
         rev::spark::SparkClosedLoopController fr_turn_pid = fr_turn_mtr.GetClosedLoopController();
 
         // -----------------------Drive Motor-------------------------
-        const int FR_DRIVE_MTR_ID = 19;
+        const int FR_DRIVE_MTR_ID = 1;
         const double FR_POSITION_CORRECTION_FACTOR = 1.0;
 
         rev::spark::SparkMax fr_drive_mtr{FR_DRIVE_MTR_ID, rev::spark::SparkMax::MotorType::kBrushless};
@@ -126,13 +126,13 @@ class WPISwerveDrive : public SwerveDrive
         // --------------------Absolute Encoder-----------------------
         const int BL_ABS_ENC_PORT = 12;
         const bool BL_ABS_ENC_INVERTED = false;
-        const frc::Rotation2d BL_ZERO_HEADING{units::degree_t{3.86f}};
+        const frc::Rotation2d BL_ZERO_HEADING{units::degree_t{168.25f}};
 
         ctre::phoenix6::hardware::CANcoder bl_abs_enc{BL_ABS_ENC_PORT};
 
 
         // -----------------------Turn Motor--------------------------
-        const int BL_TURN_MTR_ID = 7;
+        const int BL_TURN_MTR_ID = 6;
         const bool BL_TURN_MTR_INVERTED = true;
 
         rev::spark::SparkMax bl_turn_mtr{BL_TURN_MTR_ID, rev::spark::SparkMax::MotorType::kBrushless};
@@ -140,7 +140,7 @@ class WPISwerveDrive : public SwerveDrive
         rev::spark::SparkClosedLoopController bl_turn_pid = bl_turn_mtr.GetClosedLoopController();
 
         // -----------------------Drive Motor-------------------------
-        const int BL_DRIVE_MTR_ID = 8;
+        const int BL_DRIVE_MTR_ID = 5;
         const double BL_POSITION_CORRECTION_FACTOR = 1.0;
 
         rev::spark::SparkMax bl_drive_mtr{BL_DRIVE_MTR_ID, rev::spark::SparkMax::MotorType::kBrushless};
@@ -154,12 +154,12 @@ class WPISwerveDrive : public SwerveDrive
         // --------------------Absolute Encoder-----------------------
         const int BR_ABS_ENC_PORT = 9;
         const bool BR_ABS_ENC_INVERTED = false;
-        const frc::Rotation2d BR_ZERO_HEADING{units::degree_t{176.48f}};
+        const frc::Rotation2d BR_ZERO_HEADING{units::degree_t{105.43f}};
 
         ctre::phoenix6::hardware::CANcoder br_abs_enc{BR_ABS_ENC_PORT};
 
         // -----------------------Turn Motor--------------------------
-        const int BR_TURN_MTR_ID = 2;
+        const int BR_TURN_MTR_ID = 4;
         const bool BR_TURN_MTR_INVERTED = true;
 
         rev::spark::SparkMax br_turn_mtr{BR_TURN_MTR_ID, rev::spark::SparkMax::MotorType::kBrushless};
@@ -167,7 +167,7 @@ class WPISwerveDrive : public SwerveDrive
         rev::spark::SparkClosedLoopController br_turn_pid = br_turn_mtr.GetClosedLoopController();
 
         // -----------------------Drive Motor-------------------------
-        const int BR_DRIVE_MTR_ID = 20;
+        const int BR_DRIVE_MTR_ID = 3;
         const double BR_POSITION_CORRECTION_FACTOR = 1.0;
 
         rev::spark::SparkMax br_drive_mtr{BR_DRIVE_MTR_ID, rev::spark::SparkMax::MotorType::kBrushless};
@@ -210,7 +210,7 @@ class WPISwerveDrive : public SwerveDrive
         const frc::Rotation2d GYRO_ZERO_HEADING{units::degree_t{0.0f}};
 
         // --------------------------Swerve---------------------------
-        const double MAX_DRIVE_SPEED_FPS = 18.0;
+        const double MAX_DRIVE_SPEED_FPS = 7.0;
         const double MAX_ANGULAR_VELOCITY_DEGPS = 540.0;
         const double CONTROLLER_DEADZONE = 0.1;
         const int TURN_MOTOR_CURRENT_LIMIT = 20;

@@ -1,4 +1,5 @@
 #include "InputManager/IntakeManager.h"
+#include <frc/smartdashboard/SmartDashboard.h>
 
 void IntakeManager::HandleInput(RobotControlData &robotControlData)
 {
@@ -11,6 +12,7 @@ void IntakeManager::HandleInput(RobotControlData &robotControlData)
         m_intakeHAL.SequenceDown();
     }
     m_intakeHAL.RunIntake(robotControlData.intakeInput.intakeDirection);
+    frc::SmartDashboard::PutNumber("IntakeAngle", m_intakeHAL.GetIntakeAngle());
 }
 
 void IntakeManager::ResetState()

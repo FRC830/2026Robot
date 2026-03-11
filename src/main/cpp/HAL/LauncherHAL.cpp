@@ -13,7 +13,8 @@ Launcher::Launcher()
         .WithKP(ratbot::LauncherConfig::Flywheel::P)
         .WithKI(ratbot::LauncherConfig::Flywheel::I)
         .WithKD(ratbot::LauncherConfig::Flywheel::D)
-        .WithKG(ratbot::LauncherConfig::Flywheel::F);
+        .WithKV(ratbot::LauncherConfig::Flywheel::kV)
+        .WithKA(ratbot::LauncherConfig::Flywheel::kA);
     ctre::phoenix6::configs::MotorOutputConfigs &arm_output_config = flywheel_config.MotorOutput
         .WithInverted(ratbot::LauncherConfig::Flywheel::INVERTED)
         .WithNeutralMode(ratbot::LauncherConfig::Flywheel::IDLE_MODE);
@@ -28,35 +29,37 @@ Launcher::Launcher()
         status = m_leftLauncher->GetConfigurator().Apply(flywheel_config);
         if (status.IsOK()) break;
     }
-    status = ctre::phoenix::StatusCode::StatusCodeNotInitialized;
-    for (int i = 0; i < 5; ++i) {
-        status = m_rightLauncher->GetConfigurator().Apply(flywheel_config);
-        if (status.IsOK()) break;
-    }
+    m_rightLauncher->GetConfigurator().Apply(flywheel_config);
+
+
 
 }
 void Launcher::SetLauncherSpeeds(double rightSpeed, double leftSpeed)
 {
     m_desiredRightLauncherSpeed = rightSpeed;
     m_desiredLeftLauncherSpeed = leftSpeed;
-    if (rightSpeed == 0 ){
+    if (rightSpeed == 0 && leftSpeed == 0){
         m_rightLauncher->Set(0);
         m_leftLauncher->Set(0);
         return;
     } // Don't use PID to go to 0 to avoid stripping belts
-    // Don't use PID to go to 0 to avoid stripping belts
-    m_rightLauncher->SetControl(ctre::phoenix6::controls::VelocityDutyCycle(units::angular_velocity::turns_per_second_t(rightSpeed/60.0)));
     m_leftLauncher->SetControl(ctre::phoenix6::controls::VelocityDutyCycle(units::angular_velocity::turns_per_second_t(leftSpeed/60.0)));
+    m_rightLauncher->SetControl(ctre::phoenix6::controls::Follower{m_leftLauncher->GetDeviceID(), ctre::phoenix6::signals::MotorAlignmentValue::Opposed});
+
+    
     // m_rightLauncher->Set(-1);
     // m_leftLauncher->Set(1);
 
 
 }
-void Launcher::SetIndexerSpeeds(double indexerSpeed)
+void Launcher::SetIndexerSpeeds(double speed)
 {
     // if (AreFlywheelsAtDesiredSpeed())
+
     // {     
-        m_Indexer->GetClosedLoopController().SetReference(indexerSpeed, rev::spark::SparkLowLevel::ControlType::kDutyCycle);
+
+    m_Indexer->Set(std::clamp(speed, -1.0, 1.0));
+
 
     // } else
     // {
@@ -79,7 +82,7 @@ double Launcher::GetAngle()
 }
 bool Launcher::AreFlywheelsAtDesiredSpeed()
 {
-    return ((std::fabs(GetRightLauncherRPM() - m_desiredRightLauncherSpeed)<=SMALL_NUM)&&(std::fabs(GetLeftLauncherRPM() - m_desiredLeftLauncherSpeed)<=SMALL_NUM));
+    return ((std::fabs(std::fabs(GetRightLauncherRPM()) - m_desiredRightLauncherSpeed)<=SMALL_NUM)&&(std::fabs(std::fabs(GetLeftLauncherRPM()) - m_desiredLeftLauncherSpeed)<=SMALL_NUM));
 }
 
 void Launcher::SetAngle(double angle)
@@ -90,24 +93,6 @@ void Launcher::SetAngle(double angle)
 
 void Launcher::SetRPM(double wheel_rpm)
 {
-    double launcher_rpm = wheel_rpm/GEAR_RATIO;
-    SetLauncherSpeeds(launcher_rpm, -launcher_rpm);
-}
-
-double Launcher::CalcSpeed(double distance)
-{
-    // Calculate the ideal launch speed (m/s) for a given distance (m)
-    // Using projectile motion: v = sqrt(distance * g / sin(2 * launch_angle))
-    // Placeholder: simple linear approximation, tune on real robot
-    const double SPEED_PER_METER = 5.0; // m/s per meter of distance (placeholder)
-    return distance * SPEED_PER_METER;
-}
-
-double Launcher::CalcRPM(double speed)
-{
-    // Convert a linear ball speed (m/s) to flywheel RPM
-    // v = (RPM * pi * wheel_diameter) / 60
-    // RPM = (v * 60) / (pi * wheel_diameter)
-    const double WHEEL_DIAMETER = 0.1016; // 4 inch wheel in meters (placeholder)
-    return (speed * 60.0) / (M_PI * WHEEL_DIAMETER);
+    double launcher_rpm = std::fabs(wheel_rpm);
+    SetLauncherSpeeds(launcher_rpm, launcher_rpm);
 }

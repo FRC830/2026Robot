@@ -23,7 +23,8 @@ Robot::Robot() {
   m_autoChooser = pathplanner::AutoBuilder::buildAutoChooser();
   frc::SmartDashboard::PutData("Auto Chooser", &m_autoChooser);
 
-  _swerve.SetShouldSwerveLock(true);
+  _swerve.SetShouldSwerveLock(true); 
+
 }
 
 void Robot::RobotPeriodic() {
@@ -38,6 +39,11 @@ void Robot::DisabledPeriodic() {}
 void Robot::DisabledExit() {}
 
 void Robot::AutonomousInit() {
+  
+  m_launcherManager.ResetState();
+  m_intake.ResetState();
+  m_spindexer.ResetState(_robot_control_data);
+  
   m_state = 0;
   m_auto = m_autoChooser.GetSelected();
 
@@ -88,7 +94,11 @@ void Robot::AutonomousPeriodic() {
 void Robot::AutonomousExit() {}
 
 void Robot::TeleopInit() {
-
+  
+  _controller_interface.ResetState(_robot_control_data);
+  m_launcherManager.ResetState();
+  m_intake.ResetState();
+  m_spindexer.ResetState(_robot_control_data);
 
 }
 
@@ -105,13 +115,16 @@ void Robot::TeleopPeriodic() {
 
   // }
 
+  //launcher.SetAngle(m_pilot.GetRightY()*5);
   // m_smartPlanner->HandleInput(_robot_control_data);
-  m_launcherManager.HandleInput(_robot_control_data);
-  m_spindexer.HandleInput(_robot_control_data);
-  m_intake.HandleInput(_robot_control_data);
-    
-
- // _swerve.Drive(0, 0,0);
+  if (_robot_control_data.launcherInput.autoAim)
+  {
+    m_smartPlanner->HandleInput(_robot_control_data);
+  }
+  else{
+     _swerve.Drive(_robot_control_data.swerveInput.xTranslation, _robot_control_data.swerveInput.yTranslation, _robot_control_data.swerveInput.rotation);
+  }
+  //  _swerve.Drive(_robot_control_data.swerveInput.xTranslation, _robot_control_data.swerveInput.yTranslation, _robot_control_data.swerveInput.rotation);
 
   _controller_interface.UpdateRobotControlData(_robot_control_data);
 }

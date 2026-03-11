@@ -5,10 +5,9 @@
 #include <PhotonVisionCamera.h>
 #include <cmath>
 
-SmartPlanner::SmartPlanner(PhotonVisionCamera &cam, WPISwerveDrive &swerve, Launcher &launcher)
-    : m_Cam(cam)
-    , m_Swerve(swerve)
-    , m_launcher(launcher)
+SmartPlanner::SmartPlanner(PhotonVisionCamera &cam, WPISwerveDrive &swerve)
+  : m_Cam(cam)
+  , m_Swerve(swerve)
 {}
 
 
@@ -52,22 +51,22 @@ void SmartPlanner::SmartPlan(RobotControlData &data)
 
 
   double distance = targetPosition.Norm().value();
-  double idealSpeed = m_launcher.CalcSpeed(distance);
-
-
-  frc::Translation2d targetVector(units::meter_t (targetPosition.X().value()/distance * idealSpeed) , units::meter_t (targetPosition.Y().value()/distance * idealSpeed));
+  double idealSpeed = 0;
   
   double swerveX = m_Swerve.GetRobotRelativeSpeeds().vx();
   double swerveY = m_Swerve.GetRobotRelativeSpeeds().vy();
 
-  frc::Translation2d shotVector(units::meter_t (targetVector.X().value() - swerveX), units::meter_t (targetVector.X().value() - swerveY));
-  //launcher spinning
-  m_targetAngle = shotVector.Angle().Degrees().value();
+  // IMPORTANT DEBUG CODE
+  // distance = 1.5;
 
-  
-  double speed = shotVector.Norm().value(); //mps
-  speed = m_launcher.CalcRPM(speed); //rpm
-  m_launcher.SetLauncherSpeeds(speed,speed);
+  m_launchParam = m_launcherCalc.Calculate(distance, swervePose, swerveX, swerveY); //rpm
+  data.launcherInput.launcherRPM = -m_launchParam.flywheelRPM;
+  data.launcherInput.launcherAngle = m_launchParam.hoodAngle;
+  data.launcherInput.indexerSpeeds = -0.8;
+  // std::cout << "rpm " << data.launcherInput.launcherRPM << std::endl;
+  // std::cout << "angle " << data.launcherInput.launcherAngle << std::endl;
+  // std::cout << "ind speed " << data.launcherInput.indexerSpeeds << std::endl;
+  // If a launcher was provided, command it from the planner (guarded)
 
   frc::SmartDashboard::PutNumber("target angle", (m_targetAngle * 180/3.1415)-90);
 
