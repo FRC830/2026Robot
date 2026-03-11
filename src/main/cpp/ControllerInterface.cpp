@@ -164,6 +164,7 @@ void ControllerInterface::UpdateLauncherInput(RobotControlData &controlData)
     frc::SmartDashboard::PutNumber("Indexer Speeds", controlData.launcherInput.indexerSpeeds);
 
 }
+#include <iostream>
 void ControllerInterface::UpdateSpindexerInput(RobotControlData &controlData)
 {
     if (controlData.states.Launching || controlData.states.Passing || controlData.states.Intaking)

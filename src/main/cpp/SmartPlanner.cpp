@@ -16,47 +16,34 @@ SmartPlanner::SmartPlanner(PhotonVisionCamera &cam, WPISwerveDrive &swerve)
 void SmartPlanner::HandleInput(RobotControlData &data)
 {
   SmartPlan(data);
-    
 }
+
 #include <iostream>
 void SmartPlanner::SmartPlan(RobotControlData &data)
 {
-  auto camPose = m_Cam.GetPose();
+  auto swervePose = m_Cam.GetPose();
+  int x = swervePose->estimatedPose.X().value();
+  int y = swervePose->estimatedPose.Y().value();
+  blueAlliance = (std::hypot(11.915 - x, 4.035 - y) >= std::hypot(4.626 - x, 4.035 - y));
+  frc::SmartDashboard::PutBoolean("Blue Alliance?", blueAlliance);
+  if (swervePose->estimatedPose.X().value() != 0)
+  {  
+    frc::SmartDashboard::PutNumber("X est pose", x);
+    frc::SmartDashboard::PutNumber("Y est pose", y);
+    if (blueAlliance)
+    {
+      m_targetAngle = atan2(4.626 - x, 4.035 - y);
+      distToHub = std::hypot(4.626 - x, 4.035 - y);
+      targetPosition = frc::Translation2d(units::length::meter_t(4.626 - x), units::length::meter_t(4.035 - y));
+    }
+    else
+    {
+      m_targetAngle = atan2(11.915 - x, 4.035 - y);
+      distToHub = std::hypot(11.915 - x, 4.035 - y);      
+      targetPosition= frc::Translation2d(units::length::meter_t(11.915 - x), units::length::meter_t(4.035 - y));
 
-  if (camPose.has_value())
-  {
-    auto poseThing = camPose;
-    m_Swerve.UpdatePoseWithVision(poseThing->estimatedPose.ToPose2d(), units::time::second_t(poseThing->timestamp));
-   // std::cout << camPose.value().estimatedPose.Rotation().Angle().value() * 180/3.14 << std::endl;
+    }
   }
-  else
-  {
-    //std::cout << "no pose" << std::endl;
-  }
-
-
-
-  auto swervePose = m_Swerve.GetPose();
-  double x = swervePose.X().value();
-  double y = swervePose.Y().value();
-
-  blueAlliance = frc::DriverStation::GetAlliance() == frc::DriverStation::Alliance::kBlue;
-  frc::SmartDashboard::PutNumber("X est pose", x);
-  frc::SmartDashboard::PutNumber("Y est pose", y);
-  if (blueAlliance)
-  {
-    m_targetAngle = atan2(4.035 - y,4.626 - x);
-    targetPosition = frc::Translation2d(units::length::meter_t(4.035 - y), units::length::meter_t(4.626 - x));
-    // targetPosition = frc::Translation2d( units::length::meter_t(4.626 - x),units::length::meter_t(4.035 - y));
-
-  }
-  else
-  {
-    m_targetAngle = atan2(4.035 - y, 11.915 - x);
-    targetPosition= frc::Translation2d(units::length::meter_t(4.035 - y), units::length::meter_t(11.915 - x));
-    // targetPosition= frc::Translation2d(units::length::meter_t(11.915 - x),units::length::meter_t(4.035 - y));
-  }
-
 
   // find out which hub we target
   // 469.11, 158.84, red
@@ -81,11 +68,11 @@ void SmartPlanner::SmartPlan(RobotControlData &data)
   // std::cout << "ind speed " << data.launcherInput.indexerSpeeds << std::endl;
   // If a launcher was provided, command it from the planner (guarded)
 
-  frc::SmartDashboard::PutNumber("target angle", (m_targetAngle * 180/3.1415));
-  auto turnSpeed = m_moveToPose.angularRotation(m_Swerve.GetPose().Rotation().Degrees().value(),(m_targetAngle * 180/3.1415));
+  frc::SmartDashboard::PutNumber("target angle", (m_targetAngle * 180/3.1415)-90);
 
+
+  auto turnSpeed = m_moveToPose.angularRotation(m_Swerve.GetPose().Rotation().Degrees().value(), (m_targetAngle * 180/3.1415)-90);
   m_Swerve.Drive(data.swerveInput.xTranslation,data.swerveInput.yTranslation,turnSpeed);
-
 }
 
 void SmartPlanner::followPath()
