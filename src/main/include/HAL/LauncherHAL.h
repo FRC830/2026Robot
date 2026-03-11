@@ -28,6 +28,8 @@ class Launcher
         bool AreFlywheelsAtDesiredSpeed();
         void SetAngle(double angle);
         void SetRPM(double rpm);
+        double CalcSpeed(double distance);
+        double CalcRPM(double speed);
 
     private:
         std::shared_ptr<rev::spark::SparkMax> m_Indexer = std::make_shared<rev::spark::SparkMax>(LAUNCHER_INDEXER_CAN_ID, rev::spark::SparkMax::MotorType::kBrushless);        

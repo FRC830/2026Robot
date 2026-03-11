@@ -38,12 +38,14 @@ class SmartPlanner{
         double m_targetAngle = 0;
         int m_tagId;
         bool blueAlliance;
-        double distToHub;
+        double distToHub = 0;
         frc::Translation2d targetPosition;
         LauncherCalc m_launcherCalc;
         LauncherParam m_launchParam;
         
 
+        Launcher &m_launcher;
+        
 
         ScoringPositionMap m_positionMap;
 };

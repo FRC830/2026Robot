@@ -72,14 +72,13 @@ class Robot : public frc::TimedRobot {
   frc::SendableChooser<frc2::Command*> m_autoChooser;
   
   std::shared_ptr<PhotonVisionCamera> m_cam;
+  Launcher m_launcher;
   std::shared_ptr<SmartPlanner> m_smartPlanner;
 
-  frc::XboxController m_pilot{2};
+  double m_targetAngle = 0;
 
-  //Launcher launcher;
   LauncherManager m_launcherManager;
   SpindexerManager m_spindexer;
   IntakeManager m_intake;
 
-  double m_targetAngle = 0;
 };

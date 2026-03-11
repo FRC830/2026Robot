@@ -64,10 +64,6 @@ units::degrees_per_second_t MoveToPose::angularRotation(double currentDeg,double
     m_thetaPID.SetP(p);
     m_thetaPID.SetD(d);
 
-
-
-
-
     return units::degrees_per_second_t{omega};
 }
 
