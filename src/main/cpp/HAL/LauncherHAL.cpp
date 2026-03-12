@@ -6,6 +6,8 @@
 #include <ctre/phoenix6/controls/VelocityVoltage.hpp>
 #include <ctre/phoenix6/controls/Follower.hpp>
 #include <units/voltage.h>
+#include "ctre/phoenix6/configs/CurrentLimitsConfigs.hpp"
+
 
 
 Launcher::Launcher()
@@ -22,10 +24,18 @@ Launcher::Launcher()
     ctre::phoenix6::configs::MotorOutputConfigs &flywheel_output_config = flywheel_config.MotorOutput
         .WithInverted(ratbot::LauncherConfig::Flywheel::INVERTED)
         .WithNeutralMode(ratbot::LauncherConfig::Flywheel::IDLE_MODE);
+
+    ctre::phoenix6::configs::CurrentLimitsConfigs currentLimits{};
+    currentLimits.StatorCurrentLimit = units::ampere_t{30.0}; // Set limit in Amperes
+    currentLimits.StatorCurrentLimitEnable = true; // Enable the limit
+
     
     flywheel_config
         .WithSlot0(slot0Configs)
         .WithMotorOutput(flywheel_output_config);
+
+    flywheel_config.CurrentLimits = currentLimits;
+
     
     ctre::phoenix::StatusCode status = ctre::phoenix::StatusCode::StatusCodeNotInitialized;
     for (int i = 0; i < 5; ++i) {
