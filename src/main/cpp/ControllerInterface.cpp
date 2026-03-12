@@ -119,13 +119,11 @@ void ControllerInterface::UpdateLauncherInput(RobotControlData &controlData)
     if (controlData.states.Launching)
     {
         controlData.launcherInput.disableLauncher = false; //enable launcher and set to default values
-        controlData.launcherInput.launcherRPM = -3000;
         controlData.launcherInput.indexerSpeeds = 0.8;
         controlData.launcherInput.autoAim = true;
     } else if (controlData.states.Passing)
     {
         controlData.launcherInput.disableLauncher = false; //enable launcher and set to default values
-        controlData.launcherInput.launcherRPM = -3000;
         controlData.launcherInput.indexerSpeeds = 0.8;
         controlData.launcherInput.autoAim = false;
 
@@ -136,10 +134,6 @@ void ControllerInterface::UpdateLauncherInput(RobotControlData &controlData)
         if(m_copilot.GetAButtonPressed()) //hood angle up
         {
             controlData.launcherInput.launcherRPM += 100;
-        }
-        if (m_copilot.GetLeftY() > 0.1 || m_copilot.GetLeftY() < -0.1) //manual control of launcher RPM and indexer speeds using the left X axis
-        {
-            controlData.launcherInput.launcherRPM = (1-m_copilot.GetLeftY()) * (-3000); //scale the left X axis to a range of 0 to 6000 RPM
         }
 
     } else if (controlData.states.Jam)
@@ -194,5 +188,6 @@ void ControllerInterface::ResetState(RobotControlData &controlData)
     controlData.states.Intaking = false;
     controlData.states.Jam = false;
     controlData.states.Defense = false;
+    controlData.launcherInput.launcherRPM = -3000;
 
 }

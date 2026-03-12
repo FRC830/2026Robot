@@ -3,6 +3,10 @@
 #include "ratpack/SparkMaxDebugMacro.h"
 #include "MechanismConfig.h"
 #include <math.h>
+#include <ctre/phoenix6/controls/VelocityVoltage.hpp>
+#include <ctre/phoenix6/controls/Follower.hpp>
+#include <units/voltage.h>
+
 
 Launcher::Launcher()
 {
@@ -23,18 +27,17 @@ Launcher::Launcher()
         .WithSlot0(slot0Configs)
         .WithMotorOutput(flywheel_output_config);
     
-    
     ctre::phoenix::StatusCode status = ctre::phoenix::StatusCode::StatusCodeNotInitialized;
     for (int i = 0; i < 5; ++i) {
         status = m_leftLauncher->GetConfigurator().Apply(flywheel_config);
         if (status.IsOK()) break;
     }
-    ctre::phoenix::StatusCode status = ctre::phoenix::StatusCode::StatusCodeNotInitialized;
     for (int i = 0; i < 5; ++i) {
         status = m_rightLauncher->GetConfigurator().Apply(flywheel_config);
         if (status.IsOK()) break;
     }
-    
+    frc::SmartDashboard::PutNumber("velocityFF", 0.0);
+
 
 
 
@@ -53,10 +56,12 @@ void Launcher::SetLauncherSpeeds(double rightSpeed, double leftSpeed)
         m_leftLauncher->Set(0);
         return;
     } // Don't use PID to go to 0 to avoid stripping belts
-    m_leftLauncher->SetControl(ctre::phoenix6::controls::VelocityDutyCycle(units::angular_velocity::turns_per_second_t(leftSpeed/60.0)));
+
+    units::voltage::volt_t velocityFeedforward = units::voltage::volt_t{frc::SmartDashboard::GetNumber("velocityFF", 0.0)};
+    // m_leftLauncher->SetControl(ctre::phoenix6::controls::VelocityDutyCycle(units::angular_velocity::turns_per_second_t(leftSpeed/60.0)));
+    m_leftLauncher->SetControl(ctre::phoenix6::controls::VelocityVoltage{(units::angular_velocity::turns_per_second_t (leftSpeed/60.0))}.WithFeedForward(velocityFeedforward));
     m_rightLauncher->SetControl(ctre::phoenix6::controls::Follower{m_leftLauncher->GetDeviceID(), ctre::phoenix6::signals::MotorAlignmentValue::Opposed});
 
-    
     // m_rightLauncher->Set(-1);
     // m_leftLauncher->Set(1);
 
