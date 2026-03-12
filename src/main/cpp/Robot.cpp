@@ -116,6 +116,8 @@ void Robot::TeleopPeriodic() {
   // }
 
   //launcher.SetAngle(m_pilot.GetRightY()*5);
+  _controller_interface.UpdateRobotControlData(_robot_control_data);
+
   // m_smartPlanner->HandleInput(_robot_control_data);
   if (_robot_control_data.launcherInput.autoAim)
   {
@@ -126,7 +128,6 @@ void Robot::TeleopPeriodic() {
   }
   //  _swerve.Drive(_robot_control_data.swerveInput.xTranslation, _robot_control_data.swerveInput.yTranslation, _robot_control_data.swerveInput.rotation);
 
-  _controller_interface.UpdateRobotControlData(_robot_control_data);
   m_launcherManager.HandleInput(_robot_control_data);
   m_spindexer.HandleInput(_robot_control_data);
   m_intake.HandleInput(_robot_control_data);
