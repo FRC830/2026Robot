@@ -120,13 +120,13 @@ void ControllerInterface::UpdateLauncherInput(RobotControlData &controlData)
     {
         controlData.launcherInput.disableLauncher = false; //enable launcher and set to default values
         controlData.launcherInput.launcherRPM = -3000;
-        controlData.launcherInput.indexerSpeeds = -0.8;
+        controlData.launcherInput.indexerSpeeds = 0.8;
         controlData.launcherInput.autoAim = true;
     } else if (controlData.states.Passing)
     {
         controlData.launcherInput.disableLauncher = false; //enable launcher and set to default values
         controlData.launcherInput.launcherRPM = -3000;
-        controlData.launcherInput.indexerSpeeds = -0.8;
+        controlData.launcherInput.indexerSpeeds = 0.8;
         controlData.launcherInput.autoAim = false;
 
         if(m_copilot.GetYButtonPressed()) //hood angle down
@@ -146,13 +146,13 @@ void ControllerInterface::UpdateLauncherInput(RobotControlData &controlData)
     {
         controlData.launcherInput.disableLauncher = false; //enable launcher and set to default values
         controlData.launcherInput.launcherRPM = 750;
-        controlData.launcherInput.indexerSpeeds = 0.333;
+        controlData.launcherInput.indexerSpeeds = -0.333;
         controlData.launcherInput.autoAim = false;
     } else if (controlData.states.Intaking)
     {
         controlData.launcherInput.disableLauncher = true;
         controlData.launcherInput.launcherRPM = 0;
-        controlData.launcherInput.indexerSpeeds = 0.333;
+        controlData.launcherInput.indexerSpeeds = -0.333;
         controlData.launcherInput.autoAim = false;
     } else {
         controlData.launcherInput.disableLauncher = true; //disable launcher

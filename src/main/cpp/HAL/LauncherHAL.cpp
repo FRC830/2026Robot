@@ -38,10 +38,12 @@ Launcher::Launcher()
 #include <iostream>
 void Launcher::SetLauncherSpeeds(double rightSpeed, double leftSpeed)
 {
+
     m_desiredRightLauncherSpeed = rightSpeed;
     m_desiredLeftLauncherSpeed = leftSpeed;
-    std::cout << "desired " << m_desiredLeftLauncherSpeed << std::endl;
-    if (rightSpeed == 0 && leftSpeed == 0){
+    // std::cout << "desired " << m_desiredLeftLauncherSpeed << std::endl;
+    if (rightSpeed == 0 &&
+     leftSpeed == 0){
         m_rightLauncher->Set(0);
         m_leftLauncher->Set(0);
         return;
@@ -85,7 +87,7 @@ double Launcher::GetAngle()
 }
 bool Launcher::AreFlywheelsAtDesiredSpeed()
 {
-    return ((std::fabs(std::fabs(GetRightLauncherRPM()) - m_desiredRightLauncherSpeed)<=SMALL_NUM)&&(std::fabs(std::fabs(GetLeftLauncherRPM()) - m_desiredLeftLauncherSpeed)<=SMALL_NUM));
+    return ((std::fabs(std::fabs(GetLeftLauncherRPM()) - m_desiredLeftLauncherSpeed) <= 200));
 }
 
 void Launcher::SetAngle(double angle)

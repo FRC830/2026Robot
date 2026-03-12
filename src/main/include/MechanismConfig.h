@@ -37,7 +37,7 @@ namespace ratbot
             const double P = 0.0;
             const double I = 0.0;
             const double D = 0.0;
-            const double kV = 0.0105;
+            const double kV = 0.0115;
             const double kA = 0.008;
             const double VEL_CONV_FACTOR = 1.0;
             const double CURRENT_LIM = 30.0;
@@ -54,7 +54,7 @@ namespace ratbot
     }
     namespace Spindexer
     {
-        const double DEFAULT_SPEED = 0.8;
+        const double DEFAULT_SPEED = 1;
     }
 
 }
