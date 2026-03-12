@@ -15,13 +15,13 @@ Launcher::Launcher()
         .WithKD(ratbot::LauncherConfig::Flywheel::D)
         .WithKV(ratbot::LauncherConfig::Flywheel::kV)
         .WithKA(ratbot::LauncherConfig::Flywheel::kA);
-    ctre::phoenix6::configs::MotorOutputConfigs &arm_output_config = flywheel_config.MotorOutput
+    ctre::phoenix6::configs::MotorOutputConfigs &flywheel_output_config = flywheel_config.MotorOutput
         .WithInverted(ratbot::LauncherConfig::Flywheel::INVERTED)
         .WithNeutralMode(ratbot::LauncherConfig::Flywheel::IDLE_MODE);
     
     flywheel_config
         .WithSlot0(slot0Configs)
-        .WithMotorOutput(arm_output_config);
+        .WithMotorOutput(flywheel_output_config);
     
     
     ctre::phoenix::StatusCode status = ctre::phoenix::StatusCode::StatusCodeNotInitialized;
@@ -29,7 +29,12 @@ Launcher::Launcher()
         status = m_leftLauncher->GetConfigurator().Apply(flywheel_config);
         if (status.IsOK()) break;
     }
-    m_rightLauncher->GetConfigurator().Apply(flywheel_config);
+    ctre::phoenix::StatusCode status = ctre::phoenix::StatusCode::StatusCodeNotInitialized;
+    for (int i = 0; i < 5; ++i) {
+        status = m_rightLauncher->GetConfigurator().Apply(flywheel_config);
+        if (status.IsOK()) break;
+    }
+    
 
 
 
