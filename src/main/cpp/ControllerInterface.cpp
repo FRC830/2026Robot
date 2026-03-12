@@ -145,13 +145,13 @@ void ControllerInterface::UpdateLauncherInput(RobotControlData &controlData)
     } else if (controlData.states.Intaking)
     {
         controlData.launcherInput.disableLauncher = true;
-        controlData.launcherInput.launcherRPM = 0;
+        // controlData.launcherInput.launcherRPM = 0;
         controlData.launcherInput.indexerSpeeds = -0.333;
         controlData.launcherInput.autoAim = false;
     } else {
         controlData.launcherInput.disableLauncher = true; //disable launcher
         controlData.launcherInput.indexerSpeeds = 0;
-        controlData.launcherInput.launcherRPM = 0;
+        // controlData.launcherInput.launcherRPM = 0;
         controlData.launcherInput.autoAim = false;
     }
 
