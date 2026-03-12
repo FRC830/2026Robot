@@ -70,7 +70,7 @@ void Launcher::SetLauncherSpeeds(double rightSpeed, double leftSpeed)
     units::voltage::volt_t velocityFeedforward = units::voltage::volt_t{frc::SmartDashboard::GetNumber("velocityFF", 0.0)};
     // m_leftLauncher->SetControl(ctre::phoenix6::controls::VelocityDutyCycle(units::angular_velocity::turns_per_second_t(leftSpeed/60.0)));
     m_leftLauncher->SetControl(ctre::phoenix6::controls::VelocityVoltage{(units::angular_velocity::turns_per_second_t (leftSpeed/60.0))}.WithFeedForward(velocityFeedforward));
-    m_rightLauncher->SetControl(ctre::phoenix6::controls::Follower{m_leftLauncher->GetDeviceID(), ctre::phoenix6::signals::MotorAlignmentValue::Opposed});
+    m_rightLauncher->SetControl(ctre::phoenix6::controls::VelocityVoltage{(units::angular_velocity::turns_per_second_t (-rightSpeed/60.0))}.WithFeedForward(velocityFeedforward));
 
     // m_rightLauncher->Set(-1);
     // m_leftLauncher->Set(1);
