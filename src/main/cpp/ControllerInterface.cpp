@@ -127,11 +127,11 @@ void ControllerInterface::UpdateLauncherInput(RobotControlData &controlData)
         controlData.launcherInput.indexerSpeeds = 0.8;
         controlData.launcherInput.autoAim = false;
 
-        if(m_copilot.GetYButtonPressed()) //hood angle down
+        if(m_copilot.GetYButtonPressed()) // launcher RPM up
         {
             controlData.launcherInput.launcherRPM -= 100;
         }
-        if(m_copilot.GetAButtonPressed()) //hood angle up
+        if(m_copilot.GetAButtonPressed()) // launch RPM down
         {
             controlData.launcherInput.launcherRPM += 100;
         }
