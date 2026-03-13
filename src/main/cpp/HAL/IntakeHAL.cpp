@@ -8,6 +8,9 @@
 IntakeHAL::IntakeHAL()
 {
     m_zeroPos = encoder.Get();
+    
+    frc::SmartDashboard::PutNumber("IntakeAngle", encoder.Get());
+
 }
 
 double IntakeHAL::GetIntakeAngle()
@@ -22,7 +25,6 @@ void IntakeHAL::RunIntake(int direction)
 void IntakeHAL::MoveIntake(int direction)
 {
     m_angleMotor.Set(direction * ratbot::Intake::INTAKE_ANGLE_SPEED);
-    frc::SmartDashboard::PutNumber("IntakeAngle", encoder.Get());
 }
 
 void IntakeHAL::SequenceDown()

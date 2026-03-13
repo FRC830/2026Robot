@@ -63,6 +63,7 @@ void Launcher::SetLauncherSpeeds(double rightSpeed, double leftSpeed)
     if (rightSpeed == 0 &&
      leftSpeed == 0){
         m_rightLauncher->Set(0);
+        
         m_leftLauncher->Set(0);
         return;
     } // Don't use PID to go to 0 to avoid stripping belts
