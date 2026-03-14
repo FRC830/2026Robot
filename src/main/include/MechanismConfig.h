@@ -35,7 +35,7 @@ namespace ratbot
     {
         namespace Flywheel
         {
-            const double P = 0.2;
+            const double P = 0.75;
             const double I = 0.0;
             const double D = 0.0;
             const double kV = 0.12;
