@@ -7,7 +7,19 @@
         {
           "type": "path",
           "data": {
-            "pathName": "LaunchPosRight"
+            "pathName": "LaunchPosCenter"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "launch"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "center Wiggle"
           }
         },
         {
