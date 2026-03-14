@@ -5,22 +5,20 @@
 // abosulte encoder stuff below gets re
 
 // m_zeroPos = encoder.Get()
-IntakeHAL::IntakeHAL()
-{
-    m_zeroPos = encoder.Get();
-    
-    frc::SmartDashboard::PutNumber("IntakeAngle", encoder.Get());
 
-}
 
 double IntakeHAL::GetIntakeAngle()
 {
-    return encoder.Get() - m_zeroPos;
+    return encoder.Get();
+
 }
 
 void IntakeHAL::RunIntake(int direction)
 {
     m_rollerMotor.Set(-direction * ratbot::Intake::INTAKE_ROLLER_SPEED);
+
+    frc::SmartDashboard::PutNumber("IntakeAngle", encoder.Get());
+
 }
 void IntakeHAL::MoveIntake(int direction)
 {
@@ -29,9 +27,9 @@ void IntakeHAL::MoveIntake(int direction)
 
 void IntakeHAL::SequenceDown()
 {
-    if (encoder.Get() < ratbot::Intake::DOWN_LOCATION + deadzone)
+    if (encoder.Get() > ratbot::Intake::DOWN_LOCATION + deadzone)
     {
-        MoveIntake(1);
+        // MoveIntake(-1);
     }
     else
     {
@@ -41,9 +39,9 @@ void IntakeHAL::SequenceDown()
 
 void IntakeHAL::SequenceStore()
 {
-    if (encoder.Get() > m_zeroPos + deadzone)
+    if (encoder.Get() < ratbot::Intake::UP_LOCATION + deadzone)
     {
-        MoveIntake(-1);
+        // MoveIntake(1);
     }
     else
     {

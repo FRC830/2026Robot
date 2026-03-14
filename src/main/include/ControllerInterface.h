@@ -8,7 +8,7 @@ class ControllerInterface
     public:
         ControllerInterface() = default;
         ~ControllerInterface() = default;
-        void UpdateRobotControlData(RobotControlData &controlData);
+        void UpdateRobotControlData(RobotControlData &controlData, bool auton);
         void VibrateController(double intensity, double duration);
         void ResetState(RobotControlData &controlData);
     private:
@@ -17,7 +17,7 @@ class ControllerInterface
         void UpdateLauncherInput(RobotControlData &controlData);
         void UpdateSpindexerInput(RobotControlData &controlData);
         void UpdateIntakeInput(RobotControlData &controlData);
-        void UpdateNavxInput(RobotControlData &controlData);
+        void UpdatePigeonInput(RobotControlData &controlData);
         void UpdateStates(RobotControlData &controlData);
 
         frc::XboxController m_pilot{0};

@@ -7,13 +7,13 @@
         {
           "type": "path",
           "data": {
-            "pathName": "backToOutpost"
+            "pathName": "Copy of LaunchPos"
           }
         },
         {
-          "type": "wait",
+          "type": "named",
           "data": {
-            "waitTime": 5.0
+            "name": "launch"
           }
         }
       ]

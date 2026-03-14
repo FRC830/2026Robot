@@ -10,15 +10,13 @@ void launch::Initialize()
     m_data.launcherInput.disableLauncher = true;
     m_data.launcherInput.indexerSpeeds = 0;
     m_data.launcherInput.autoAim = false;
-    m_timer.Start();
+    m_timer.Restart();
 }
 
 void launch::Execute()
 {
-    m_data.launcherInput.disableLauncher = false; //enable launcher and set to default values
-    m_data.launcherInput.indexerSpeeds = 0.8;
-    m_data.launcherInput.launcherRPM = -3000; //probably needs to be taken out.
-    m_data.launcherInput.autoAim = true;
+    m_data.launcherInput.launcherRPM = -3000;
+    m_data.states.Passing = true;
 }
 
 bool launch::IsFinished()
@@ -29,4 +27,8 @@ bool launch::IsFinished()
 void launch::End(bool interrupted)
 {
 
+    m_data.launcherInput.disableLauncher = true; //disable launcher
+    m_data.launcherInput.indexerSpeeds = 0;
+    m_data.launcherInput.autoAim = false;
+    m_data.states.Passing = false;
 }

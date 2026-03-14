@@ -1,7 +1,7 @@
 #pragma once
 
 const int INTAKE_ROLLER_CAN_ID = 45;
-const int INTAKE_ANGLE_CAN_ID = 46;
+const int INTAKE_ANGLE_CAN_ID = 13;
 
 const int LAUNCHER_FLYWHEEL_RIGHT_CAN_ID = 32;
 const int LAUNCHER_FLYWHEEL_LEFT_CAN_ID = 31;

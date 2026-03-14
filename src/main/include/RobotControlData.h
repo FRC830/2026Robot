@@ -9,7 +9,7 @@ struct SwerveInput{
     bool goFieldOriented;
 };
 
-struct ResetNavx
+struct ResetPigeon
 {
     bool reset;
 };
@@ -56,7 +56,7 @@ struct States
 
 struct RobotControlData {
     SwerveInput swerveInput;
-    ResetNavx resetNavx;
+    ResetPigeon resetPigeon;
     LauncherInput launcherInput;
     LauncherOutput launcherOutput;
     SpindexerInput spindexerInput;

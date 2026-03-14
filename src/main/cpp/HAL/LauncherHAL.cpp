@@ -19,7 +19,7 @@ Launcher::Launcher()
         .WithKP(ratbot::LauncherConfig::Flywheel::P)
         .WithKI(ratbot::LauncherConfig::Flywheel::I)
         .WithKD(ratbot::LauncherConfig::Flywheel::D)
-        .WithKV(ratbot::LauncherConfig::Flywheel::kV)
+        .WithKV(0.113)
         .WithKA(ratbot::LauncherConfig::Flywheel::kA);
     ctre::phoenix6::configs::MotorOutputConfigs &flywheel_output_config = flywheel_config.MotorOutput
         .WithInverted(ratbot::LauncherConfig::Flywheel::INVERTED)
@@ -42,11 +42,35 @@ Launcher::Launcher()
         status = m_leftLauncher->GetConfigurator().Apply(flywheel_config);
         if (status.IsOK()) break;
     }
+
+        ctre::phoenix6::configs::TalonFXConfiguration flywheel_config2{};
+
+    ctre::phoenix6::configs::Slot0Configs &slot0Configs2 = flywheel_config2.Slot0
+        .WithKP(ratbot::LauncherConfig::Flywheel::P)
+        .WithKI(ratbot::LauncherConfig::Flywheel::I)
+        .WithKD(ratbot::LauncherConfig::Flywheel::D)
+        .WithKV(0.117)
+        .WithKA(ratbot::LauncherConfig::Flywheel::kA);
+    ctre::phoenix6::configs::MotorOutputConfigs &flywheel_output_config2 = flywheel_config2.MotorOutput
+        .WithInverted(false)
+        .WithNeutralMode(ratbot::LauncherConfig::Flywheel::IDLE_MODE);
+
+
+
+    
+    flywheel_config
+        .WithSlot0(slot0Configs2)
+        .WithMotorOutput(flywheel_output_config2);
+
+    flywheel_config2.CurrentLimits = currentLimits;
+
     for (int i = 0; i < 5; ++i) {
-        status = m_rightLauncher->GetConfigurator().Apply(flywheel_config);
+        status = m_rightLauncher->GetConfigurator().Apply(flywheel_config2);
         if (status.IsOK()) break;
+
     }
-    frc::SmartDashboard::PutNumber("velocityFF", 0.0);
+
+    frc::SmartDashboard::PutNumber("velocityFF2", 0.23);
 
 
 
@@ -68,10 +92,10 @@ void Launcher::SetLauncherSpeeds(double rightSpeed, double leftSpeed)
         return;
     } // Don't use PID to go to 0 to avoid stripping belts
 
-    units::voltage::volt_t velocityFeedforward = units::voltage::volt_t{frc::SmartDashboard::GetNumber("velocityFF", 0.0)};
+    units::voltage::volt_t velocityFeedforward = units::voltage::volt_t{frc::SmartDashboard::GetNumber("velocityFF2", 0.0)};
     // m_leftLauncher->SetControl(ctre::phoenix6::controls::VelocityDutyCycle(units::angular_velocity::turns_per_second_t(leftSpeed/60.0)));
     m_leftLauncher->SetControl(ctre::phoenix6::controls::VelocityVoltage{(units::angular_velocity::turns_per_second_t (leftSpeed/60.0))}.WithFeedForward(velocityFeedforward));
-    m_rightLauncher->SetControl(ctre::phoenix6::controls::VelocityVoltage{(units::angular_velocity::turns_per_second_t (-rightSpeed/60.0))}.WithFeedForward(velocityFeedforward));
+    m_rightLauncher->SetControl(ctre::phoenix6::controls::VelocityVoltage{(units::angular_velocity::turns_per_second_t (rightSpeed/60.0))}.WithFeedForward(velocityFeedforward));
 
     // m_rightLauncher->Set(-1);
     // m_leftLauncher->Set(1);

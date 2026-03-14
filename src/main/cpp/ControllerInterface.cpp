@@ -3,11 +3,15 @@
 #include <iostream>
 #include <string>
 
-void ControllerInterface::UpdateRobotControlData(RobotControlData &controlData)
+void ControllerInterface::UpdateRobotControlData(RobotControlData &controlData, bool auton)
 {
-    UpdateStates(controlData);
-    UpdateSwerveInput(controlData);
-    // UpdateNavxInput(controlData);
+    if (!auton)
+    {
+        UpdateStates(controlData);
+        UpdateSwerveInput(controlData);
+    }
+    
+    UpdatePigeonInput(controlData);
     UpdateLauncherInput(controlData);
     UpdateIntakeInput(controlData);
     UpdateSpindexerInput(controlData);
@@ -78,9 +82,9 @@ void ControllerInterface::UpdateStates(RobotControlData &controlData)
 
 }
 
-void ControllerInterface::UpdateNavxInput(RobotControlData &controlData)
+void ControllerInterface::UpdatePigeonInput(RobotControlData &controlData)
 {
-    controlData.resetNavx.reset = m_pilot.GetStartButtonPressed();
+    controlData.resetPigeon.reset = m_pilot.GetStartButtonPressed();
 }
 
 void ControllerInterface::UpdateSwerveInput(RobotControlData &controlData)
@@ -95,14 +99,14 @@ void ControllerInterface::UpdateIntakeInput(RobotControlData &controlData)
 { 
     if (controlData.states.Passing || controlData.states.Launching || controlData.states.Intaking) // on if launching or passing or intaking
     {
-        controlData.intakeInput.intakeState = false; //down
+        // controlData.intakeInput.intakeState = false; //down
         controlData.intakeInput.intakeDirection = 1; //in
     } else if (controlData.states.Jam || (m_copilot.GetRightY() < -0.1)) //jam or manual outtake
     {
         controlData.intakeInput.intakeDirection = -1; //out
     } else if (controlData.states.Defense) //Defense
     {
-        controlData.intakeInput.intakeState = true; //up
+        // controlData.intakeInput.intakeState = true; //up
         controlData.intakeInput.intakeDirection = 0; //stop
     } else
     {
@@ -161,7 +165,7 @@ void ControllerInterface::UpdateLauncherInput(RobotControlData &controlData)
 }
 void ControllerInterface::UpdateSpindexerInput(RobotControlData &controlData)
 {
-    if (controlData.states.Launching || controlData.states.Passing || controlData.states.Intaking)
+    if (controlData.states.Launching || controlData.states.Passing)
     {
         controlData.spindexerInput.enableSpindexer = true;
     } else
