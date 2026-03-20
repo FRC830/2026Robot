@@ -81,6 +81,7 @@ void ControllerInterface::UpdateIntakeInput(RobotControlData &controlData)
     }
 
 
+
 }
 
 #include <iostream>
@@ -96,6 +97,7 @@ void ControllerInterface::UpdateLauncherInput(RobotControlData &controlData)
             controlData.launcherInput.indexerSpeeds = -0.8;
             controlData.launcherInput.autoAim = true;
             m_statusLauncher=true;
+            std::cout << "should be running" << std::endl;
         }
         else //if the launcher is currently enabled, disable it
         {
@@ -171,11 +173,11 @@ void ControllerInterface::UpdateLauncherInput(RobotControlData &controlData)
     }
     if(m_copilot.GetYButtonPressed()) //hood angle down
     {
-        controlData.launcherInput.launcherRPM -= 100;
+        controlData.launcherInput.launcherAngle -= 10;
     }
     if(m_copilot.GetAButtonPressed()) //hood angle up
     {
-        controlData.launcherInput.launcherRPM += 100;
+        controlData.launcherInput.launcherAngle += 10;
     }
     frc::SmartDashboard::PutNumber("Goal Launcher RPM", controlData.launcherInput.launcherRPM);
 

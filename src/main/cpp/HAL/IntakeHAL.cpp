@@ -2,7 +2,7 @@
 #include <frc/smartdashboard/SmartDashboard.h>
 void IntakeHAL::RunIntake(int direction)
 {
-    m_rollerMotor->Set(direction * ratbot::Intake::INTAKE_ROLLER_SPEED);
+    m_rollerMotor.Set(direction * ratbot::Intake::INTAKE_ROLLER_SPEED);
 }
 void IntakeHAL::MoveIntake(int direction)
 {

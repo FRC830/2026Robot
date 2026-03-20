@@ -7,9 +7,10 @@ void LauncherManager::HandleInput(RobotControlData &robotControlData){
         m_launcherRPM = 0;
     }
     else{
-        m_launcherAngle = robotControlData.launcherInput.launcherAngle;
         m_launcherRPM = robotControlData.launcherInput.launcherRPM; //configure max speed
     }
+    m_launcherAngle = robotControlData.launcherInput.launcherAngle;
+
     
     m_Launcher.SetRPM(m_launcherRPM);
     m_Launcher.SetAngle(m_launcherAngle);
