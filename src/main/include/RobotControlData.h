@@ -45,6 +45,15 @@ struct IntakeInput
     int intakeDirection; //1 is in, -1 is out, 0 is stop
 };
 
+struct States
+{
+    bool Launching;
+    bool Passing;
+    bool Intaking;
+    bool Jam;
+    bool Defense;
+};
+
 struct RobotControlData {
     SwerveInput swerveInput;
     ResetNavx resetNavx;
@@ -53,6 +62,7 @@ struct RobotControlData {
     SpindexerInput spindexerInput;
     SpindexerOutput spindexerOutput;
     IntakeInput intakeInput;
+    States states;
 };
 
 

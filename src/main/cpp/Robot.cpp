@@ -95,6 +95,7 @@ void Robot::AutonomousExit() {}
 
 void Robot::TeleopInit() {
   
+  _controller_interface.ResetState(_robot_control_data);
   m_launcherManager.ResetState();
   m_intake.ResetState();
   m_spindexer.ResetState(_robot_control_data);
