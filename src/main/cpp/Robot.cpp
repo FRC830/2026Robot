@@ -9,11 +9,15 @@
 #include <frc/smartdashboard/SmartDashboard.h>
 #include <frc/DriverStation.h>
 #include "MechanismConfig.h"
+#include "ConfigManager.h"
 #include <frc/geometry/Pose2d.h>
 //#include <pathplanner/lib/auto/NamedCommands.h>
 
 
 Robot::Robot() {
+  // Initialize configuration system FIRST
+  ratbot::ConfigManager::GetInstance().Initialize();
+  
   m_cam = std::make_shared<PhotonVisionCamera>("cam1", ratbot::VisionConfig::ROBOT_TO_CAMERA);
 
   SwerveInit();
@@ -30,6 +34,10 @@ Robot::Robot() {
 void Robot::RobotPeriodic() {
   PrintSwerveInfo();
   m_cam->PrintVisionInfo();
+  
+  // Optional: reload config values for live tuning via Shuffleboard
+  // Uncomment the following line to enable live tuning (adds slight overhead each loop)
+  // ratbot::ConfigManager::GetInstance().Reload();
 }
 
 void Robot::DisabledInit() {}

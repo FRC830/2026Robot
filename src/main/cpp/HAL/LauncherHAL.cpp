@@ -2,19 +2,24 @@
 #include <rev/config/SparkMaxConfig.h>
 #include "ratpack/SparkMaxDebugMacro.h"
 #include "MechanismConfig.h"
+#include "ConfigManager.h"
 #include <math.h>
 
 Launcher::Launcher()
 {
+    // Get configuration from ConfigManager
+    auto& config = ratbot::ConfigManager::GetInstance();
+    
     // Additional initialization if needed
     ctre::phoenix6::configs::TalonFXConfiguration flywheel_config{};
 
+    // Use ConfigManager values instead of hardcoded constants
     ctre::phoenix6::configs::Slot0Configs &slot0Configs = flywheel_config.Slot0
-        .WithKP(ratbot::LauncherConfig::Flywheel::P)
-        .WithKI(ratbot::LauncherConfig::Flywheel::I)
-        .WithKD(ratbot::LauncherConfig::Flywheel::D)
-        .WithKV(ratbot::LauncherConfig::Flywheel::kV)
-        .WithKA(ratbot::LauncherConfig::Flywheel::kA);
+        .WithKP(config.launcher.flywheel_p)
+        .WithKI(config.launcher.flywheel_i)
+        .WithKD(config.launcher.flywheel_d)
+        .WithKV(config.launcher.flywheel_kv)
+        .WithKA(config.launcher.flywheel_ka);
     ctre::phoenix6::configs::MotorOutputConfigs &arm_output_config = flywheel_config.MotorOutput
         .WithInverted(ratbot::LauncherConfig::Flywheel::INVERTED)
         .WithNeutralMode(ratbot::LauncherConfig::Flywheel::IDLE_MODE);
