@@ -1,26 +1,28 @@
-// #include <cmds/intake.h>
-// #include <MechanismConfig.h>
+#include <cmds/intake.h>
+#include <MechanismConfig.h>
 
 
-// intake::intake(RobotControlData& data) : m_data(data)
-// {}
+intake::intake(RobotControlData& data) : m_data(data)
+{}
 
-// void intake::Initialize()
-// {
+void intake::Initialize()
+{
+    m_timer.Restart();
+}
 
-// }
+void intake::Execute()
+{
+    m_data.states.Intaking = true;
+    
+}
 
-// void launch::Execute()
-// {
+bool intake::IsFinished()
+{
+    return m_timer.Get().value() > 3.0;
+}
 
-// }
-
-// bool launch::IsFinished()
-// {
-//     return m_timer.Get().value() > 8.0;
-// }
-
-// void launch::End(bool interrupted)
-// {
-
-// }
+void intake::End(bool interrupted)
+{
+    m_data.states.Intaking = false;
+    m_data.intakeInput.intakeDirection = 0;
+}
