@@ -10,10 +10,11 @@ Launcher::Launcher()
     ctre::phoenix6::configs::TalonFXConfiguration flywheel_config{};
 
     ctre::phoenix6::configs::Slot0Configs &slot0Configs = flywheel_config.Slot0
-        .WithKP(ratbot::LauncherConfig::Flywheel::P)
-        .WithKI(ratbot::LauncherConfig::Flywheel::I)
-        .WithKD(ratbot::LauncherConfig::Flywheel::D)
-        .WithKG(ratbot::LauncherConfig::Flywheel::F);
+        .WithKP(0.75)
+        .WithKI(0)
+        .WithKD(0)
+        .WithKV(0.113)
+        .WithKA(0.11);
     ctre::phoenix6::configs::MotorOutputConfigs &arm_output_config = flywheel_config.MotorOutput
         .WithInverted(ratbot::LauncherConfig::Flywheel::INVERTED)
         .WithNeutralMode(ratbot::LauncherConfig::Flywheel::IDLE_MODE);
@@ -45,8 +46,8 @@ void Launcher::SetLauncherSpeeds(double rightSpeed, double leftSpeed)
         return;
     } // Don't use PID to go to 0 to avoid stripping belts
     // Don't use PID to go to 0 to avoid stripping belts
-    m_rightLauncher->SetControl(ctre::phoenix6::controls::VelocityDutyCycle(units::angular_velocity::turns_per_second_t(rightSpeed/60.0)));
-    m_leftLauncher->SetControl(ctre::phoenix6::controls::VelocityDutyCycle(units::angular_velocity::turns_per_second_t(leftSpeed/60.0)));
+    m_leftLauncher->SetControl(ctre::phoenix6::controls::VelocityVoltage{(units::angular_velocity::turns_per_second_t (leftSpeed/60.0))}.WithFeedForward(units::voltage::volt_t (0.23)));
+    m_rightLauncher->SetControl(ctre::phoenix6::controls::Follower{m_leftLauncher->GetDeviceID(), ctre::phoenix6::signals::MotorAlignmentValue::Opposed});
     // m_rightLauncher->Set(-1);
     // m_leftLauncher->Set(1);
 
@@ -56,8 +57,7 @@ void Launcher::SetIndexerSpeeds(double indexerSpeed)
 {
     // if (AreFlywheelsAtDesiredSpeed())
     // {     
-        m_Indexer->GetClosedLoopController().SetReference(indexerSpeed, rev::spark::SparkLowLevel::ControlType::kDutyCycle);
-
+        m_Indexer->Set(indexerSpeed);
     // } else
     // {
     //     m_Indexer->GetClosedLoopController().SetReference(0, rev::spark::SparkLowLevel::ControlType::kDutyCycle);
