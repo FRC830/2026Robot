@@ -26,7 +26,7 @@ Launcher::Launcher()
         .WithNeutralMode(ratbot::LauncherConfig::Flywheel::IDLE_MODE);
 
     ctre::phoenix6::configs::CurrentLimitsConfigs currentLimits{};
-    currentLimits.StatorCurrentLimit = units::ampere_t{30.0}; // Set limit in Amperes
+    currentLimits.StatorCurrentLimit = units::ampere_t{40.0}; // Set limit in Amperes
     currentLimits.StatorCurrentLimitEnable = true; // Enable the limit
 
     
