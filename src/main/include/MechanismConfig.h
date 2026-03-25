@@ -38,7 +38,8 @@ namespace ratbot
             const double P = 0.75;
             const double I = 0.0;
             const double D = 0.0;
-            const double kV = 0.12;
+            const double kVleft = 0.113;
+            const double kVright = 0.117;
             const double kA = 0.11;
             const double VEL_CONV_FACTOR = 1.0;
             const double CURRENT_LIM = 30.0;

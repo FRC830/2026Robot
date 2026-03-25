@@ -19,7 +19,7 @@ Launcher::Launcher()
         .WithKP(ratbot::LauncherConfig::Flywheel::P)
         .WithKI(ratbot::LauncherConfig::Flywheel::I)
         .WithKD(ratbot::LauncherConfig::Flywheel::D)
-        .WithKV(0.113)
+        .WithKV(ratbot::LauncherConfig::Flywheel::kVleft)
         .WithKA(ratbot::LauncherConfig::Flywheel::kA);
     ctre::phoenix6::configs::MotorOutputConfigs &flywheel_output_config = flywheel_config.MotorOutput
         .WithInverted(ratbot::LauncherConfig::Flywheel::INVERTED)
@@ -49,7 +49,7 @@ Launcher::Launcher()
         .WithKP(ratbot::LauncherConfig::Flywheel::P)
         .WithKI(ratbot::LauncherConfig::Flywheel::I)
         .WithKD(ratbot::LauncherConfig::Flywheel::D)
-        .WithKV(0.117)
+        .WithKV(ratbot::LauncherConfig::Flywheel::kVright)
         .WithKA(ratbot::LauncherConfig::Flywheel::kA);
     ctre::phoenix6::configs::MotorOutputConfigs &flywheel_output_config2 = flywheel_config2.MotorOutput
         .WithInverted(false)
@@ -70,7 +70,6 @@ Launcher::Launcher()
 
     }
 
-    frc::SmartDashboard::PutNumber("velocityFF2", 0.23);
 
 
 
@@ -92,7 +91,7 @@ void Launcher::SetLauncherSpeeds(double rightSpeed, double leftSpeed)
         return;
     } // Don't use PID to go to 0 to avoid stripping belts
 
-    units::voltage::volt_t velocityFeedforward = units::voltage::volt_t{frc::SmartDashboard::GetNumber("velocityFF2", 0.0)};
+    units::voltage::volt_t velocityFeedforward = units::voltage::volt_t(0.23);
     // m_leftLauncher->SetControl(ctre::phoenix6::controls::VelocityDutyCycle(units::angular_velocity::turns_per_second_t(leftSpeed/60.0)));
     m_leftLauncher->SetControl(ctre::phoenix6::controls::VelocityVoltage{(units::angular_velocity::turns_per_second_t (leftSpeed/60.0))}.WithFeedForward(velocityFeedforward));
     m_rightLauncher->SetControl(ctre::phoenix6::controls::VelocityVoltage{(units::angular_velocity::turns_per_second_t (rightSpeed/60.0))}.WithFeedForward(velocityFeedforward));
