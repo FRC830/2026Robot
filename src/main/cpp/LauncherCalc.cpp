@@ -34,14 +34,5 @@ LauncherCalc::LauncherCalc()
 
 double LauncherCalc::Calculate(double distance, frc::Pose2d current, double velocityX, double velocityY)
 {
-    
-
-
-    
-    //aimAngle = atan2(targetPosition.Y().value()-lookaheadPose.Y().value(), targetPosition.X().value()-lookaheadPose.X().value());
-
-    //hoodAngle = hoodAngleMap.operator[](distance);
-
-
     return flywheelRPMMap.operator[](distance);
 }
