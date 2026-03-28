@@ -41,7 +41,6 @@ class SmartPlanner{
         double distToHub;
         frc::Translation2d targetPosition;
         LauncherCalc m_launcherCalc;
-        LauncherParam m_launchParam;
         
 
 

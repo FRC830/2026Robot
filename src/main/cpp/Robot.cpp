@@ -15,7 +15,7 @@
 
 
 Robot::Robot() {
-  m_cam = std::make_shared<PhotonVisionCamera>("cam1", ratbot::VisionConfig::ROBOT_TO_CAMERA);
+  m_cam = std::make_shared<PhotonVisionCamera>("cam2", ratbot::VisionConfig::ROBOT_TO_CAMERA);
 
   SwerveInit();
   pathplanner::NamedCommands::registerCommand("launch", std::make_shared<launch>(_robot_control_data));
@@ -32,6 +32,14 @@ Robot::Robot() {
 void Robot::RobotPeriodic() {
   PrintSwerveInfo();
   m_cam->PrintVisionInfo();
+  auto camPose = m_cam->GetPose();
+
+  if (camPose.has_value())
+  {
+    auto poseThing = camPose;
+    _swerve.UpdatePoseWithVision(poseThing->estimatedPose.ToPose2d(), units::time::second_t(poseThing->timestamp));
+   // std::cout << camPose.value().estimatedPose.Rotation().Angle().value() * 180/3.14 << std::endl;
+  }
 }
 
 void Robot::DisabledInit() {}
