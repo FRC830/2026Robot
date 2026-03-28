@@ -4,15 +4,32 @@
 LauncherCalc::LauncherCalc()
 {
     //just placeholder map values for now, change later please
-    hoodAngleMap.insert(1,1);
-    hoodAngleMap.insert(2,2);
-    hoodAngleMap.insert(3,3);
-    flywheelRPMMap.insert(1, 1);
-    flywheelRPMMap.insert(2, 2);
-    flywheelRPMMap.insert(3, 3);
-    timeOfFlightMap.insert(1, 1);
-    timeOfFlightMap.insert(2, 2);
-    timeOfFlightMap.insert(3, 3);
+    //Distance (Bumper to Hub) - RPM
+
+// 12 in - 2700
+
+// 25in-3000
+
+// 40in-3200
+
+// 52in-3300
+
+// 64in-3500
+
+// 77 in - 4000
+
+    // hoodAngleMap.insert(1,1);
+    // hoodAngleMap.insert(2,2);
+    // hoodAngleMap.insert(3,3);
+    flywheelRPMMap.insert(12, 2700); //what unit does it take for distance
+    flywheelRPMMap.insert(25, 3000);
+    flywheelRPMMap.insert(40, 3200);
+    flywheelRPMMap.insert(52, 3300);
+    flywheelRPMMap.insert(64, 3500);
+    flywheelRPMMap.insert(77, 4000);
+    // timeOfFlightMap.insert(1, 1);
+    // timeOfFlightMap.insert(2, 2);
+    // timeOfFlightMap.insert(3, 3);
 }
 
 LauncherParam LauncherCalc::Calculate(double distance, frc::Pose2d current, double velocityX, double velocityY)

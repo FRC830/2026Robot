@@ -95,7 +95,8 @@ void Robot::AutonomousPeriodic() {
 void Robot::AutonomousExit() {}
 
 void Robot::TeleopInit() {
-  
+  _robot_control_data.launcherInput.launcherRPM = -3000;
+
   _controller_interface.ResetState(_robot_control_data);
   m_launcherManager.ResetState();
   m_intake.ResetState();

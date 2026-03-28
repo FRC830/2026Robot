@@ -192,6 +192,5 @@ void ControllerInterface::ResetState(RobotControlData &controlData)
     controlData.states.Intaking = false;
     controlData.states.Jam = false;
     controlData.states.Defense = false;
-    controlData.launcherInput.launcherRPM = -3000;
 
 }
