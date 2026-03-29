@@ -41,7 +41,10 @@ class MoveToPose
         double m_vyCoeff;
         double m_vx;
         double m_vy;
-        double tempSpeed = 720;
+        double m_p =  9.0;
+        double m_d = 0.0;
+        double m_maxSpeeds = 60;
+
         units::degrees_per_second_t m_angularVelocity;
         units::degrees_per_second_t m_rotation;
         std::pair<units::feet_per_second_t, units::feet_per_second_t> m_translation;

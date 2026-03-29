@@ -10,7 +10,7 @@ PhotonVisionCamera::PhotonVisionCamera(std::string name, frc::Transform3d robotT
                                                                     robotToCamera);
 
     m_poseEstimator->SetMultiTagFallbackStrategy(photon::PoseStrategy::LOWEST_AMBIGUITY);
-
+    
     frc::SmartDashboard::PutData("vision_pose", &m_field);
 }
 

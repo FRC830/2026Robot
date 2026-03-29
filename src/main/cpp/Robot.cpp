@@ -12,7 +12,9 @@
 #include <frc/geometry/Pose2d.h>
 #include <pathplanner/lib/auto/NamedCommands.h>
 #include <cmds/launch.h>
-
+#include <wpinet/WebServer.h>
+#include <frc/Filesystem.h>
+#include <cameraserver/CameraServer.h>
 
 Robot::Robot() {
   m_cam = std::make_shared<PhotonVisionCamera>("cam1", ratbot::VisionConfig::ROBOT_TO_CAMERA);
@@ -25,7 +27,8 @@ Robot::Robot() {
   frc::SmartDashboard::PutData("Auto Chooser", &m_autoChooser);
 
   _swerve.SetShouldSwerveLock(true); 
-
+  frc::CameraServer StartAutomaticCapture();
+  wpi::WebServer::GetInstance().Start(5800, frc::filesystem::GetDeployDirectory());
 }
 
 

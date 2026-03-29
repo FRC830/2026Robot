@@ -9,9 +9,14 @@
 MoveToPose::MoveToPose()
 {
     m_thetaPID.EnableContinuousInput(-180,180);
-    frc::SmartDashboard::PutNumber("D_thing", 0.0);
-    frc::SmartDashboard::PutNumber("K_p", 9.0);
-    frc::SmartDashboard::PutNumber("max speeds", 60);
+    frc::SmartDashboard::PutNumber("D_thing", m_d);
+    frc::SmartDashboard::PutNumber("K_p", m_p);
+    frc::SmartDashboard::PutNumber("max speeds", m_maxSpeeds);
+
+
+    m_thetaPID.SetP(m_p);
+    m_thetaPID.SetD(m_d);
+
     m_thetaPID.SetTolerance(kThetaTolerance.value());
 }
 
@@ -48,7 +53,7 @@ units::degrees_per_second_t MoveToPose::angularRotation(double currentDeg,double
 
     double omega = m_thetaPID.Calculate( currentDeg,desiredDeg);
     // omega = std::clamp(omega,-ratbot::MoveToPoseConfig::MAX_TURN_SPEED_DEG_PER_SEC,ratbot::MoveToPoseConfig::MAX_TURN_SPEED_DEG_PER_SEC);
-    double speed = frc::SmartDashboard::GetValue("max speeds").GetDouble();
+    double speed = m_maxSpeeds;
 
     omega = std::clamp(omega,-speed,speed);
     m_thetaPID.SetSetpoint(desiredDeg);
@@ -59,14 +64,7 @@ units::degrees_per_second_t MoveToPose::angularRotation(double currentDeg,double
     }
 
 
-    double p = double(frc::SmartDashboard::GetValue("K_p").GetDouble());
-    double d = double(frc::SmartDashboard::GetValue("D_thing").GetDouble());
-    m_thetaPID.SetP(p);
-    m_thetaPID.SetD(d);
-
-
-
-
+    
 
     return units::degrees_per_second_t{omega};
 }
