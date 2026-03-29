@@ -60,11 +60,8 @@ units::degrees_per_second_t MoveToPose::angularRotation(double currentDeg,double
 
     if (m_thetaPID.AtSetpoint()) 
     {
-        omega = 0.0;    
+        omega = 0.0;
     }
-
-
-    
 
     return units::degrees_per_second_t{omega};
 }
@@ -179,5 +176,5 @@ bool MoveToPose::isDone()
 
 bool MoveToPose::turnIsDone()
 {
-    return m_MoveAngleToState == 3;
+    return m_thetaPID.AtSetpoint();
 }

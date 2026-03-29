@@ -43,7 +43,7 @@ class MoveToPose
         double m_vy;
         double m_p =  9.0;
         double m_d = 0.0;
-        double m_maxSpeeds = 60;
+        double m_maxSpeeds = 120;
 
         units::degrees_per_second_t m_angularVelocity;
         units::degrees_per_second_t m_rotation;

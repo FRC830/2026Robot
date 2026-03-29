@@ -22,10 +22,6 @@ void SmartPlanner::HandleInput(RobotControlData &data)
 void SmartPlanner::SmartPlan(RobotControlData &data)
 {
 
-
-
-
-
   auto swervePose = m_Swerve.GetPose();
   double x = swervePose.X().value();
   double y = swervePose.Y().value();
@@ -64,9 +60,10 @@ void SmartPlanner::SmartPlan(RobotControlData &data)
 
   // IMPORTANT DEBUG CODE
   // distance = 1.5;
-
-  data.launcherInput.launcherRPM = m_launcherCalc.Calculate(distance, swervePose, swerveX, swerveY); //rpm
-
+  if (m_moveToPose.isDone())
+  {  
+    data.launcherInput.launcherRPM = m_launcherCalc.Calculate(distance, swervePose, swerveX, swerveY); //rpm
+  }
   // std::cout << "rpm " << data.launcherInput.launcherRPM << std::endl;
   // std::cout << "angle " << data.launcherInput.launcherAngle << std::endl;
   // std::cout << "ind speed " << data.launcherInput.indexerSpeeds << std::endl;

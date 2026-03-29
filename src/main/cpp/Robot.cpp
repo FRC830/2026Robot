@@ -37,6 +37,7 @@ void Robot::RobotPeriodic() {
   m_cam->PrintVisionInfo();
   auto camPose = m_cam->GetPose();
 
+  
   if (camPose.has_value())
   {
     auto poseThing = camPose;
