@@ -21,18 +21,8 @@ void SmartPlanner::HandleInput(RobotControlData &data)
 #include <iostream>
 void SmartPlanner::SmartPlan(RobotControlData &data)
 {
-  auto camPose = m_Cam.GetPose();
 
-  if (camPose.has_value())
-  {
-    auto poseThing = camPose;
-    m_Swerve.UpdatePoseWithVision(poseThing->estimatedPose.ToPose2d(), units::time::second_t(poseThing->timestamp));
-   // std::cout << camPose.value().estimatedPose.Rotation().Angle().value() * 180/3.14 << std::endl;
-  }
-  else
-  {
-    //std::cout << "no pose" << std::endl;
-  }
+
 
 
 
@@ -64,6 +54,9 @@ void SmartPlanner::SmartPlan(RobotControlData &data)
 
 
   double distance = targetPosition.Norm().value();
+
+  
+
   double idealSpeed = 0;
   
   double swerveX = m_Swerve.GetRobotRelativeSpeeds().vx();
@@ -72,10 +65,8 @@ void SmartPlanner::SmartPlan(RobotControlData &data)
   // IMPORTANT DEBUG CODE
   // distance = 1.5;
 
-  m_launchParam = m_launcherCalc.Calculate(distance, swervePose, swerveX, swerveY); //rpm
-  data.launcherInput.launcherRPM = -m_launchParam.flywheelRPM;
-  data.launcherInput.launcherAngle = m_launchParam.hoodAngle;
-  data.launcherInput.indexerSpeeds = -0.8;
+  data.launcherInput.launcherRPM = m_launcherCalc.Calculate(distance, swervePose, swerveX, swerveY); //rpm
+
   // std::cout << "rpm " << data.launcherInput.launcherRPM << std::endl;
   // std::cout << "angle " << data.launcherInput.launcherAngle << std::endl;
   // std::cout << "ind speed " << data.launcherInput.indexerSpeeds << std::endl;
