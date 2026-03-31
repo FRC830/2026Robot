@@ -25,7 +25,7 @@ class IntakeHAL
         double deadzone = 0.02;
         double m_zeroPos;
 
-        frc::Encoder encoder = frc::Encoder(1,2,false);
+        frc::Encoder encoder = frc::Encoder(0,1,false);
         // 	Encoder (int aChannel, int bChannel, bool reverseDirection=false, EncodingType encodingType=k4X)
 
 

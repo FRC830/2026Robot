@@ -14,10 +14,9 @@
 #include <cmds/launch.h>
 #include <wpinet/WebServer.h>
 #include <frc/Filesystem.h>
-#include <cameraserver/CameraServer.h>
 
 Robot::Robot() {
-  m_cam = std::make_shared<PhotonVisionCamera>("cam2", ratbot::VisionConfig::ROBOT_TO_CAMERA);
+  m_cam = std::make_shared<PhotonVisionCamera>("cam1", ratbot::VisionConfig::ROBOT_TO_CAMERA);
 
   SwerveInit();
   pathplanner::NamedCommands::registerCommand("launch", std::make_shared<launch>(_robot_control_data));
@@ -27,8 +26,6 @@ Robot::Robot() {
   frc::SmartDashboard::PutData("Auto Chooser", &m_autoChooser);
 
   _swerve.SetShouldSwerveLock(true); 
-  frc::CameraServer StartAutomaticCapture();
-  wpi::WebServer::GetInstance().Start(5800, frc::filesystem::GetDeployDirectory());
 }
 
 

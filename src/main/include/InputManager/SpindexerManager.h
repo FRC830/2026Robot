@@ -4,6 +4,7 @@
 #include "RobotControlData.h"
 #include <frc/DigitalInput.h>
 #include <MechanismConfig.h>
+#include <frc/Timer.h>
 
 class SpindexerManager
 {
@@ -15,8 +16,9 @@ class SpindexerManager
         void HandleInput(RobotControlData &robotControlData);
 
     private:
+        int state = 0;
         Spindexer m_Spindexer;
         double m_SpindexerRPM;
-
+        frc::Timer m_Timer;
         
 };

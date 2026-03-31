@@ -29,7 +29,7 @@ void IntakeHAL::SequenceDown()
 {
     if (encoder.Get() > ratbot::Intake::DOWN_LOCATION + deadzone)
     {
-        // MoveIntake(-1);
+        MoveIntake(-1);
     }
     else
     {
@@ -41,7 +41,7 @@ void IntakeHAL::SequenceStore()
 {
     if (encoder.Get() < ratbot::Intake::UP_LOCATION + deadzone)
     {
-        // MoveIntake(1);
+        MoveIntake(1);
     }
     else
     {
