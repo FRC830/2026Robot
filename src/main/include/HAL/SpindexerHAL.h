@@ -15,9 +15,9 @@ class Spindexer
         ~Spindexer() = default;
 
         void RunSpindexer(double speed);
-        double GetSpeed();
+        double Get();
 
     private:
         rev::spark::SparkMax m_SpindexerMotorA{SPINDEXER_A_CAN_ID, rev::spark::SparkMax::MotorType::kBrushless};
-        rev::spark::SparkMax m_SpindexerMotorB{SPINDEXER_B_CAN_ID, rev::spark::SparkMax::MotorType::kBrushless};
+       
 };

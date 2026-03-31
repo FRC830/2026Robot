@@ -3,10 +3,9 @@
 void Spindexer::RunSpindexer(double speed)
 {
     m_SpindexerMotorA.Set(speed);
-    m_SpindexerMotorB.Set(-speed);
 }
 
-double Spindexer::GetSpeed()
+double Spindexer::Get()
 {
     return m_SpindexerMotorA.Get();
 }

@@ -56,7 +56,7 @@ namespace ratbot
     }
     namespace Spindexer
     {
-        const double DEFAULT_SPEED = 0.6;
+        const double DEFAULT_SPEED = 0.8;
     }
 
 }
