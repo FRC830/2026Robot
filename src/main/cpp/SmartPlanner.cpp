@@ -62,7 +62,7 @@ void SmartPlanner::SmartPlan(RobotControlData &data)
   // distance = 1.5;
   if (m_moveToPose.isDone())
   {  
-    data.launcherInput.launcherRPM = m_launcherCalc.Calculate(distance, swervePose, swerveX, swerveY); //rpm
+    data.launcherInput.launcherRPM = m_launcherCalc.Calculate(distance - 0.4572, swervePose, swerveX, swerveY); //rpm
   }
   // std::cout << "rpm " << data.launcherInput.launcherRPM << std::endl;
   // std::cout << "angle " << data.launcherInput.launcherAngle << std::endl;
