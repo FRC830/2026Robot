@@ -14,11 +14,13 @@
 #include <cmds/launch.h>
 #include <wpinet/WebServer.h>
 #include <frc/Filesystem.h>
+#include "cmds/intake.h"
 
 Robot::Robot() {
   m_cam = std::make_shared<PhotonVisionCamera>("cam1", ratbot::VisionConfig::ROBOT_TO_CAMERA);
 
   SwerveInit();
+  pathplanner::NamedCommands::registerCommand("intake", std::make_shared<intake>(_robot_control_data));
   pathplanner::NamedCommands::registerCommand("launch", std::make_shared<launch>(_robot_control_data));
   m_smartPlanner = std::make_shared<SmartPlanner>(*m_cam, _swerve);
   

@@ -42,6 +42,7 @@ struct SpindexerOutput
 struct IntakeInput
 {
     bool intakeState; //true means up
+    bool shakeIntake;
     int intakeDirection; //1 is in, -1 is out, 0 is stop
 };
 

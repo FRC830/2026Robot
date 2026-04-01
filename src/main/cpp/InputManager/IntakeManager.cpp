@@ -11,6 +11,7 @@ void IntakeManager::HandleInput(RobotControlData &robotControlData)
     {
         m_intakeHAL.SequenceDown();
     }
+
     m_intakeHAL.RunIntake(robotControlData.intakeInput.intakeDirection);
     frc::SmartDashboard::PutNumber("IntakeAngle", m_intakeHAL.GetIntakeAngle());
 }
@@ -22,14 +23,14 @@ void IntakeManager::Shake(RobotControlData &robotControlData)
         {
             m_Timer.Reset();
             m_Timer.Start();
-            switchCaseState = 1;
+            switchCaseState++;
             break;
         }
         case 1:
         {
-            m_intakeHAL.SequenceDown();
-            if(m_Timer.Get() > (units::time::second_t) 1) {
-                switchCaseState = 2;
+            m_intakeHAL.SequenceStore();
+            if(m_Timer.Get() > (units::time::second_t) 4) {
+                switchCaseState++;
                 break;
             }
         }
@@ -37,16 +38,13 @@ void IntakeManager::Shake(RobotControlData &robotControlData)
         {
             m_Timer.Reset();
             m_Timer.Start();
-            switchCaseState = 3;
+            switchCaseState++;
             break;
         }
         case 3:
         {
-            m_intakeHAL.SequenceStore();
-            if(m_Timer.Get() > (units::time::second_t) 1) {
-                switchCaseState = 0;
-                break;
-            }
+            m_intakeHAL.SequenceDown();
+            break;
         }
         default: {
             break;

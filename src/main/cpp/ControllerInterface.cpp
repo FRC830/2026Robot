@@ -52,6 +52,8 @@ void ControllerInterface::UpdateStates(RobotControlData &controlData)
         controlData.states.Launching = false; // Ensure Launching is false when Passing is toggled
         controlData.states.Defense = false; // Ensure Defense is false when Intaking is toggled
         state = (controlData.states.Jam) ? "Jam" : "No State";
+        // controlData.intakeInput.shakeIntake = !controlData.intakeInput.shakeIntake;
+        
     }
      else if (m_copilot.GetXButtonPressed()) // Intaking
     {
@@ -99,18 +101,22 @@ void ControllerInterface::UpdateIntakeInput(RobotControlData &controlData)
 { 
     if (controlData.states.Passing || controlData.states.Launching || controlData.states.Intaking) // on if launching or passing or intaking
     {
-        // controlData.intakeInput.intakeState = false; //down
+        controlData.intakeInput.intakeState = false; //down
         controlData.intakeInput.intakeDirection = 1; //in
+        controlData.intakeInput.shakeIntake = false;
     } else if (controlData.states.Jam || (m_copilot.GetRightY() < -0.1)) //jam or manual outtake
     {
-        controlData.intakeInput.intakeDirection = -1; //out
+        //controlData.intakeInput.intakeDirection = 1; //in
+        controlData.intakeInput.shakeIntake = true;
     } else if (controlData.states.Defense) //Defense
     {
-        // controlData.intakeInput.intakeState = true; //up
+        controlData.intakeInput.intakeState = true; //up
         controlData.intakeInput.intakeDirection = 0; //stop
+        controlData.intakeInput.shakeIntake = false;
     } else
     {
         controlData.intakeInput.intakeDirection = 0; //stop
+        controlData.intakeInput.shakeIntake = false;
     }
     frc::SmartDashboard::PutBoolean("Intake state", controlData.intakeInput.intakeState);
     frc::SmartDashboard::PutNumber("Intake direction", controlData.intakeInput.intakeDirection);
@@ -192,5 +198,6 @@ void ControllerInterface::ResetState(RobotControlData &controlData)
     controlData.states.Intaking = false;
     controlData.states.Jam = false;
     controlData.states.Defense = false;
+    controlData.intakeInput.shakeIntake = false;
 
 }

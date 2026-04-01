@@ -14,7 +14,7 @@ namespace ratbot
     const double VOLTAGE_COMPENSATION = 10.5f;
     namespace VisionConfig
     {
-        constexpr frc::Transform3d ROBOT_TO_CAMERA = frc::Transform3d{frc::Translation3d(13.5_in, 4_in, 6_in), frc::Rotation3d(0_rad, 28_deg, 0_rad)};
+        constexpr frc::Transform3d ROBOT_TO_CAMERA = frc::Transform3d{frc::Translation3d(15_in, -4_in, 6_in), frc::Rotation3d(0_rad, 28_deg, 0_rad)};
     }
     namespace MoveToPoseConfig
     {
@@ -27,9 +27,9 @@ namespace ratbot
     namespace Intake
     {
         const double INTAKE_ROLLER_SPEED = 0.8;
-        const double INTAKE_ANGLE_SPEED = 0.3;
+        const double INTAKE_ANGLE_SPEED = 0.5;
         const double UP_LOCATION = 0.0;
-        const double DOWN_LOCATION = -527;
+        const double DOWN_LOCATION = 527;
     }
     namespace LauncherConfig
     {

@@ -18,11 +18,10 @@ void intake::Execute()
 
 bool intake::IsFinished()
 {
-    return m_timer.Get().value() > 3.0;
+    return m_timer.Get().value() > 0.3;
 }
 
 void intake::End(bool interrupted)
 {
-    m_data.states.Intaking = false;
-    m_data.intakeInput.intakeDirection = 0;
+  m_data.intakeInput.intakeDirection = 1;
 }
