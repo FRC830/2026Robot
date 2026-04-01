@@ -11,7 +11,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "NeutralLeft"
+                  "pathName": "NeutralRight"
                 }
               },
               {
@@ -26,13 +26,13 @@
         {
           "type": "path",
           "data": {
-            "pathName": "GoBackL"
+            "pathName": "GoBackR"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "toHubfTrnech"
+            "pathName": "toHubfTrenchR"
           }
         },
         {
