@@ -32,6 +32,6 @@ bool launch::IsFinished()
 void launch::End(bool interrupted)
 {
 
-    m_data.launcherInput.disableLauncher = true; //disable launcher
-    m_data.launcherInput.states.Launching = false;
+    m_data.states.Launching = false;
+    m_data.states.Intaking = true;
 }
