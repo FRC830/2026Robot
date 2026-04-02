@@ -12,11 +12,11 @@ void intake::Initialize()
 
 void intake::Execute()
 {
-    controlData.states.Intaking = true;
-    controlData.states.Passing = false; // Ensure Passing is false when Launching is toggled
-    controlData.states.Jam = false; // Ensure Jam is false when Launching is toggled
-    controlData.states.Launching = false; // Ensure Launching is false when Passing is toggled
-    controlData.states.Defense = false; // Ensure Defense is false when Intaking is toggled
+    m_data.states.Intaking = true;
+    m_data.states.Passing = false; // Ensure Passing is false when Launching is toggled
+    m_data.states.Jam = false; // Ensure Jam is false when Launching is toggled
+    m_data.states.Launching = false; // Ensure Launching is false when Passing is toggled
+    m_data.states.Defense = false; // Ensure Defense is false when Intaking is toggled
 }
 
 bool intake::IsFinished()
