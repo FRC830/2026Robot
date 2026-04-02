@@ -12,8 +12,11 @@ void intake::Initialize()
 
 void intake::Execute()
 {
-    m_data.intakeInput.intakeDirection = 1.0;
-    m_data.intakeInput.intakeState = false;
+    controlData.states.Intaking = true;
+    controlData.states.Passing = false; // Ensure Passing is false when Launching is toggled
+    controlData.states.Jam = false; // Ensure Jam is false when Launching is toggled
+    controlData.states.Launching = false; // Ensure Launching is false when Passing is toggled
+    controlData.states.Defense = false; // Ensure Defense is false when Intaking is toggled
 }
 
 bool intake::IsFinished()
