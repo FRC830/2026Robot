@@ -7,17 +7,17 @@ void LauncherManager::HandleInput(RobotControlData &robotControlData){
         m_launcherRPM = 0;
     }
     else{
-        m_launcherAngle = robotControlData.launcherInput.launcherAngle;
         m_launcherRPM = robotControlData.launcherInput.launcherRPM; //configure max speed
     }
-    
+    m_launcherAngle = robotControlData.launcherInput.launcherAngle;
+
     m_Launcher.SetRPM(m_launcherRPM);
     m_Launcher.SetAngle(m_launcherAngle);
 
     robotControlData.launcherOutput.leftLauncherRPM = m_Launcher.GetLeftLauncherRPM();
     robotControlData.launcherOutput.rightLauncherRPM = m_Launcher.GetRightLauncherRPM();
     robotControlData.launcherOutput.launcherAtSpeed = m_Launcher.AreFlywheelsAtDesiredSpeed();
-if (robotControlData.launcherOutput.launcherAtSpeed)
+    if (robotControlData.launcherOutput.launcherAtSpeed)
     {
         m_Launcher.SetIndexerSpeeds(robotControlData.launcherInput.indexerSpeeds);
     }
@@ -29,6 +29,7 @@ if (robotControlData.launcherOutput.launcherAtSpeed)
     frc::SmartDashboard::PutNumber("LeftLauncherRPM",m_Launcher.GetLeftLauncherRPM());
     frc::SmartDashboard::PutNumber("RightLauncherRPM",m_Launcher.GetRightLauncherRPM());
     frc::SmartDashboard::PutNumber("LauncherAngle",m_Launcher.GetAngle());
+    frc::SmartDashboard::PutNumber("goal angle",robotControlData.launcherInput.launcherAngle);
     
 }
 
@@ -40,5 +41,5 @@ void LauncherManager::ResetState(){
 LauncherManager::LauncherManager()
 {
     m_launcherRPM = 0;
-
+    m_launcherAngle = 0;
 }

@@ -71,7 +71,7 @@ Launcher::Launcher()
     }
 
 
-
+    
 
 
 }
@@ -127,7 +127,7 @@ double Launcher::GetLeftLauncherRPM()
 
 double Launcher::GetAngle()
 {
-    return m_verticalServo1.Get();
+    return m_servo.GetAngle();
 }
 bool Launcher::AreFlywheelsAtDesiredSpeed()
 {
@@ -136,7 +136,8 @@ bool Launcher::AreFlywheelsAtDesiredSpeed()
 
 void Launcher::SetAngle(double angle)
 {
-    // m_verticalServo1.SetPosition(angle/180);
+    // m_servo.SetAngle(angle);
+    
 } 
 
 void Launcher::SetRPM(double wheel_rpm)

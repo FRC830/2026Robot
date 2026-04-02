@@ -103,20 +103,20 @@ void ControllerInterface::UpdateIntakeInput(RobotControlData &controlData)
     {
         controlData.intakeInput.intakeState = false; //down
         controlData.intakeInput.intakeDirection = 1; //in
-        controlData.intakeInput.shakeIntake = false;
+        // controlData.intakeInput.shakeIntake = false
     } else if (controlData.states.Jam || (m_copilot.GetRightY() < -0.1)) //jam or manual outtake
     {
-        //controlData.intakeInput.intakeDirection = 1; //in
-        controlData.intakeInput.shakeIntake = true;
+        controlData.intakeInput.intakeDirection = 1; //in
+        // controlData.intakeInput.shakeIntake = true;
     } else if (controlData.states.Defense) //Defense
     {
         controlData.intakeInput.intakeState = true; //up
         controlData.intakeInput.intakeDirection = 0; //stop
-        controlData.intakeInput.shakeIntake = false;
+        // controlData.intakeInput.shakeIntake = false;
     } else
     {
         controlData.intakeInput.intakeDirection = 0; //stop
-        controlData.intakeInput.shakeIntake = false;
+        // controlData.intakeInput.shakeIntake = false;
     }
     frc::SmartDashboard::PutBoolean("Intake state", controlData.intakeInput.intakeState);
     frc::SmartDashboard::PutNumber("Intake direction", controlData.intakeInput.intakeDirection);
@@ -126,6 +126,15 @@ void ControllerInterface::UpdateIntakeInput(RobotControlData &controlData)
 void ControllerInterface::UpdateLauncherInput(RobotControlData &controlData)
 { 
     controlData.launcherInput.autoAim = false;
+        if(m_test.GetYButtonPressed()) // hood up
+        {
+            
+            controlData.launcherInput.launcherAngle += 5;  
+        }
+        if(m_test.GetAButtonPressed()) // hood down
+        {
+            controlData.launcherInput.launcherAngle -= 5;
+        }
     if (controlData.states.Launching)
     {
         controlData.launcherInput.disableLauncher = false; //enable launcher and set to default values
@@ -139,12 +148,13 @@ void ControllerInterface::UpdateLauncherInput(RobotControlData &controlData)
 
         if(m_copilot.GetYButtonPressed()) // launcher RPM up
         {
-            controlData.launcherInput.launcherRPM -= 100;
+            controlData.launcherInput.launcherRPM -= 100;  
         }
         if(m_copilot.GetAButtonPressed()) // launch RPM down
         {
             controlData.launcherInput.launcherRPM += 100;
         }
+
 
     } else if (controlData.states.Jam)
     {

@@ -12,8 +12,8 @@ void intake::Initialize()
 
 void intake::Execute()
 {
-    m_data.states.Intaking = true;
-    
+    m_data.intakeInput.intakeDirection = 1.0;
+    m_data.intakeInput.intakeState = false;
 }
 
 bool intake::IsFinished()
@@ -23,5 +23,5 @@ bool intake::IsFinished()
 
 void intake::End(bool interrupted)
 {
-  m_data.intakeInput.intakeDirection = 1;
+
 }

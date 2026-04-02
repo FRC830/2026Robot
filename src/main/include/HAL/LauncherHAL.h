@@ -37,8 +37,7 @@ class Launcher
 
 
         
-        frc::Servo m_verticalServo1{SERVO_ID1};
-        frc::Servo m_verticalServo2{SERVO_ID2};
+        frc::Servo m_servo{0};
     
 
 

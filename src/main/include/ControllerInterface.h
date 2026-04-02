@@ -22,6 +22,7 @@ class ControllerInterface
 
         frc::XboxController m_pilot{0};
         frc::XboxController m_copilot{1};
+        frc::XboxController m_test{2};
         frc::Timer m_timer;
         std::string state = "Starting up";
         int m_vibrateControllerState = 0;
