@@ -29,12 +29,16 @@ void IntakeHAL::SequenceDown()
 {
     if (encoder.Get() < ratbot::Intake::DOWN_LOCATION + deadzone)
     {
-        MoveIntake(-0.3);
+        MoveIntake(-0.1);
+
+        if (encoder.Get() > 250)
+        {
+            MoveIntake(0.0);
+        }
+
     }
-    else
-    {
-        MoveIntake(0);
-    }
+
+
 }
 
 void IntakeHAL::ToPosition(double pos)
@@ -42,7 +46,7 @@ void IntakeHAL::ToPosition(double pos)
     if(pos>encoder.Get()){
          if (encoder.Get() < ratbot::Intake::DOWN_LOCATION + deadzone)
         {
-            MoveIntake(-0.3);
+            MoveIntake(-0.1);
         }
         else
         {
@@ -65,9 +69,13 @@ void IntakeHAL::ToPosition(double pos)
 
 void IntakeHAL::SequenceStore()
 {
+    if (encoder.Get() < 300)
+    {
+        MoveIntake(1.5);
+    }
     if (encoder.Get() > ratbot::Intake::UP_LOCATION + deadzone)
     {
-        MoveIntake(1);
+        MoveIntake(2.0);
     }
     else
     {

@@ -13,6 +13,7 @@ public:
     ~LauncherCalc() = default;
     
     double Calculate(double distance, frc::Pose2d current, double velocityX, double velocityY);
+    double CalcHood(double distance);
 
     // Return a pointer to the internal Launcher instance so other subsystems
     // can use the same hardware controller instead of creating their own.
@@ -21,6 +22,7 @@ public:
 private:
     wpi::interpolating_map<double, double> flywheelRPMMap;
 
+    wpi::interpolating_map<double, double> hoodMap;
 
 
     

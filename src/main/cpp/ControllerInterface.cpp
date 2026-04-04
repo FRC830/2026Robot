@@ -91,10 +91,20 @@ void ControllerInterface::UpdatePigeonInput(RobotControlData &controlData)
 
 void ControllerInterface::UpdateSwerveInput(RobotControlData &controlData)
 {  
+    if (m_pilot.GetRightTriggerAxis() > 0.2)
+    {
+        controlData.swerveInput.xTranslation = -m_pilot.GetLeftY() * 0.5;
+        controlData.swerveInput.yTranslation = -m_pilot.GetLeftX() * 0.5;
+        controlData.swerveInput.rotation = -m_pilot.GetRightX() * 0.5;  
+    }
+    else
+    {
+        controlData.swerveInput.xTranslation = -m_pilot.GetLeftY() * 2;
+        controlData.swerveInput.yTranslation = -m_pilot.GetLeftX() * 2;
+        controlData.swerveInput.rotation = -m_pilot.GetRightX() * 2; 
+    }
     
-    controlData.swerveInput.xTranslation = -m_pilot.GetLeftY() * 2;
-    controlData.swerveInput.yTranslation = -m_pilot.GetLeftX() * 2;
-    controlData.swerveInput.rotation = -m_pilot.GetRightX() * 2;    
+       
 }
 
 void ControllerInterface::UpdateIntakeInput(RobotControlData &controlData)
@@ -103,20 +113,21 @@ void ControllerInterface::UpdateIntakeInput(RobotControlData &controlData)
     {
         controlData.intakeInput.intakeState = false; //down
         controlData.intakeInput.intakeDirection = 1; //in
-        // controlData.intakeInput.shakeIntake = false
+        controlData.intakeInput.shakeIntake = false;
     } else if (controlData.states.Jam || (m_copilot.GetRightY() < -0.1)) //jam or manual outtake
     {
-        controlData.intakeInput.intakeDirection = 1; //in
-        // controlData.intakeInput.shakeIntake = true;
+        controlData.intakeInput.intakeDirection = -1; //out
+        //controlData.intakeInput.shakeIntake = true;
+
     } else if (controlData.states.Defense) //Defense
     {
         controlData.intakeInput.intakeState = true; //up
-        controlData.intakeInput.intakeDirection = 0; //stop
-        // controlData.intakeInput.shakeIntake = false;
+        controlData.intakeInput.intakeDirection = 1; //stop
+        controlData.intakeInput.shakeIntake = false;
     } else
     {
         controlData.intakeInput.intakeDirection = 0; //stop
-        // controlData.intakeInput.shakeIntake = false;
+        controlData.intakeInput.shakeIntake = false;
     }
     frc::SmartDashboard::PutBoolean("Intake state", controlData.intakeInput.intakeState);
     frc::SmartDashboard::PutNumber("Intake direction", controlData.intakeInput.intakeDirection);

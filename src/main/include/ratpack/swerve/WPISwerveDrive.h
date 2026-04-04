@@ -72,7 +72,7 @@ class WPISwerveDrive : public SwerveDrive
         // --------------------Absolute Encoder-----------------------
         const int FL_ABS_ENC_PORT = 3;
         const bool FL_ABS_ENC_INVERTED = false;
-        const frc::Rotation2d FL_ZERO_HEADING{units::degree_t{187.294f}};
+        const frc::Rotation2d FL_ZERO_HEADING{units::degree_t{193.44f}};
 
         ctre::phoenix6::hardware::CANcoder fl_abs_enc{FL_ABS_ENC_PORT};
 
@@ -93,13 +93,14 @@ class WPISwerveDrive : public SwerveDrive
         rev::spark::SparkClosedLoopController fl_drive_pid = fl_drive_mtr.GetClosedLoopController();
 
 
+        
         // ###########################################################
         // #                  Front Right Module                     #
         // ###########################################################
         // --------------------Absolute Encoder-----------------------
-        const int FR_ABS_ENC_PORT = 6;
+        const int FR_ABS_ENC_PORT = 23;
         const bool FR_ABS_ENC_INVERTED = false;
-        const frc::Rotation2d FR_ZERO_HEADING{units::degree_t{246.44f}};
+        const frc::Rotation2d FR_ZERO_HEADING{units::degree_t{183.69f}};
 
         ctre::phoenix6::hardware::CANcoder fr_abs_enc{FR_ABS_ENC_PORT};
 
@@ -126,7 +127,7 @@ class WPISwerveDrive : public SwerveDrive
         // --------------------Absolute Encoder-----------------------
         const int BL_ABS_ENC_PORT = 12;
         const bool BL_ABS_ENC_INVERTED = false;
-        const frc::Rotation2d BL_ZERO_HEADING{units::degree_t{168.25f}};
+        const frc::Rotation2d BL_ZERO_HEADING{units::degree_t{170.59f}};
 
         ctre::phoenix6::hardware::CANcoder bl_abs_enc{BL_ABS_ENC_PORT};
 
@@ -154,7 +155,7 @@ class WPISwerveDrive : public SwerveDrive
         // --------------------Absolute Encoder-----------------------
         const int BR_ABS_ENC_PORT = 9;
         const bool BR_ABS_ENC_INVERTED = false;
-        const frc::Rotation2d BR_ZERO_HEADING{units::degree_t{105.43f}};
+        const frc::Rotation2d BR_ZERO_HEADING{units::degree_t{101.43f}};
 
         ctre::phoenix6::hardware::CANcoder br_abs_enc{BR_ABS_ENC_PORT};
 

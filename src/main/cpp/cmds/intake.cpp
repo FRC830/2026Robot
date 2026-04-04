@@ -17,6 +17,7 @@ void intake::Execute()
     m_data.states.Jam = false; // Ensure Jam is false when Launching is toggled
     m_data.states.Launching = false; // Ensure Launching is false when Passing is toggled
     m_data.states.Defense = false; // Ensure Defense is false when Intaking is toggled
+    m_data.intakeInput.intakeDirection = 1.0;
 }
 
 bool intake::IsFinished()

@@ -27,7 +27,7 @@ namespace ratbot
     namespace Intake
     {
         const double INTAKE_ROLLER_SPEED = 0.8;
-        const double INTAKE_ANGLE_SPEED = 0.5;
+        const double INTAKE_ANGLE_SPEED = 0.7;
         const double UP_LOCATION = 0.0;
         const double DOWN_LOCATION = 527;
     }

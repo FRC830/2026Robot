@@ -131,15 +131,13 @@ double Launcher::GetAngle()
 }
 bool Launcher::AreFlywheelsAtDesiredSpeed()
 {
-    return ((std::fabs(std::fabs(GetLeftLauncherRPM()) - m_desiredLeftLauncherSpeed) <= 300));
+    return ((std::fabs(std::fabs(GetLeftLauncherRPM()) - m_desiredLeftLauncherSpeed) <= 200));
 }
 
 void Launcher::SetAngle(double angle)
 {
-    // m_servo.SetAngle(angle);
-    
+    m_servo.SetAngle(angle);
 } 
-
 void Launcher::SetRPM(double wheel_rpm)
 {
     double launcher_rpm = std::fabs(wheel_rpm);

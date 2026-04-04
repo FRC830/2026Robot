@@ -62,8 +62,13 @@ void SmartPlanner::SmartPlan(RobotControlData &data)
   // distance = 1.5;
   // if (m_moveToPose.isDone())
   // {  
-    data.launcherInput.launcherRPM = m_launcherCalc.Calculate(distance - 0.4576, swervePose, swerveX, swerveY); //rpm
   // }
+  double hoodAngle = m_launcherCalc.CalcHood(distance - 0.4576);
+  frc::SmartDashboard::PutNumber("hoodAngle", hoodAngle);
+
+  data.launcherInput.launcherRPM = m_launcherCalc.Calculate(distance - 0.4576, swervePose, swerveX, swerveY); //rpm
+
+  data.launcherInput.launcherAngle = m_launcherCalc.CalcHood(distance - 0.4576);
   // std::cout << "rpm " << data.launcherInput.launcherRPM << std::endl;
   // std::cout << "angle " << data.launcherInput.launcherAngle << std::endl;
   // std::cout << "ind speed " << data.launcherInput.indexerSpeeds << std::endl;
