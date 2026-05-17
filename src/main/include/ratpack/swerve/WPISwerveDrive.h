@@ -22,6 +22,10 @@
 #include "rev/SparkMax.h"
 #include <units/length.h>
 
+#include <wpi/SymbolExports.h>
+#include <wpi/struct/Struct.h>
+#include "frc/kinematics/SwerveModuleState.h"
+
 struct SwerveConfig{
     bool idle_mode;
     bool ebrake;
@@ -61,7 +65,7 @@ class WPISwerveDrive : public SwerveDrive
         virtual frc::ChassisSpeeds GetRobotRelativeSpeeds() override;
         void UpdatePoseWithVision(frc::Pose2d pose2d, units::second_t timestamp);
         void SetShouldSwerveLock(bool shouldLock);
-
+        std::array<frc::SwerveModuleState, 4> GetModuleStates() const;
         inline std::array<SwerveModule*, 4>* GetModules()
         {
             return &m_modules;

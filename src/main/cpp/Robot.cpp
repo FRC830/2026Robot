@@ -16,6 +16,12 @@
 #include <frc/Filesystem.h>
 #include <cameraserver/CameraServer.h>
 
+#include <wpi/SymbolExports.h>
+#include <wpi/struct/Struct.h>
+#include "frc/kinematics/SwerveModuleState.h"
+
+
+
 Robot::Robot() {
   m_cam = std::make_shared<PhotonVisionCamera>("cam2", ratbot::VisionConfig::ROBOT_TO_CAMERA);
 
@@ -37,7 +43,11 @@ void Robot::RobotPeriodic() {
   m_cam->PrintVisionInfo();
   auto camPose = m_cam->GetPose();
 
+
+  auto states = _swerve.GetModuleStates();
   
+
+
   if (camPose.has_value())
   {
     auto poseThing = camPose;

@@ -263,3 +263,14 @@ void WPISwerveDrive::SetShouldSwerveLock(bool shouldLock)
 {
     m_shouldSwerveLock = shouldLock;
 }
+
+std::array<frc::SwerveModuleState, 4> WPISwerveDrive::GetModuleStates() const {
+    // Replace with actual logic to retrieve swerve module states
+    
+    return {
+        m_states[0], // Module 1 state
+        m_states[1], // Module 2 state
+        m_states[2], // Module 3 state
+        m_states[3]  // Module 4 state
+    };
+}
