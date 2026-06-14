@@ -17,7 +17,7 @@
 #include <cameraserver/CameraServer.h>
 
 Robot::Robot() {
-  m_cam = std::make_shared<PhotonVisionCamera>("cam2", ratbot::VisionConfig::ROBOT_TO_CAMERA);
+  m_cam = std::make_shared<PhotonVisionCamera>("Arducam_OV9281_USB_Camera", ratbot::VisionConfig::ROBOT_TO_CAMERA);
 
   SwerveInit();
   pathplanner::NamedCommands::registerCommand("launch", std::make_shared<launch>(_robot_control_data));

@@ -1,6 +1,78 @@
 #include "Robot.h"
 #include "ratpack/swerve/SwerveConfig.h"
 
+#include <cmath>
+#include <functional>
+
+#include <frc/smartdashboard/SmartDashboard.h>
+#include <wpi/sendable/Sendable.h>
+#include <wpi/sendable/SendableBuilder.h>
+
+namespace
+{
+double ToElasticAngleRadians(frc::Rotation2d angle)
+{
+  constexpr double kTwoPi = 6.28318530717958647692;
+  double radians = std::fmod(angle.Radians().to<double>(), kTwoPi);
+  if (radians < 0.0)
+  {
+    radians += kTwoPi;
+  }
+  return radians;
+}
+
+class ElasticSwerveDriveWidget : public wpi::Sendable
+{
+ public:
+  ElasticSwerveDriveWidget(
+      std::function<double()> frontLeftAngle,
+      std::function<double()> frontLeftVelocity,
+      std::function<double()> frontRightAngle,
+      std::function<double()> frontRightVelocity,
+      std::function<double()> backLeftAngle,
+      std::function<double()> backLeftVelocity,
+      std::function<double()> backRightAngle,
+      std::function<double()> backRightVelocity,
+      std::function<double()> robotAngle)
+      : m_frontLeftAngle(frontLeftAngle),
+        m_frontLeftVelocity(frontLeftVelocity),
+        m_frontRightAngle(frontRightAngle),
+        m_frontRightVelocity(frontRightVelocity),
+        m_backLeftAngle(backLeftAngle),
+        m_backLeftVelocity(backLeftVelocity),
+        m_backRightAngle(backRightAngle),
+        m_backRightVelocity(backRightVelocity),
+        m_robotAngle(robotAngle)
+  {
+  }
+
+  void InitSendable(wpi::SendableBuilder& builder) override
+  {
+    builder.SetSmartDashboardType("SwerveDrive");
+    builder.AddDoubleProperty("Front Left Angle", m_frontLeftAngle, nullptr);
+    builder.AddDoubleProperty("Front Left Velocity", m_frontLeftVelocity, nullptr);
+    builder.AddDoubleProperty("Front Right Angle", m_frontRightAngle, nullptr);
+    builder.AddDoubleProperty("Front Right Velocity", m_frontRightVelocity, nullptr);
+    builder.AddDoubleProperty("Back Left Angle", m_backLeftAngle, nullptr);
+    builder.AddDoubleProperty("Back Left Velocity", m_backLeftVelocity, nullptr);
+    builder.AddDoubleProperty("Back Right Angle", m_backRightAngle, nullptr);
+    builder.AddDoubleProperty("Back Right Velocity", m_backRightVelocity, nullptr);
+    builder.AddDoubleProperty("Robot Angle", m_robotAngle, nullptr);
+  }
+
+ private:
+  std::function<double()> m_frontLeftAngle;
+  std::function<double()> m_frontLeftVelocity;
+  std::function<double()> m_frontRightAngle;
+  std::function<double()> m_frontRightVelocity;
+  std::function<double()> m_backLeftAngle;
+  std::function<double()> m_backLeftVelocity;
+  std::function<double()> m_backRightAngle;
+  std::function<double()> m_backRightVelocity;
+  std::function<double()> m_robotAngle;
+};
+}  // namespace
+
   namespace ModulePosition
   { 
     static const int FL = 0;
@@ -152,6 +224,23 @@ void Robot::SwerveInit(){
 
 void Robot::PrintSwerveInfo()
 {
+  static ElasticSwerveDriveWidget elasticSwerveDriveWidget(
+      [this] { return ToElasticAngleRadians(_abs_encoders[ModulePosition::FL].GetHeading()); },
+      [this] { return _modules[ModulePosition::FL].GetState().speed.to<double>(); },
+      [this] { return ToElasticAngleRadians(_abs_encoders[ModulePosition::FR].GetHeading()); },
+      [this] { return _modules[ModulePosition::FR].GetState().speed.to<double>(); },
+      [this] { return ToElasticAngleRadians(_abs_encoders[ModulePosition::BL].GetHeading()); },
+      [this] { return _modules[ModulePosition::BL].GetState().speed.to<double>(); },
+      [this] { return ToElasticAngleRadians(_abs_encoders[ModulePosition::BR].GetHeading()); },
+      [this] { return _modules[ModulePosition::BR].GetState().speed.to<double>(); },
+      [this] { return ToElasticAngleRadians(_gyro.GetHeading()); });
+  static bool elasticSwerveDriveWidgetPublished = false;
+  if (!elasticSwerveDriveWidgetPublished)
+  {
+    frc::SmartDashboard::PutData("Swerve Drive", &elasticSwerveDriveWidget);
+    elasticSwerveDriveWidgetPublished = true;
+  }
+
   frc::SmartDashboard::PutNumber("FL Drive Motor Rotations", _swerve.fl_drive_enc.GetPosition());
   frc::SmartDashboard::PutNumber("FR Drive Motor Rotations", _swerve.fr_drive_enc.GetPosition());
   frc::SmartDashboard::PutNumber("BR Drive Motor Rotations", _swerve.br_drive_enc.GetPosition());
@@ -176,6 +265,8 @@ void Robot::PrintSwerveInfo()
   frc::SmartDashboard::PutNumber("FR Velocity", _swerve.fr_drive_enc.GetVelocity());
   frc::SmartDashboard::PutNumber("BL Velocity", _swerve.bl_drive_enc.GetVelocity());
   frc::SmartDashboard::PutNumber("BR Velocity", _swerve.br_drive_enc.GetVelocity());
+
+  
 
 }
 
