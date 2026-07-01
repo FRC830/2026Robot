@@ -17,8 +17,8 @@ void Pigeon2::Configure(GyroConfig &config)
     if (m_gyro == nullptr) {
         m_gyro = new ctre::phoenix6::hardware::Pigeon2(39, "rio");
     }
-    // m_is_inverted = config.is_inverted;
-    // m_zero_heading = config.zero_heading;
+    m_is_inverted = config.is_inverted;
+    m_zero_heading = config.zero_heading;
 }
 
 frc::Rotation3d Pigeon2::GetYawPitchRoll() 
@@ -43,7 +43,12 @@ frc::Rotation2d Pigeon2::GetHeading()
 
 frc::Rotation2d Pigeon2::GetRawHeading() 
 {
-    return m_gyro->GetRotation2d();
+    frc::Rotation2d heading = m_gyro->GetRotation2d();
+    if (m_is_inverted)
+    {
+        heading = -heading;
+    }
+    return heading;
 }
 
 bool Pigeon2::GetInverted() 

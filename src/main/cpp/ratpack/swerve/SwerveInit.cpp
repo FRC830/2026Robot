@@ -121,10 +121,10 @@ void Robot::SwerveInit(){
     _modules[i].Configure(module_config);
   }
   
-  // GyroConfig gyroConfig;
-  // gyroConfig.is_inverted = _swerve.GYRO_INVERTED;
-  // gyroConfig.zero_heading = _swerve.GYRO_ZERO_HEADING;
-  // _gyro.Configure(gyroConfig);
+  GyroConfig gyroConfig;
+  gyroConfig.is_inverted = _swerve.GYRO_INVERTED;
+  gyroConfig.zero_heading = _swerve.GYRO_ZERO_HEADING;
+  _gyro.Configure(gyroConfig);
 
   SwerveConfig swerveConfig;
   swerveConfig.backLeftLocation= _swerve.bl_position;

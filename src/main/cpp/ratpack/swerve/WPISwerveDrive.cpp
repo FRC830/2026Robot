@@ -170,18 +170,42 @@ void WPISwerveDrive::Drive(std::vector<frc::SwerveModuleState> &state) {
     // frc::SmartDashboard::PutData("Rotation2d", )
     
 
-    m_estimator->UpdateWithTime(frc::Timer::GetFPGATimestamp(), m_gyro->GetRawHeading(), {m_modules[0]->GetPosition(), m_modules[1]->GetPosition(), m_modules[2]->GetPosition(), m_modules[3]->GetPosition()});
-    m_field.SetRobotPose(m_estimator->GetEstimatedPosition());
 } 
 
+void WPISwerveDrive::Periodic()
+{
+    if (m_estimator == nullptr || m_gyro == nullptr)
+    {
+        return;
+    }
+
+    for (SwerveModule *module : m_modules)
+    {
+        if (module == nullptr)
+        {
+            return;
+        }
+    }
+
+    m_estimator->UpdateWithTime(
+        frc::Timer::GetFPGATimestamp(),
+        m_gyro->GetRawHeading(),
+        {m_modules[0]->GetPosition(), m_modules[1]->GetPosition(), m_modules[2]->GetPosition(), m_modules[3]->GetPosition()});
+    m_field.SetRobotPose(m_estimator->GetEstimatedPosition());
+}
+
 bool WPISwerveDrive::GetIdleMode() {
-    return false;
+    return m_driveMotorIdleMode;
 }
 
 void WPISwerveDrive::SetIdleMode(bool idle_mode) {
-     for(int i = 0; i < m_modules.size(); i++){
+    m_driveMotorIdleMode = idle_mode;
+    for(int i = 0; i < m_modules.size(); i++){
 
-        m_modules[i]->SetIdleMode(idle_mode);
+        if (m_modules[i] != nullptr)
+        {
+            m_modules[i]->SetIdleMode(idle_mode);
+        }
 
     }
 }

@@ -28,6 +28,7 @@ Robot::Robot() {
 }
 
 void Robot::RobotPeriodic() {
+  _swerve.Periodic();
   PrintSwerveInfo();
   m_cam->PrintVisionInfo();
 }

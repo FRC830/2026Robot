@@ -55,10 +55,11 @@ class WPISwerveDrive : public SwerveDrive
         virtual void SetIdleMode(bool idle_mode) override;
         virtual void SetRobotOriented() override;
         virtual void SetFieldOriented() override;
-        virtual bool GetOrientedMode() override; 
+        virtual bool GetOrientedMode() override;
         virtual frc::Pose2d GetPose() override;
         virtual void ResetPose(frc::Pose2d pose) override;
         virtual frc::ChassisSpeeds GetRobotRelativeSpeeds() override;
+        void Periodic();
         void UpdatePoseWithVision(frc::Pose2d pose2d, units::second_t timestamp);
         void SetShouldSwerveLock(bool shouldLock);
 
@@ -117,7 +118,7 @@ class WPISwerveDrive : public SwerveDrive
 
         rev::spark::SparkMax fr_drive_mtr{FR_DRIVE_MTR_ID, rev::spark::SparkMax::MotorType::kBrushless};
         rev::spark::SparkRelativeEncoder fr_drive_enc = fr_drive_mtr.GetEncoder();
-        rev::spark::SparkClosedLoopController fr_drive_pid = fr_drive_mtr.GetClosedLoopController(); 
+        rev::spark::SparkClosedLoopController fr_drive_pid = fr_drive_mtr.GetClosedLoopController();
 
 
         // ###########################################################
@@ -172,7 +173,7 @@ class WPISwerveDrive : public SwerveDrive
 
         rev::spark::SparkMax br_drive_mtr{BR_DRIVE_MTR_ID, rev::spark::SparkMax::MotorType::kBrushless};
         rev::spark::SparkRelativeEncoder br_drive_enc = br_drive_mtr.GetEncoder();
-        rev::spark::SparkClosedLoopController br_drive_pid = br_drive_mtr.GetClosedLoopController(); 
+        rev::spark::SparkClosedLoopController br_drive_pid = br_drive_mtr.GetClosedLoopController();
 
 
         // ###########################################################
@@ -225,9 +226,9 @@ class WPISwerveDrive : public SwerveDrive
         frc::Translation2d m_backLeftLocation;
         frc::Translation2d m_backRightLocation;
 
-        frc::SwerveDriveKinematics<4>* m_kinematics;
-        
-        std::array<SwerveModule*, 4> m_modules;
+        frc::SwerveDriveKinematics<4>* m_kinematics = nullptr;
+
+        std::array<SwerveModule*, 4> m_modules{nullptr, nullptr, nullptr, nullptr};
 
         std::vector<frc::SwerveModuleState> m_states;
 
@@ -237,15 +238,15 @@ class WPISwerveDrive : public SwerveDrive
         bool m_driveMotorIdleMode = false;
         // false is brake and true is coast
         bool m_orientation = false;
-        // false is robot orientated, true is FieldOrientated. 
+        // false is robot orientated, true is FieldOrientated.
         double m_deadzone;
 
         bool m_visionResetOccurred = false;
 
         double ApplyDeadzone(double input);
         std::pair<double, double> ApplyCylindricalDeadzone(double x, double y);
-        Pigeon2 *m_gyro;
-        frc::SwerveDrivePoseEstimator<4> *m_estimator;
+        Pigeon2 *m_gyro = nullptr;
+        frc::SwerveDrivePoseEstimator<4> *m_estimator = nullptr;
 
         bool m_shouldSwerveLock = true;
 };

@@ -49,14 +49,17 @@ units::velocity::feet_per_second_t NeoDriveMotor::GetVelocity() {
 
 
 void NeoDriveMotor::SetIdleMode(bool m) {
-    // TODO 2025 refactor makes doing this more challenging... have to figure out best way forward
-    //m_motor->SetIdleMode(m ? rev::spark::SparkMax::IdleMode::kBrake : rev::spark::SparkMax::IdleMode::kCoast);
+    rev::spark::SparkMaxConfig mtr_config{};
+    mtr_config.SetIdleMode(m ? rev::spark::SparkMaxConfig::IdleMode::kCoast : rev::spark::SparkMaxConfig::IdleMode::kBrake);
+
+    START_RETRYING(NEO_DRIVE_MTR_IDLE_MODE)
+    m_motor->Configure(mtr_config, rev::spark::SparkMax::ResetMode::kNoResetSafeParameters, rev::spark::SparkMax::PersistMode::kPersistParameters);
+    END_RETRYING
 };
 
 
 bool NeoDriveMotor::GetIdleMode() {
     return m_motor->configAccessor.GetIdleMode() == rev::spark::SparkBaseConfig::IdleMode::kBrake;
 };
-
 
 

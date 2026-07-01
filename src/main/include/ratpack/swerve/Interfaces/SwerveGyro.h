@@ -2,7 +2,11 @@
 #include <frc/geometry/Rotation2d.h>
 #include <frc/geometry/Rotation3d.h>
 
-struct GyroConfig;
+struct GyroConfig
+{
+    bool is_inverted;
+    frc::Rotation2d zero_heading;
+};
 
 class SwerveGyro
 {
