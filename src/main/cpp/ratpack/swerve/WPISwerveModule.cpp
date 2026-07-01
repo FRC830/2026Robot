@@ -1,13 +1,15 @@
 #include "ratpack/swerve/WPISwerveModule.h"
 #include <frc/smartdashboard/SmartDashboard.h>
 #include <units/length.h>
+#include <cmath>
 
 
 
 frc::SwerveModuleState WPISwerveModule::Optimize(frc::SwerveModuleState desiredState, frc::Rotation2d currentHeading){
 
     auto delta = desiredState.angle - currentHeading;
-    if (units::math::abs(delta.Degrees()) > 120_deg) {
+    delta = frc::Rotation2d{units::degree_t{std::remainder(delta.Degrees().to<double>(), 360.0)}};
+    if (units::math::abs(delta.Degrees()) > 90_deg) {
 
         return frc::SwerveModuleState(-desiredState.speed, desiredState.angle + frc::Rotation2d{180_deg});
 
@@ -30,7 +32,7 @@ void WPISwerveModule::Configure(SwerveModuleConfig &config)
 void WPISwerveModule::SetState(frc::SwerveModuleState state)
 {
     double fixed_heading = state.angle.Degrees().to<double>();
-    fixed_heading = std::fmod(fixed_heading, 360.0);
+    fixed_heading = std::remainder(fixed_heading, 360.0);
     auto newState = Optimize(frc::SwerveModuleState(state.speed, frc::Rotation2d(units::degree_t{fixed_heading})), m_turnMotor->GetRotation());
     m_turnMotor->SetRotation(frc::Rotation2d(units::degree_t (std::fmod(newState.angle.Degrees().to<double>(), 360.0))));
     m_driveMotor->SetVelocity(newState.speed);
