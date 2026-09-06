@@ -75,7 +75,7 @@ void SmartPlanner::SmartPlan(RobotControlData &data)
   frc::SmartDashboard::PutNumber("target angle", (m_targetAngle * 180/3.1415));
   auto turnSpeed = m_moveToPose.angularRotation(m_Swerve.GetPose().Rotation().Degrees().value(),(m_targetAngle * 180/3.1415));
 
-  m_Swerve.Drive(data.swerveInput.xTranslation,data.swerveInput.yTranslation,turnSpeed);
+  // m_Swerve.Drive(data.swerveInput.xTranslation,data.swerveInput.yTranslation,turnSpeed);
 
 }
 

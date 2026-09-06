@@ -15,7 +15,7 @@
 
 
 Robot::Robot() {
-  m_cam = std::make_shared<PhotonVisionCamera>("cam2", ratbot::VisionConfig::ROBOT_TO_CAMERA);
+  m_cam = std::make_shared<PhotonVisionCamera>("camera", ratbot::VisionConfig::ROBOT_TO_CAMERA);
 
   SwerveInit();
   pathplanner::NamedCommands::registerCommand("launch", std::make_shared<launch>(_robot_control_data));
@@ -103,7 +103,7 @@ void Robot::AutonomousPeriodic() {
 void Robot::AutonomousExit() {}
 
 void Robot::TeleopInit() {
-  _robot_control_data.launcherInput.launcherRPM = -3000;
+  _robot_control_data.launcherInput.launcherRPM = -2700;
 
   _controller_interface.ResetState(_robot_control_data);
   m_launcherManager.ResetState();
