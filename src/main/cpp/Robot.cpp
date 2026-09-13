@@ -54,6 +54,9 @@ void Robot::TeleopPeriodic() {
   } else {
     m_Motor2.Set(0);
   }
+
+  frc::SmartDashboard::PutNumber("Motor 1 Output", m_Motor1.Get());
+  frc::SmartDashboard::PutNumber("Motor 2 Output", m_Motor2.Get());
 }
 
 void Robot::TeleopExit() {}
