@@ -22,12 +22,9 @@
 #include "ControllerInterface.h"
 #include "RobotControlData.h"
 #include "MoveToPose.h"
-#include "InputManager/LauncherManager.h"
 #include "SmartPlanner.h"
 #include "ratpack/swerve/SwerveConfig.h"
 
-#include "InputManager/IntakeManager.h"
-#include "InputManager/SpindexerManager.h"
 
 class Robot : public frc::TimedRobot {
  public:
@@ -49,37 +46,8 @@ class Robot : public frc::TimedRobot {
   void PrintSwerveInfo();
 
  private:
-  double GetSwerveDeadZone();
+   frc::XboxController m_controller{0};
 
-  static const int NUM_MODULES = 4;
-
-  std::array<AnalogAbsoluteEncoder, NUM_MODULES> _abs_encoders;
-  std::array<NeoTurnMotor, NUM_MODULES> _turn_motors;
-  std::array<NeoDriveMotor, NUM_MODULES> _drive_motors;
-  std::array<WPISwerveModule, NUM_MODULES> _modules;
-  WPISwerveDrive _swerve;
-
-  Pigeon2 _gyro;
-  ControllerInterface _controller_interface;
-  RobotControlData _robot_control_data;
-  MoveToPose m_rotateToHub;
-
-  frc::Timer autonTimer;
-  
-  int m_state = 0;
-  frc2::Command* m_auto;
-
-  frc::SendableChooser<frc2::Command*> m_autoChooser;
-  
-  std::shared_ptr<PhotonVisionCamera> m_cam;
-  std::shared_ptr<SmartPlanner> m_smartPlanner;
-
-  frc::XboxController m_pilot{2};
-
-  //Launcher launcher;
-  LauncherManager m_launcherManager;
-  SpindexerManager m_spindexer;
-  IntakeManager m_intake;
-
-  double m_targetAngle = 0;
+  rev::spark::SparkMax m_Motor1{2, rev::spark::SparkMax::MotorType::kBrushless};
+  rev::spark::SparkMax m_Motor2{22, rev::spark::SparkMax::MotorType::kBrushless};
 };

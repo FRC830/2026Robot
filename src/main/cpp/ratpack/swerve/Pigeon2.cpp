@@ -1,6 +1,6 @@
 #include "ratpack/swerve/Pigeon2.h"
 #include <units/angle.h>
-
+ 
 Pigeon2::Pigeon2()
 {
     // Allocate the hardware Pigeon2 and assign to the member pointer.

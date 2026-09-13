@@ -11,35 +11,15 @@
 #include "MechanismConfig.h"
 #include <frc/geometry/Pose2d.h>
 #include <pathplanner/lib/auto/NamedCommands.h>
-#include <cmds/launch.h>
 
 
 Robot::Robot() {
-  m_cam = std::make_shared<PhotonVisionCamera>("camera", ratbot::VisionConfig::ROBOT_TO_CAMERA);
-
-  SwerveInit();
-  pathplanner::NamedCommands::registerCommand("launch", std::make_shared<launch>(_robot_control_data));
-  m_smartPlanner = std::make_shared<SmartPlanner>(*m_cam, _swerve);
-  
-  m_autoChooser = pathplanner::AutoBuilder::buildAutoChooser();
-  frc::SmartDashboard::PutData("Auto Chooser", &m_autoChooser);
-
-  _swerve.SetShouldSwerveLock(true); 
 
 }
 
 
 void Robot::RobotPeriodic() {
-  PrintSwerveInfo();
-  m_cam->PrintVisionInfo();
-  auto camPose = m_cam->GetPose();
-
-  if (camPose.has_value())
-  {
-    auto poseThing = camPose;
-    _swerve.UpdatePoseWithVision(poseThing->estimatedPose.ToPose2d(), units::time::second_t(poseThing->timestamp));
-   // std::cout << camPose.value().estimatedPose.Rotation().Angle().value() * 180/3.14 << std::endl;
-  }
+  
 }
 
 void Robot::DisabledInit() {}
@@ -49,103 +29,31 @@ void Robot::DisabledPeriodic() {}
 void Robot::DisabledExit() {}
 
 void Robot::AutonomousInit() {
-  m_launcherManager.ResetState();
-  m_intake.ResetState();
-  m_spindexer.ResetState(_robot_control_data);
-  
-  m_state = 0;
-  m_auto = m_autoChooser.GetSelected();
 
-  autonTimer.Stop();
-  autonTimer.Reset();
-  autonTimer.Start();
 }
 
 void Robot::AutonomousPeriodic() {
 
-  switch(m_state)
-  {
-    case 0:
-      {
-        m_auto->Initialize();
-        m_state++;
-      }
-      break;
-    case 1:
-      {
-        m_auto->Execute();
-        if (m_auto->IsFinished())
-        {
-          m_state++;
-        }
-      }
-      break;
-    case 2:
-      {
-        m_auto->End(false);
-        m_state++;
-      }
-      break;
-    case 3:
-      {
-        _swerve.Drive(0.0, 0.0, 0.0);
-      }
-    
-      break;
-    default:
-      break;
-  }
-
-  TeleopPeriodic();
 
 }
 
 void Robot::AutonomousExit() {}
 
 void Robot::TeleopInit() {
-  _robot_control_data.launcherInput.launcherRPM = -2700;
-
-  _controller_interface.ResetState(_robot_control_data);
-  m_launcherManager.ResetState();
-  m_intake.ResetState();
-  m_spindexer.ResetState(_robot_control_data);
 
 }
 
 void Robot::TeleopPeriodic() {
-
-  // Start normal teleop
-  m_cam->SaveResult();
-  // if (_robot_control_data.swerveInput.autoTarget == false)
-  // {  
-  //   _swerve.Drive(_robot_control_data.swerveInput.xTranslation, _robot_control_data.swerveInput.yTranslation, _robot_control_data.swerveInput.rotation);
-  // }
-  // else
-  // {-
-
-  // }
-  //launcher.SetAngle(m_pilot.GetRightY()*5);
-  _controller_interface.UpdateRobotControlData(_robot_control_data, IsAutonomous());
-  if(!IsAutonomous())
-  {
-    if (_robot_control_data.resetPigeon.reset)
-    {
-      _gyro.Reset();
-    }
-    // m_smartPlanner->HandleInput(_robot_control_data);
-    if (_robot_control_data.launcherInput.autoAim)
-    {
-      m_smartPlanner->HandleInput(_robot_control_data);
-    }
-    else{
-      _swerve.Drive(_robot_control_data.swerveInput.xTranslation, _robot_control_data.swerveInput.yTranslation, _robot_control_data.swerveInput.rotation);
-    }
-    //  _swerve.Drive(_robot_control_data.swerveInput.xTranslation, _robot_control_data.swerveInput.yTranslation, _robot_control_data.swerveInput.rotation);
+  if ((m_controller.GetRightY() > 0.1) || (m_controller.GetRightY() < -0.1)) {
+    m_Motor1.Set(m_controller.GetRightY() * 0.5);
+  } else {
+    m_Motor1.Set(0);
   }
-  m_launcherManager.HandleInput(_robot_control_data);
-  m_spindexer.HandleInput(_robot_control_data);
-  m_intake.HandleInput(_robot_control_data);
-
+  if ((m_controller.GetLeftY() > 0.1) || (m_controller.GetLeftY() < -0.1)) {
+    m_Motor2.Set(m_controller.GetLeftY() * 0.75);
+  } else {
+    m_Motor2.Set(0);
+  }
 }
 
 void Robot::TeleopExit() {}
