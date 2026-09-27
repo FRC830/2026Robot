@@ -44,19 +44,7 @@ void Robot::TeleopInit() {
 }
 
 void Robot::TeleopPeriodic() {
-  if ((m_controller.GetRightY() > 0.1) || (m_controller.GetRightY() < -0.1)) {
-    m_Motor1.Set(m_controller.GetRightY() * 0.5);
-  } else {
-    m_Motor1.Set(0);
-  }
-  if ((m_controller.GetLeftY() > 0.1) || (m_controller.GetLeftY() < -0.1)) {
-    m_Motor2.Set(m_controller.GetLeftY() * 0.75);
-  } else {
-    m_Motor2.Set(0);
-  }
 
-  frc::SmartDashboard::PutNumber("Motor 1 Output", m_Motor1.Get());
-  frc::SmartDashboard::PutNumber("Motor 2 Output", m_Motor2.Get());
 }
 
 void Robot::TeleopExit() {}
