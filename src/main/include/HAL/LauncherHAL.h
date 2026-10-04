@@ -35,9 +35,11 @@ class Launcher
         std::shared_ptr<ctre::phoenix6::hardware::TalonFX> m_rightLauncher = std::make_shared<ctre::phoenix6::hardware::TalonFX>(LAUNCHER_FLYWHEEL_RIGHT_CAN_ID);
         std::shared_ptr<ctre::phoenix6::hardware::TalonFX> m_leftLauncher = std::make_shared<ctre::phoenix6::hardware::TalonFX>(LAUNCHER_FLYWHEEL_LEFT_CAN_ID);
 
-
         
         frc::Servo m_verticalServo1{SERVO_ID1};
+
+
+        
         frc::Servo m_verticalServo2{SERVO_ID2};
     
 

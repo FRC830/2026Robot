@@ -2,30 +2,31 @@
 #include <frc/DriverStation.h>
 
 void LauncherManager::HandleInput(RobotControlData &robotControlData){
-    
-    if (robotControlData.launcherInput.disableLauncher){
+    if (robotControlData.launcherInput.disableLauncher) 
+    {
         m_launcherRPM = 0;
     }
-    else{
-        m_launcherAngle = robotControlData.launcherInput.launcherAngle;
-        m_launcherRPM = robotControlData.launcherInput.launcherRPM; //configure max speed
+    else {
+        m_launcherRPM = robotControlData.launcherInput.launcherRPM;
     }
-    
+
     m_Launcher.SetRPM(m_launcherRPM);
-    m_Launcher.SetAngle(m_launcherAngle);
 
     robotControlData.launcherOutput.leftLauncherRPM = m_Launcher.GetLeftLauncherRPM();
-    robotControlData.launcherOutput.rightLauncherRPM = m_Launcher.GetRightLauncherRPM();
+    robotControlData.launcherOutput.leftLauncherRPM = m_Launcher.GetRightLauncherRPM();
+
     robotControlData.launcherOutput.launcherAtSpeed = m_Launcher.AreFlywheelsAtDesiredSpeed();
-if (robotControlData.launcherOutput.launcherAtSpeed)
-    {
+
+    if (robotControlData.launcherOutput.launcherAtSpeed) {
         m_Launcher.SetIndexerSpeeds(robotControlData.launcherInput.indexerSpeeds);
     }
-    else
-    {
+    else {
         m_Launcher.SetIndexerSpeeds(0);
     }
-    robotControlData.launcherOutput.launcherAngle = m_Launcher.GetAngle();
+
+
+
+
     frc::SmartDashboard::PutNumber("LeftLauncherRPM",m_Launcher.GetLeftLauncherRPM());
     frc::SmartDashboard::PutNumber("RightLauncherRPM",m_Launcher.GetRightLauncherRPM());
     frc::SmartDashboard::PutNumber("LauncherAngle",m_Launcher.GetAngle());
