@@ -19,9 +19,6 @@
 Robot::Robot() {
   m_cam = std::make_shared<PhotonVisionCamera>("cam1", ratbot::VisionConfig::ROBOT_TO_CAMERA);
 
-  SwerveInit();
-  pathplanner::NamedCommands::registerCommand("intake", std::make_shared<intake>(_robot_control_data));
-  pathplanner::NamedCommands::registerCommand("launch", std::make_shared<launch>(_robot_control_data));
   m_smartPlanner = std::make_shared<SmartPlanner>(*m_cam, _swerve);
   
   m_autoChooser = pathplanner::AutoBuilder::buildAutoChooser();
@@ -52,16 +49,7 @@ void Robot::DisabledPeriodic() {}
 void Robot::DisabledExit() {}
 
 void Robot::AutonomousInit() {
-  m_launcherManager.ResetState();
-  m_intake.ResetState();
-  m_spindexer.ResetState(_robot_control_data);
-  
-  m_state = 0;
-  m_auto = m_autoChooser.GetSelected();
 
-  autonTimer.Stop();
-  autonTimer.Reset();
-  autonTimer.Start();
 }
 
 void Robot::AutonomousPeriodic() {
@@ -106,48 +94,14 @@ void Robot::AutonomousPeriodic() {
 void Robot::AutonomousExit() {}
 
 void Robot::TeleopInit() {
-  _robot_control_data.launcherInput.launcherRPM = -3000;
 
-  _controller_interface.ResetState(_robot_control_data);
-  m_launcherManager.ResetState();
-  m_intake.ResetState();
-  m_spindexer.ResetState(_robot_control_data);
 
 }
 
 void Robot::TeleopPeriodic() {
 
-  // Start normal teleop
-  m_cam->SaveResult();
-  // if (_robot_control_data.swerveInput.autoTarget == false)
-  // {  
-  //   _swerve.Drive(_robot_control_data.swerveInput.xTranslation, _robot_control_data.swerveInput.yTranslation, _robot_control_data.swerveInput.rotation);
-  // }
-  // else
-  // {-
 
-  // }
-  //launcher.SetAngle(m_pilot.GetRightY()*5);
-  _controller_interface.UpdateRobotControlData(_robot_control_data, IsAutonomous());
-  if(!IsAutonomous())
-  {
-    if (_robot_control_data.resetPigeon.reset)
-    {
-      _gyro.Reset();
-    }
-    // m_smartPlanner->HandleInput(_robot_control_data);
-    if (_robot_control_data.launcherInput.autoAim)
-    {
-      m_smartPlanner->HandleInput(_robot_control_data);
-    }
-    else{
-      _swerve.Drive(_robot_control_data.swerveInput.xTranslation, _robot_control_data.swerveInput.yTranslation, _robot_control_data.swerveInput.rotation);
-    }
-    //  _swerve.Drive(_robot_control_data.swerveInput.xTranslation, _robot_control_data.swerveInput.yTranslation, _robot_control_data.swerveInput.rotation);
-  }
-  m_launcherManager.HandleInput(_robot_control_data);
-  m_spindexer.HandleInput(_robot_control_data);
-  m_intake.HandleInput(_robot_control_data);
+
 
 }
 

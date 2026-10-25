@@ -35,12 +35,12 @@ namespace ratbot
     {
         namespace Flywheel
         {
-            const double P = 0.75;
+            const double P = 0;
             const double I = 0.0;
             const double D = 0.0;
-            const double kVleft = 0.113;
-            const double kVright = 0.117;
-            const double kA = 0.11;
+            const double kVleft = 0;
+            const double kVright = 0;
+            const double kA = 0;
             const double VEL_CONV_FACTOR = 1.0;
             const double CURRENT_LIM = 30.0;
             constexpr ctre::phoenix6::signals::InvertedValue INVERTED = true; 
