@@ -11,10 +11,8 @@
 #include "MechanismConfig.h"
 #include <frc/geometry/Pose2d.h>
 #include <pathplanner/lib/auto/NamedCommands.h>
-#include <cmds/launch.h>
 #include <wpinet/WebServer.h>
 #include <frc/Filesystem.h>
-#include "cmds/intake.h"
 
 Robot::Robot() {
   m_cam = std::make_shared<PhotonVisionCamera>("cam1", ratbot::VisionConfig::ROBOT_TO_CAMERA);

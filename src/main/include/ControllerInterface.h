@@ -13,10 +13,6 @@ class ControllerInterface
         void ResetState(RobotControlData &controlData);
     private:
         void UpdateSwerveInput(RobotControlData &controlData);
-        void UpdateSmartplannerInput(RobotControlData &controlData);
-        void UpdateLauncherInput(RobotControlData &controlData);
-        void UpdateSpindexerInput(RobotControlData &controlData);
-        void UpdateIntakeInput(RobotControlData &controlData);
         void UpdatePigeonInput(RobotControlData &controlData);
         void UpdateStates(RobotControlData &controlData);
 
@@ -25,7 +21,6 @@ class ControllerInterface
         frc::XboxController m_test{2};
         frc::Timer m_timer;
         std::string state = "Starting up";
-        int m_vibrateControllerState = 0;
         double m_slowmodefactor = 0.25;
         double m_globalDuration = 0.0;
         bool variable = false;

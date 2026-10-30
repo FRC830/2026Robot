@@ -14,56 +14,9 @@ struct ResetPigeon
     bool reset;
 };
 
-struct LauncherInput {
-    double indexerSpeeds;
-    double launcherRPM;
-    double launcherAngle;
-    bool disableLauncher;
-    bool autoAim;
-};
 
-struct LauncherOutput{
-    double leftLauncherRPM;
-    double rightLauncherRPM;
-    double launcherAngle;
-    bool launcherAtSpeed;
-};
-
-struct SpindexerInput
+struct RobotControlData
 {
-    bool enableSpindexer;
-};
-
-struct SpindexerOutput
-{
-    double RPM;
-};
-
-struct IntakeInput
-{
-    bool intakeState; //true means up
-    bool shakeIntake;
-    int intakeDirection; //1 is in, -1 is out, 0 is stop
-};
-
-struct States
-{
-    bool Launching;
-    bool Passing;
-    bool Intaking;
-    bool Jam;
-    bool Defense;
-};
-
-struct RobotControlData {
     SwerveInput swerveInput;
     ResetPigeon resetPigeon;
-    LauncherInput launcherInput;
-    LauncherOutput launcherOutput;
-    SpindexerInput spindexerInput;
-    SpindexerOutput spindexerOutput;
-    IntakeInput intakeInput;
-    States states;
 };
-
-

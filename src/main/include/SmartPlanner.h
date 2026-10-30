@@ -11,8 +11,6 @@
 #include <units/angular_velocity.h>
 #include <pathplanner/lib/auto/AutoBuilder.h>
 #include <memory>
-#include <HAL/LauncherHAL.h>
-#include "LauncherCalc.h"
 
 class SmartPlanner{
     public:
@@ -37,12 +35,7 @@ class SmartPlanner{
         frc::Pose2d m_startPose;
         double m_targetAngle = 0;
         int m_tagId;
-        bool blueAlliance;
-        double distToHub;
-        frc::Translation2d targetPosition;
-        LauncherCalc m_launcherCalc;
-        
 
-
+    
         ScoringPositionMap m_positionMap;
 };
