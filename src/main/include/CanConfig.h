@@ -12,4 +12,5 @@ const int SERVO_ID2 = 1;
 const int SPINDEXER_A_CAN_ID = 21;
 const int SPINDEXER_B_CAN_ID = 22;
 
-
+const int CLAW_MOTOR_A_ID = 5;
+const int CLAW_MOTOR_B_ID = 6;
