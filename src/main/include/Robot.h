@@ -48,6 +48,6 @@ class Robot : public frc::TimedRobot {
  private:
    frc::XboxController m_controller{0};
 
-  rev::spark::SparkMax m_Motor1{2, rev::spark::SparkMax::MotorType::kBrushless};
+  rev::spark::SparkMax m_Motor1{45, rev::spark::SparkMax::MotorType::kBrushless};
   rev::spark::SparkMax m_Motor2{22, rev::spark::SparkMax::MotorType::kBrushless};
 };
