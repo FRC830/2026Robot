@@ -42,7 +42,7 @@ void Robot::AutonomousExit() {}
 void Robot::TeleopInit() {
 
 }
-
+#include <iostream>
 void Robot::TeleopPeriodic() {
   // if ((m_controller.GetRightY() > 0.1) || (m_controller.GetRightY() < -0.1)) {
   //   m_Motor1.Set(m_controller.GetRightY() * 0.5);
@@ -58,14 +58,20 @@ void Robot::TeleopPeriodic() {
   // frc::SmartDashboard::PutNumber("Motor 1 Output", m_Motor1.Get());
   // frc::SmartDashboard::PutNumber("Motor 2 Output", m_Motor2.Get());
 
-  if (m_controller.GetAButtonPressed()) {
-    m_Motor1.Set(1);
-    m_Motor2.Set(-1);
+  if (m_controller.GetAButton()) {
+    m_Motor1.Set(speed);
+    m_Motor2.Set(-speed);
   } else {
     m_Motor1.Set(0);
     m_Motor2.Set(0);
   }
-
+  if (m_controller.GetBButtonPressed()) {
+    speed += 0.1;
+  }
+  if (m_controller.GetXButtonPressed()) {
+    speed -= 0.1;
+  }
+  std::cout << speed << std::endl;
 }
 
 void Robot::TeleopExit() {}
